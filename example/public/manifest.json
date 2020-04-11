@@ -1,6 +1,6 @@
 {
-  "short_name": "my-library",
-  "name": "my-library",
+  "short_name": "eoscr-components-example",
+  "name": "eoscr-components-example",
   "icons": [
     {
       "src": "favicon.ico",
