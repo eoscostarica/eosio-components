@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 import Modal from '@material-ui/core/Modal'
 import Backdrop from '@material-ui/core/Backdrop'
 import IconButton from '@material-ui/core/IconButton'
@@ -14,14 +15,14 @@ import config from './config'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    height: 'auto',
+    minHeight: 400,
     display: 'flex',
-    padding: '0 10px'
+    padding: 0
   },
   btn: {
     display: 'flex',
     justifyContent: 'center',
-    marginBottom: 10
+    margin: 10
   },
   modal: {
     display: 'flex',
@@ -38,19 +39,22 @@ const useStyles = makeStyles(theme => ({
       outline: 'none'
     },
     [theme.breakpoints.up('sm')]: {
-    width: '60%'
+      width: '60%'
     }
   },
   inputBox: {
     display: 'flex',
     flexDirection: 'column',
-    height: '60%',
-    justifyContent: 'space-between'
+    height: 300,
+    justifyContent: 'space-between',
+    padding: '0px 20px'
   },
   deleteBtn: {
     height: 27,
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'space-between',
+    padding: '20px 10px',
+    borderBottom: '1px solid #e9ecef'
   },
   iconBtnPadding: {
     padding: 0
@@ -91,103 +95,105 @@ const CreateAccount = ({ onHandleSubmit, customBtnStyle }) => {
     setOpen(!open)
   }
 
-  console.log({ eosjsAPI })
-
-  const handleOnSubmit = () => {
-    if (
-      values.accountName.isValid &&
-      values.activePK.isValid &&
-      values.ownerPK.isValid
-    ) {
-      // await api.transact({
-      //   actions: [{
-      //     account: 'eosio',
-      //     name: 'newaccount',
-      //     authorization: [{
-      //       actor: 'useraaaaaaaa',
-      //       permission: 'active',
-      //     }],
-      //     data: {
-      //       creator: 'useraaaaaaaa',
-      //       name: values.accountName,
-      //       owner: {
-      //         threshold: 1,
-      //         keys: [{
-      //           key: values.ownerPK,
-      //           weight: 1
-      //         }],
-      //         accounts: [],
-      //         waits: []
-      //       },
-      //       active: {
-      //         threshold: 1,
-      //         keys: [{
-      //           key: values.activePK,
-      //           weight: 1
-      //         }],
-      //         accounts: [],
-      //         waits: []
-      //       },
-      //     },
-      //   },
-      //   {
-      //     account: 'eosio',
-      //     name: 'buyrambytes',
-      //     authorization: [{
-      //       actor: 'useraaaaaaaa',
-      //       permission: 'active',
-      //     }],
-      //     data: {
-      //       payer: 'useraaaaaaaa',
-      //       receiver: values.accountName,
-      //       bytes: 8192,
-      //     },
-      //   },
-      //   {
-      //     account: 'eosio',
-      //     name: 'delegatebw',
-      //     authorization: [{
-      //       actor: 'useraaaaaaaa',
-      //       permission: 'active',
-      //     }],
-      //     data: {
-      //       from: 'useraaaaaaaa',
-      //       receiver: values.accountName,
-      //       stake_net_quantity: '1.0000 SYS',
-      //       stake_cpu_quantity: '1.0000 SYS',
-      //       transfer: false,
-      //     }
-      //   }]
-      // }, {
-      //   blocksBehind: 3,
-      //   expireSeconds: 30,
-      // });
-
-      onHandleSubmit({
-        accountName: values.accountName.value,
-        ownerPK: values.activePK.value,
-        activePK: values.ownerPK.value
-      })
-
-      setValues(INITIAL_VALUES)
-
-      return
-    }
-
-    setValues({
-      accountName: {
-        ...values.accountName,
-        error: !values.accountName.value.length ? DEFAULT_MESSAGE : ''
-      },
-      ownerPK: {
-        ...values.ownerPK,
-        error: !values.activePK.value.length ? DEFAULT_MESSAGE : ''
-      },
-      activePK: {
-        ...values.activePK,
-        error: !values.ownerPK.value.length ? DEFAULT_MESSAGE : ''
+  const handleOnSubmit = async () => {
+    try {
+      if (
+        values.accountName.isValid &&
+        values.activePK.isValid &&
+        values.ownerPK.isValid
+      ) {
+        await eosjsAPI.api.transact({
+          actions: [{
+            account: 'eosio',
+            name: 'newaccount',
+            authorization: [{
+              actor: 'useraaaaaaaa',
+              permission: 'active',
+            }],
+            data: {
+              creator: 'useraaaaaaaa',
+              name: values.accountName,
+              owner: {
+                threshold: 1,
+                keys: [{
+                  key: values.ownerPK,
+                  weight: 1
+                }],
+                accounts: [],
+                waits: []
+              },
+              active: {
+                threshold: 1,
+                keys: [{
+                  key: values.activePK,
+                  weight: 1
+                }],
+                accounts: [],
+                waits: []
+              },
+            },
+          },
+          {
+            account: 'eosio',
+            name: 'buyrambytes',
+            authorization: [{
+              actor: 'useraaaaaaaa',
+              permission: 'active',
+            }],
+            data: {
+              payer: 'useraaaaaaaa',
+              receiver: values.accountName,
+              bytes: 8192,
+            },
+          },
+          {
+            account: 'eosio',
+            name: 'delegatebw',
+            authorization: [{
+              actor: 'useraaaaaaaa',
+              permission: 'active',
+            }],
+            data: {
+              from: 'useraaaaaaaa',
+              receiver: values.accountName,
+              stake_net_quantity: '1.0000 SYS',
+              stake_cpu_quantity: '1.0000 SYS',
+              transfer: false,
+            }
+          }]
+        }, {
+          blocksBehind: 3,
+          expireSeconds: 30,
+        });
+  
+        onHandleSubmit({
+          accountName: values.accountName.value,
+          ownerPK: values.activePK.value,
+          activePK: values.ownerPK.value
+        })
+  
+        setValues(INITIAL_VALUES)
+  
+        return
       }
-    })
+  
+      setValues({
+        accountName: {
+          ...values.accountName,
+          error: !values.accountName.value.length ? DEFAULT_MESSAGE : ''
+        },
+        ownerPK: {
+          ...values.ownerPK,
+          error: !values.activePK.value.length ? DEFAULT_MESSAGE : ''
+        },
+        activePK: {
+          ...values.activePK,
+          error: !values.ownerPK.value.length ? DEFAULT_MESSAGE : ''
+        }
+      })
+    } catch (error) {
+      console.log('Create account', error)
+    }
   }
 
   const handleChange = event => {
@@ -260,21 +266,24 @@ const CreateAccount = ({ onHandleSubmit, customBtnStyle }) => {
         <div className={classes.paper}>
           <form noValidate autoComplete='off'>
             <Grid
+              container
               direction='column'
-              spacing={1}
               justify='space-between'
               className={classes.root}
             >
+              <div className={classes.deleteBtn}>
+                <Typography variant='h6' gutterBottom color='primary'>
+                  Create Account
+                </Typography>
+                <IconButton
+                  classes={{ root: classes.iconBtnPadding }}
+                  aria-label='delete'
+                  onClick={() => setOpen(false)}
+                >
+                  X
+                </IconButton>
+              </div>
               <div className={classes.inputBox}>
-                <div className={classes.deleteBtn}>
-                  <IconButton
-                    classes={{ root: classes.iconBtnPadding }}
-                    aria-label='delete'
-                    onClick={() => setOpen(false)}
-                  >
-                    X
-                  </IconButton>
-                </div>
                 <Grid item>
                   <TextField
                     fullWidth
@@ -321,7 +330,10 @@ const CreateAccount = ({ onHandleSubmit, customBtnStyle }) => {
                   />
                 </Grid>
                 <div className={classes.captcha}>
-                  <ReCAPTCHA sitekey={config.sitekey} onChange={(value) => console.log({ value })} />
+                  <ReCAPTCHA
+                    sitekey={config.sitekey}
+                    onChange={value => console.log({ value })}
+                  />
                 </div>
               </div>
               <div className={classes.btn}>
