@@ -28,31 +28,30 @@ $ npm install eoscr-components --save
 |                |Description                          |Tag                        |
 |----------------|-------------------------------|-----------------------------|
 |Create Account | Form to create a new account          |`<CreateAccount />`           |
-|Input Text          |Input Text           |`<InputText />`            |
-|Modal          |Simple modal component |`<Modal />`|
 
 ## Run locally
-### Development
+#### Local Development
 
-Local development is broken into two parts (ideally using two tabs).
+Now you're ready to run a local version of rollup that will watch your `src/` component and automatically recompile it into `dist/` whenever you make changes.
 
-First, run rollup to watch your `src/` module and automatically recompile it into `dist/` whenever you make changes.
-
+```bash
+# run example to start developing your new component against
+npm install # disregard any warnings about missing peer dependencies
+npm link # the link commands are important for local development
+npm start # runs rollup with watch flag
 ```
-npm start
-```
 
-The second part will be running the `example/` create-react-app that's linked to the local version of your module.
+We'll also be running our `example/` create-react-app that's linked to the local version of your `eoscr-components` module.
 
-```
+```bash
 # (in another tab)
 cd example
-npm start
+npm install
+npm link eoscr-components
+npm start # runs create-react-app dev server
 ```
 
-Now, anytime you make a change to your library in `src/` or to the example app's `example/src`, `create-react-app` will live-reload your local dev server so you can iterate on your component in real-time.
-
-![](https://media.giphy.com/media/12NUbkX6p4xOO4/giphy.gif)
+Now, anytime you make a change to your component in `src/` or to the example app's `example/src`, `create-react-app` will live-reload your local dev server so you can iterate on your component in real-time.
 
 ## File Structure
 Within the download you'll find the following directories and files:

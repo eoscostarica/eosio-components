@@ -42,31 +42,3 @@ body {
   margin: 16px 0;
   font-size: 15px;
 }
-
-.botonModal {
-  width: auto;
-  height: 30px;
-  background: none;
-  border: 0;
-  font-size: 20px;
-}
-
-.botonModal:hover {
-  cursor: pointer;
-  border-bottom: solid;
-}
-
-.container {
-  padding: 0 20px;
-}
-
-.boxMargin {
-  margin-left: 30px;
-  margin-right: 30px;
-}
-
-.modalBoxBtn {
-  display: flex;
-  justify-content: center;
-  margin: 30px 0;
-}
