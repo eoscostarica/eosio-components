@@ -1,5 +1,5 @@
 import React from 'react'
-import { CreateAccount } from 'eoscr-components'
+import { CreateAccount, AccountInfo } from 'eoscr-components'
 import 'eoscr-components/dist/index.css'
 
 import Info from './infoComponent'
@@ -16,6 +16,11 @@ const App = () => {
         ]}
       />
       <CreateAccount onHandleSubmit={onHandleCreateAccountClick} />
+      <Info
+        componentName='AccountInfo'
+        properties={[]}
+      />
+      <AccountInfo />
     </div>
   )
 }

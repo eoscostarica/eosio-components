@@ -86,10 +86,12 @@ const INITIAL_VALUES = {
   }
 }
 
-const CreateAccount = ({ onHandleSubmit, customBtnStyle }) => {
+const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
   const classes = useStyles()
   const [values, setValues] = useState(INITIAL_VALUES)
   const [open, setOpen] = useState(false)
+
+  console.log('teto from create aacount')
 
   const handleOpen = () => {
     setOpen(!open)
@@ -249,7 +251,7 @@ const CreateAccount = ({ onHandleSubmit, customBtnStyle }) => {
         onClick={handleOpen}
         className={customBtnStyle}
       >
-        Create account
+        Create Account
       </Button>
       <Modal
         aria-labelledby='transition-modal-title'
@@ -354,14 +356,14 @@ const CreateAccount = ({ onHandleSubmit, customBtnStyle }) => {
   )
 }
 
-CreateAccount.propTypes = {
+AccountInfo.propTypes = {
   onHandleSubmit: PropTypes.func,
   customBtnStyle: PropTypes.object
 }
 
-CreateAccount.defaultProps = {
+AccountInfo.defaultProps = {
   onHandleSubmit: () => console.log('click Submit button'),
   customBtnStyle: {}
 }
 
-export default CreateAccount
+export default AccountInfo

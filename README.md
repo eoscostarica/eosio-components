@@ -72,9 +72,7 @@ eoscr-components/
 │   └── package.json
 ├──  src
 │   ├── CreateAccount.js
-│   ├── index.js
-│   ├── InputText.js
-│   └── Modal.js
+│   └── index.js
 ├── .eslintrc
 ├── .gitignore
 ├── .prettierignore
