@@ -142,8 +142,6 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  console.log({ account })
-
   const handleOpen = async () => {
     setOpen(!open)
   }

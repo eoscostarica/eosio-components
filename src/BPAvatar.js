@@ -33,7 +33,7 @@ const BPAvatar = ({ name }) => {
   return (
     <Grid className={classes.bpAvatar}>
       <Avatar className={classes.avatar}>.</Avatar>
-      <Typography>{name} </Typography>
+      <Typography>{name}</Typography>
     </Grid>
   )
 }
