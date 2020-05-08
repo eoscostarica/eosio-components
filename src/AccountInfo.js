@@ -245,6 +245,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
                   className={classes.gridBox}
                 >
                   <TextField
+                    variant="filled"
                     label='Account Name'
                     placeholder='eoscrtest123'
                     autoComplete='off'

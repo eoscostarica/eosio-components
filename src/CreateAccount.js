@@ -286,6 +286,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
               <div className={classes.inputBox}>
                 <Grid item>
                   <TextField
+                    variant="filled"
                     fullWidth
                     error={Boolean(values.accountName.error)}
                     helperText={
@@ -301,6 +302,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
                 </Grid>
                 <Grid item>
                   <TextField
+                    variant="filled"
                     fullWidth
                     error={Boolean(values.ownerPK.error)}
                     helperText={
@@ -316,6 +318,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
                 </Grid>
                 <Grid item>
                   <TextField
+                    variant="filled"
                     fullWidth
                     error={Boolean(values.activePK.error)}
                     helperText={
