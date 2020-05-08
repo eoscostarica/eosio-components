@@ -91,8 +91,6 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
   const [values, setValues] = useState(INITIAL_VALUES)
   const [open, setOpen] = useState(false)
 
-  console.log('teto from create aacount')
-
   const handleOpen = () => {
     setOpen(!open)
   }

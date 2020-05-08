@@ -8,13 +8,6 @@ import Typography from '@material-ui/core/Typography'
 import getRgbColorsFromHex from './utils/getRgbColorsFromHex'
 
 const useStyles = makeStyles({
-  bpAvatar: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    padding: 5,
-    alignItems: 'center'
-  },
   avatar: {
     margin: 5,
     width: 10,
@@ -25,13 +18,24 @@ const useStyles = makeStyles({
   }
 })
 
+const useStylesBase = makeStyles(theme => ({
+  bpAvatar: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    padding: theme.spacing(1),
+    alignItems: 'center'
+  }
+}))
+
 const BPAvatar = ({ name }) => {
+  const classesBase = useStylesBase()
   const classes = useStyles({
     backgroundColor: getRgbColorsFromHex(name)
   })
 
   return (
-    <Grid className={classes.bpAvatar}>
+    <Grid className={classesBase.bpAvatar}>
       <Avatar className={classes.avatar}>.</Avatar>
       <Typography>{name}</Typography>
     </Grid>

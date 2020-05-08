@@ -5,9 +5,9 @@ import classNames from 'classnames'
 
 import hex2RGB from './utils/convertHex2RGB'
 
-const useStyles = makeStyles({
+const useStylesBase = makeStyles((theme) => ({
   skillsContainer: {
-    marginTop: '2em',
+    marginTop: theme.spacing(2),
     display: 'flex',
     overflow: 'hidden',
     flexWrap: 'wrap'
@@ -39,7 +39,10 @@ const useStyles = makeStyles({
       textTransform: 'uppercase',
       lineHeight: '120px'
     }
-  },
+  }
+}))
+
+const useStyles = makeStyles({
   content: {
     background: ({ color, rgb }) =>
       `linear-gradient(0deg, ${color} 50%, rgba(${rgb.r}, ${rgb.b}, ${rgb.b}, .3) 50%)`,
@@ -60,6 +63,7 @@ const useStyles = makeStyles({
 })
 
 const CircularProgress = ({ name, color, backgroundColor, percent }) => {
+  const classesBase = useStylesBase()
   const classes = useStyles({
     value: (percent / 100) * 180,
     name,
@@ -70,8 +74,8 @@ const CircularProgress = ({ name, color, backgroundColor, percent }) => {
   })
 
   return (
-    <div className={classes.skillsContainer}>
-      <div className={classNames(classes.circularProgress, classes.content)} />
+    <div className={classesBase.skillsContainer}>
+      <div className={classNames(classesBase.circularProgress, classes.content)} />
     </div>
   )
 }
