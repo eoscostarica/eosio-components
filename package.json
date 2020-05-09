@@ -23,7 +23,8 @@
     "predeploy": "cd example && npm install && npm run build",
     "deploy": "gh-pages -d example/build",
     "storybook": "start-storybook -p 9009",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "deploy-storybook": "storybook-to-ghpages"
   },
   "peerDependencies": {
     "react": "^16.0.0",
@@ -45,6 +46,7 @@
     "@storybook/addons": "^5.3.18",
     "@storybook/preset-create-react-app": "^2.1.1",
     "@storybook/react": "^5.3.18",
+    "@storybook/storybook-deployer": "^2.8.5",
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "cross-env": "^7.0.2",
