@@ -14,6 +14,6 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@2.0.3
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: storybook-static
-        FOLDER: storybook-static
+        BRANCH: gh-pages
+        FOLDER: /
         BUILD_SCRIPT: npm install && npm run build-storybook
