@@ -12,14 +12,8 @@ jobs:
       with:
         persist-credentials: false
 
-    - name: Install and Build 🔧
+    - name: Install, Build, & Deploy 🚀
       run: |
         npm install 
-        npm run build-storybook -c .storybook -o docs
-    
-    - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@releases/v3
-      with:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: master
-        FOLDER: .
+        npm run deploy-storybook -- --ci --host-token-env-variable= ${{ secrets.ACCESS_TOKEN }}
+ 
