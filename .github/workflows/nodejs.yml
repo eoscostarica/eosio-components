@@ -1,19 +1,23 @@
-on: 
-  push
-
 name: Publish stories if changed
-
+on:
+  push:
+    branches:
+      - master
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
+    - name: Checkout 🛎️
       uses: actions/checkout@master
 
-    - name: Build and deploy to storybook-static branch
-      uses: JamesIves/github-pages-deploy-action@2.0.3
+    - name: Install and Build 🔧
+      run: |
+        npm install 
+        npm run build-storybook
+    
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@releases/v3
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: master
-        FOLDER: docs
-        BUILD_SCRIPT: npm install && npm run build-storybook
+        BRANCH: gh-pages
+        FOLDER: .
