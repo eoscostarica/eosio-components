@@ -24,4 +24,4 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm run deploy-storybook -- --ci --host-token-env-variable=${{ secrets.ACCESS_TOKEN }}
+    - run: npm install && npm run deploy-storybook -- --ci --host-token-env-variable=${{ secrets.ACCESS_TOKEN }}
