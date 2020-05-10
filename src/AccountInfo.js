@@ -26,11 +26,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     padding: 0
   },
-  btn: {
-    display: 'flex',
-    justifyContent: 'center',
-    margin: 10
-  },
   modal: {
     display: 'flex',
     alignItems: 'center',
@@ -40,32 +35,33 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     borderRadius: 10,
+    padding: theme.spacing(2),
     width: '100%',
     height: 'auto',
     '&:focus': {
       outline: 'none'
     },
     [theme.breakpoints.up('sm')]: {
-      width: '60%'
+      width: 600
     }
   },
   contentBox: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     minHeight: 300,
-    maxHeight: 600,
+    maxHeight: 450,
     overflowX: 'scroll',
-    marginTop: 10,
-    padding: '0px 20px',
+    marginTop: theme.spacing(1),
     '& button': {
-      marginLeft: 20
+      marginLeft: theme.spacing(2)
     }
   },
   deleteBtn: {
     height: 27,
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '20px 10px',
+    width: '100%',
     borderBottom: '1px solid #e9ecef'
   },
   iconBtnPadding: {
@@ -78,17 +74,18 @@ const useStyles = makeStyles(theme => ({
     fontSize: 12
   },
   accountInfo: {
-    marginLeft: 20
+    marginLeft: theme.spacing(2)
   },
   accountName: {
     margin: 0,
     fontWeight: '500'
   },
   gridBox: {
-    marginBottom: 20
+    marginBottom: theme.spacing(2)
   },
   expansionPanel: {
-    boxShadow: 'none'
+    boxShadow: 'none',
+    width: '100%'
   },
   list: {
     display: 'flex',
@@ -120,21 +117,24 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     '& p:nth-child(2)': {
-      marginLeft: 10,
+      marginLeft: theme.spacing(1),
       color: 'rgba(0, 0, 0, 0.54)'
     }
   },
   expanded: {
     margin: '0px !important',
-    padding: 0
+    padding: 0,
+    '& div': {
+      margin: '0px !important'
+    }
   },
   keyIcon: {
-    marginLeft: 10,
+    marginLeft: theme.spacing(1),
     color: 'rgba(0, 0, 0, 0.54)'
   }
 }))
 
-const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
+const AccountInfo = ({ customBtnStyle }) => {
   const classes = useStyles()
   const [value, setValue] = useState()
   const [account, setAccount] = useState(null)
@@ -245,7 +245,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
                   className={classes.gridBox}
                 >
                   <TextField
-                    variant="filled"
+                    variant='filled'
                     label='Account Name'
                     placeholder='eoscrtest123'
                     autoComplete='off'
@@ -489,12 +489,10 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
 }
 
 AccountInfo.propTypes = {
-  onHandleSubmit: PropTypes.func,
   customBtnStyle: PropTypes.object
 }
 
 AccountInfo.defaultProps = {
-  onHandleSubmit: () => console.log('click Submit button'),
   customBtnStyle: {}
 }
 

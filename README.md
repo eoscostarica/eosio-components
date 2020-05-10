@@ -28,54 +28,61 @@ $ npm install eoscr-components --save
 |                |Description                          |Tag                        |
 |----------------|-------------------------------|-----------------------------|
 |Create Account | Form to create a new account          |`<CreateAccount />`           |
+|Get Account Information| Get an account information          |`<AccountInfo />`           |
+|Input Hash | Input Text to create or validate HASH256          |`<InputHash />`           |
 
 ## Run locally
 #### Local Development
 
-Now you're ready to run a local version of rollup that will watch your `src/` component and automatically recompile it into `dist/` whenever you make changes.
+We are using Storybook
+
+> is an open source tool for developing UI
+> components in isolation for React, Vue, and Angular.
+> It makes building stunning UIs organized and efficient.
 
 ```bash
-# run example to start developing your new component against
-npm install # disregard any warnings about missing peer dependencies
-npm link # the link commands are important for local development
-npm start # runs rollup with watch flag
+npm run storybook
 ```
 
-We'll also be running our `example/` create-react-app that's linked to the local version of your `eoscr-components` module.
-
-```bash
-# (in another tab)
-cd example
-npm install
-npm link eoscr-components
-npm start # runs create-react-app dev server
-```
-
-Now, anytime you make a change to your component in `src/` or to the example app's `example/src`, `create-react-app` will live-reload your local dev server so you can iterate on your component in real-time.
+_you can see more information about [STORYBOOK](https://storybook.js.org/)_
 
 ## File Structure
 Within the download you'll find the following directories and files:
 
 ```
 eoscr-components/
-├── README.md
-├── example
-│   ├── public
-│   │   ├── index.html
-│   │   └── manifest.json
-│   ├── src
-│   │   ├── App.js
-│   │   ├── index.css
-│   │   ├── index.js
-│   │   └── infoComponent.js
-│   ├── README.md
-│   └── package.json
+├── .storybook
+│   ├── main.js
+│   └── preview.js
+│
 ├──  src
+│   ├── api
+│   │   └── eosjs-api.js
+│   │   
+│   ├── config
+│   │   └── index.js
+│   │   
+│   ├── stories
+│   │   ├── 0-AccountInfo.stories.js
+│   │   ├── 1-CreateAccount.stories.js
+│   │   └── 2-InputHash.stories.js
+│   │   
+│   ├── utils
+│   │   ├── convertHex2RGB.js
+│   │   ├── convertVotesToEosVotes.js
+│   │   └── getRgbColorsFromHex.js
+│   │   
+│   ├── AccountInfo.js
+│   ├── BPAvatar.js
 │   ├── CreateAccount.js
+│   ├── InputHash.js
+│   ├── ProgressBar.js
 │   └── index.js
+│
 ├── .eslintrc
 ├── .gitignore
 ├── .prettierignore
+├── README.md
 ├── prettier.config.js
 └── package.json
 ```
