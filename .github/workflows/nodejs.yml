@@ -15,11 +15,11 @@ jobs:
     - name: Install and Build 🔧
       run: |
         npm install 
-        npm run build-storybook -c .storybook -o .
+        npm run build-storybook -c .storybook -o docs
     
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: gh-pages
+        BRANCH: master
         FOLDER: .
