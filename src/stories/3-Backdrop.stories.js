@@ -13,7 +13,10 @@ import BackdropComponent from '../Backdrop'
 export default {
   title: 'Backdrop',
   component: BackdropComponent,
-  decorators: [withKnobs]
+  decorators: [withKnobs],
+  viewport: { 
+    defaultViewport: 'iphonex' 
+  },
 }
 
 const useStyles = makeStyles({

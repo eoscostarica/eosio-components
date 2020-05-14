@@ -309,19 +309,16 @@ const AccountInfo = ({ customBtnStyle }) => {
                     <Grid container direction='row' justify='space-around'>
                       <ProgressBar
                         name='ram'
-                        // color='#F1642C'
                         backgroundColor='#fff'
                         percent={(account && account.ram) || 0}
                       />
                       <ProgressBar
                         name='cpu'
-                        // color='#25AFDE'
                         backgroundColor='#fff'
                         percent={(account && account.cpu) || 0}
                       />
                       <ProgressBar
                         name='net'
-                        // color='#767BB3'
                         backgroundColor='#fff'
                         percent={(account && account.net) || 0}
                       />

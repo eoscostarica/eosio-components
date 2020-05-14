@@ -5,20 +5,15 @@ import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
-const useStyles = makeStyles(theme => {
-
-  console.log('EL TEMA', { theme });
-
-  return {
-    root: {
-      padding: theme.spacing(1)
-    },
-    hashResult: {
-      marginTop: theme.spacing(1),
-      wordWrap: 'break-word'
-    }
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(1)
+  },
+  hashResult: {
+    marginTop: theme.spacing(1),
+    wordWrap: 'break-word'
   }
-})
+}))
 
 const SHA256_REGEX_VALIDATOR = /\b[A-Fa-f0-9]{64}\b/
 
