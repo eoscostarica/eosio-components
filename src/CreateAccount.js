@@ -343,7 +343,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
                 <Button
                   size='large'
                   variant='contained'
-                  color='primary'
+                  color='secondary'
                   onClick={handleOnSubmit}
                 >
                   Create account

@@ -89,7 +89,7 @@ CircularProgress.propTypes = {
 
 CircularProgress.defaultProps = {
   name: 'ram',
-  color: '#F1642C',
+  color: '#3EBBD3',
   backgroundColor: '#fff',
   percent: 80
 }

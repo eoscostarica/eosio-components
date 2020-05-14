@@ -255,7 +255,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                   <Button
                     size='large'
                     variant='contained'
-                    color='primary'
+                    color='secondary'
                     onClick={handleOnSubmit}
                   >
                     Get
@@ -284,7 +284,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                       <Identicon
                         string={account.account_name || 'default'}
                         size={60}
-                        fg='#F1642C'
+                        fg='#757575'
                       />
                       <Grid
                         container
@@ -309,19 +309,19 @@ const AccountInfo = ({ customBtnStyle }) => {
                     <Grid container direction='row' justify='space-around'>
                       <ProgressBar
                         name='ram'
-                        color='#F1642C'
+                        // color='#F1642C'
                         backgroundColor='#fff'
                         percent={(account && account.ram) || 0}
                       />
                       <ProgressBar
                         name='cpu'
-                        color='#25AFDE'
+                        // color='#25AFDE'
                         backgroundColor='#fff'
                         percent={(account && account.cpu) || 0}
                       />
                       <ProgressBar
                         name='net'
-                        color='#767BB3'
+                        // color='#767BB3'
                         backgroundColor='#fff'
                         percent={(account && account.net) || 0}
                       />
@@ -343,7 +343,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                           aria-controls='panel1a-content'
                           id='panel1a-header'
                         >
-                          <Typography variant='h6' color='textSecondary'>
+                          <Typography variant='h6' color='primary'>
                             Resources
                           </Typography>
                         </ExpansionPanelSummary>
@@ -386,7 +386,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                           aria-controls='panel3a-content'
                           id='panel3a-header'
                         >
-                          <Typography variant='h6' color='textSecondary'>
+                          <Typography variant='h6' color='primary'>
                             Voter Information
                           </Typography>
                         </ExpansionPanelSummary>
@@ -447,7 +447,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                           aria-controls='panel2a-content'
                           id='panel2a-header'
                         >
-                          <Typography variant='h6' color='textSecondary'>
+                          <Typography variant='h6' color='primary'>
                             Keys
                           </Typography>
                         </ExpansionPanelSummary>
