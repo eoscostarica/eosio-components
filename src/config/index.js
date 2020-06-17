@@ -1,5 +1,5 @@
 const config = {
-  sitekey: '6Ld4qOoUAAAAAKwnrG4CGj9RjzG3FMFXLEaqEdVv',
+  sitekey: '6Lch-_wUAAAAAAb-KkroXz9hkopPeQHHQc8W9S5G',
   eosApiHost: 'https://jungle.eosio.cr'
 }
 

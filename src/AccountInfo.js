@@ -16,7 +16,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import VpnKey from '@material-ui/icons/VpnKey'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-import eosjsAPI from './api/eosjs-api'
+import { eosApi } from './api/eosjs-api'
 import ProgressBar from './ProgressBar'
 import BPAvatar from './BPAvatar'
 
@@ -150,9 +150,7 @@ const AccountInfo = ({ customBtnStyle }) => {
     try {
       setLoading(true)
 
-      const account = await eosjsAPI.api.rpc.get_account(
-        (value || '').toLocaleLowerCase()
-      )
+      const account = await eosApi.getAccount((value || '').toLocaleLowerCase())
 
       if (Object.keys(account).length === 0) throw new Error('No Account data!')
 

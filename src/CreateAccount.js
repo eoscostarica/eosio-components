@@ -10,7 +10,7 @@ import Backdrop from '@material-ui/core/Backdrop'
 import IconButton from '@material-ui/core/IconButton'
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import eosjsAPI from './api/eosjs-api'
+import { api } from './api/eosjs-api'
 import config from './config'
 
 const useStyles = makeStyles(theme => ({
@@ -102,81 +102,96 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
         values.activePK.isValid &&
         values.ownerPK.isValid
       ) {
-        await eosjsAPI.api.transact({
-          actions: [{
-            account: 'eosio',
-            name: 'newaccount',
-            authorization: [{
-              actor: 'useraaaaaaaa',
-              permission: 'active',
-            }],
-            data: {
-              creator: 'useraaaaaaaa',
-              name: values.accountName,
-              owner: {
-                threshold: 1,
-                keys: [{
-                  key: values.ownerPK,
-                  weight: 1
-                }],
-                accounts: [],
-                waits: []
+        await api.transact(
+          {
+            actions: [
+              {
+                account: 'eosio',
+                name: 'newaccount',
+                authorization: [
+                  {
+                    actor: 'useraaaaaaaa',
+                    permission: 'active'
+                  }
+                ],
+                data: {
+                  creator: 'useraaaaaaaa',
+                  name: values.accountName,
+                  owner: {
+                    threshold: 1,
+                    keys: [
+                      {
+                        key: values.ownerPK,
+                        weight: 1
+                      }
+                    ],
+                    accounts: [],
+                    waits: []
+                  },
+                  active: {
+                    threshold: 1,
+                    keys: [
+                      {
+                        key: values.activePK,
+                        weight: 1
+                      }
+                    ],
+                    accounts: [],
+                    waits: []
+                  }
+                }
               },
-              active: {
-                threshold: 1,
-                keys: [{
-                  key: values.activePK,
-                  weight: 1
-                }],
-                accounts: [],
-                waits: []
+              {
+                account: 'eosio',
+                name: 'buyrambytes',
+                authorization: [
+                  {
+                    actor: 'useraaaaaaaa',
+                    permission: 'active'
+                  }
+                ],
+                data: {
+                  payer: 'useraaaaaaaa',
+                  receiver: values.accountName,
+                  bytes: 8192
+                }
               },
-            },
+              {
+                account: 'eosio',
+                name: 'delegatebw',
+                authorization: [
+                  {
+                    actor: 'useraaaaaaaa',
+                    permission: 'active'
+                  }
+                ],
+                data: {
+                  from: 'useraaaaaaaa',
+                  receiver: values.accountName,
+                  stake_net_quantity: '1.0000 SYS',
+                  stake_cpu_quantity: '1.0000 SYS',
+                  transfer: false
+                }
+              }
+            ]
           },
           {
-            account: 'eosio',
-            name: 'buyrambytes',
-            authorization: [{
-              actor: 'useraaaaaaaa',
-              permission: 'active',
-            }],
-            data: {
-              payer: 'useraaaaaaaa',
-              receiver: values.accountName,
-              bytes: 8192,
-            },
-          },
-          {
-            account: 'eosio',
-            name: 'delegatebw',
-            authorization: [{
-              actor: 'useraaaaaaaa',
-              permission: 'active',
-            }],
-            data: {
-              from: 'useraaaaaaaa',
-              receiver: values.accountName,
-              stake_net_quantity: '1.0000 SYS',
-              stake_cpu_quantity: '1.0000 SYS',
-              transfer: false,
-            }
-          }]
-        }, {
-          blocksBehind: 3,
-          expireSeconds: 30,
-        });
-  
+            blocksBehind: 3,
+            expireSeconds: 30
+          }
+        )
+
         onHandleSubmit({
           accountName: values.accountName.value,
           ownerPK: values.activePK.value,
           activePK: values.ownerPK.value
         })
-  
+
         setValues(INITIAL_VALUES)
-  
+
         return
       }
-  
+
       setValues({
         accountName: {
           ...values.accountName,
@@ -286,7 +301,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
               <div className={classes.inputBox}>
                 <Grid item>
                   <TextField
-                    variant="filled"
+                    variant='filled'
                     fullWidth
                     error={Boolean(values.accountName.error)}
                     helperText={
@@ -302,7 +317,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
                 </Grid>
                 <Grid item>
                   <TextField
-                    variant="filled"
+                    variant='filled'
                     fullWidth
                     error={Boolean(values.ownerPK.error)}
                     helperText={
@@ -318,7 +333,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
                 </Grid>
                 <Grid item>
                   <TextField
-                    variant="filled"
+                    variant='filled'
                     fullWidth
                     error={Boolean(values.activePK.error)}
                     helperText={
