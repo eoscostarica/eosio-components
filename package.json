@@ -96,6 +96,7 @@
     "dist/*"
   ],
   "dependencies": {
-    "react-dropzone": "^11.0.1"
+    "react-dropzone": "^11.0.1",
+    "crypto-js": "^4.0.0"
   }
 }
