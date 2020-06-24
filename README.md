@@ -6,17 +6,19 @@ A collection of React Components for EOSIO.
 
 ## Table of Contents
 
-* [Installation](#installation)
-* [Components](#components)
-* [Run locally](#run-locally)
-* [File Structure](#file-structure)
-* [License](#license)
-* [Contributors](#contributors)
+- [Installation](#installation)
+- [Components](#components)
+- [Run locally](#run-locally)
+- [File Structure](#file-structure)
+- [License](#license)
+- [Contributors](#contributors)
 
 ## Version
+
 - 0.1.0
 
 ### Installation
+
 Install the dependencies and devDependencies and start the server.
 
 ```
@@ -25,13 +27,14 @@ $ npm install eoscr-components --save
 
 ## Components
 
-|                |Description                          |Tag                        |
-|----------------|-------------------------------|-----------------------------|
-|Create Account | Form to create a new account          |`<CreateAccount />`           |
-|Get Account Information| Get an account information          |`<AccountInfo />`           |
-|Input Hash | Input Text to create or validate HASH256          |`<InputHash />`           |
+|                         | Description                              | Tag                 |
+| ----------------------- | ---------------------------------------- | ------------------- |
+| Create Account          | Form to create a new account             | `<CreateAccount />` |
+| Get Account Information | Get an account information               | `<AccountInfo />`   |
+| Input Hash              | Input Text to create or validate HASH256 | `<InputHash />`     |
 
 ## Run locally
+
 #### Local Development
 
 We are using Storybook
@@ -47,6 +50,7 @@ npm run storybook
 _you can see more information about [STORYBOOK](https://storybook.js.org/)_
 
 ## File Structure
+
 Within the download you'll find the following directories and files:
 
 ```
@@ -58,20 +62,20 @@ eoscr-components/
 ├──  src
 │   ├── api
 │   │   └── eosjs-api.js
-│   │   
+│   │
 │   ├── config
 │   │   └── index.js
-│   │   
+│   │
 │   ├── stories
 │   │   ├── 0-AccountInfo.stories.js
 │   │   ├── 1-CreateAccount.stories.js
 │   │   └── 2-InputHash.stories.js
-│   │   
+│   │
 │   ├── utils
 │   │   ├── convertHex2RGB.js
 │   │   ├── convertVotesToEosVotes.js
 │   │   └── getRgbColorsFromHex.js
-│   │   
+│   │
 │   ├── AccountInfo.js
 │   ├── BPAvatar.js
 │   ├── CreateAccount.js
@@ -86,6 +90,7 @@ eoscr-components/
 ├── prettier.config.js
 └── package.json
 ```
+
 ## License
 
 MIT © [EOS Costa Rica](https://eoscostarica.io)
@@ -93,6 +98,7 @@ MIT © [EOS Costa Rica](https://eoscostarica.io)
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
 <table>
   <tr>
     <td align="center"><a href="https://github.com/xavier506"><img src="https://avatars0.githubusercontent.com/u/5632966?v=4" width="100px;" alt="Xavier Fernandez"/><br /><sub><b>Xavier Fernandez</b></sub></a><br /><a href="#ideas-xavier506" title="Ideas, Planning, & Feedback">🤔</a> <a href="#blog-xavier506" title="Blogposts">📝</a> <a href="#talk-xavier506" title="Talks">📢</a> <a href="#infra-xavier506" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
@@ -102,4 +108,3 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 </table>
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
-
