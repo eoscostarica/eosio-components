@@ -10,13 +10,13 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop'
-
 import Slide from '@material-ui/core/Slide'
 import { styled } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/styles'
 import { useDropzone } from 'react-dropzone'
 import * as CryptoJS from 'crypto-js'
+
 import { parseFile } from './util/filereader'
 import FileComponent from './FileComponent'
 //#endregion
@@ -28,7 +28,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const SHA256_REGEX_VALIDATOR = /\b[A-Fa-f0-9]{64}\b/
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   papper: {
     [theme.breakpoints.up('md')]: {
       width: '660px'
@@ -75,8 +75,8 @@ const DropzoneHash = () => {
   const classes = useStyles()
   const sha256 = CryptoJS.algo.SHA256.create()
 
-  const onDrop = files => {
-    setFile(file => ({
+  const onDrop = (files) => {
+    setFile((file) => ({
       ...file,
       filename: files[0].name,
       filesize: `${(files[0].size / (1024 * 1024)).toFixed(2)} MB`,
@@ -84,8 +84,8 @@ const DropzoneHash = () => {
     }))
     parseFile(
       files[0],
-      r => sha256.update(String(r)),
-      p => setProgress(Math.trunc(p))
+      (r) => sha256.update(String(r)),
+      (p) => setProgress(Math.trunc(p))
     )
     handleInputHashCreator()
   }
@@ -97,7 +97,7 @@ const DropzoneHash = () => {
     const result = sha256.finalize()
     const isHasValid = SHA256_REGEX_VALIDATOR.test(result)
     isHasValid
-      ? setFile(file => ({ ...file, filehash: String(result) }))
+      ? setFile((file) => ({ ...file, filehash: String(result) }))
       : setFile(null)
   }
 
@@ -135,7 +135,7 @@ const DropzoneHash = () => {
                   <div className={classes.dropzoneBox}>
                     <input
                       multiple='false'
-                      onClick={e => e.preventDefault()}
+                      onClick={(e) => e.preventDefault()}
                       {...getInputProps()}
                     />
                     <Typography>

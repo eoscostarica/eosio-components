@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import ReactMarkdown from 'react-markdown'
+import { makeStyles } from '@material-ui/core/styles'
 
 import { eosApi } from './api/eosjs-api'
 
+const useStyles = makeStyles((theme) => ({
+  ricardianContractContent: {
+    border: '1px solid red',
+    '& img': {
+      width: 50
+    }
+  }
+}))
+
 const RicardianContract = ({ name }) => {
+  const classes = useStyles()
   const [source, setSource] = useState('')
   const formatRicardianClause = (text = '') => {
     const [_version, content1] = text.split('\ntitle: ')
@@ -18,7 +29,7 @@ const RicardianContract = ({ name }) => {
   }
 
   useEffect(() => {
-    async function getData() {
+    const getData = async () => {
       const { abi = {} } = await eosApi.getAbi(name)
       const { code_hash: hash = '' } = await eosApi.getCodeHash(name)
 
@@ -52,7 +63,12 @@ const RicardianContract = ({ name }) => {
     getData()
   }, [name])
 
-  return <ReactMarkdown source={source} />
+  return (
+    <ReactMarkdown
+      className={classes.ricardianContractContent}
+      source={source}
+    />
+  )
 }
 
 RicardianContract.propTypes = {
