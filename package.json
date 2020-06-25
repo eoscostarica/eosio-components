@@ -1,10 +1,13 @@
 {
-  "name": "eoscr-components",
+  "name": "@eoscostarica/eoscr-components",
   "version": "1.0.0",
   "description": "A collection of React Components for EOSIO",
   "author": "EOS Costa Rica",
   "license": "MIT",
-  "repository": "https://github.com/eoscostarica/eoscr-components",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eoscostarica/eoscr-components.git"
+  },
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
@@ -86,5 +89,9 @@
     "@storybook/addon-viewport": "^5.3.19",
     "@storybook/storybook-deployer": "^2.8.5",
     "@storybook/theming": "^5.3.19"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/eoscostarica/eoscr-components/issues"
+  },
+  "homepage": "https://github.com/eoscostarica/eoscr-components#readme"
 }
