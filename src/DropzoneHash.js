@@ -71,7 +71,16 @@ const DropzoneButton = styled(Button)({
   marginRight: 'auto'
 })
 
-const DropzoneHash = ({ useModal, handleOnDropFile }) => {
+const DropzoneHash = ({
+  useModal,
+  handleOnDropFile,
+  dropZoneButtonText,
+  dropZoneText,
+  dropZoneDialogText,
+  dropZoneDialogButton,
+  sendButtonText,
+  cancelButtonText
+}) => {
   const [open, setOpen] = React.useState(false)
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0)
@@ -128,7 +137,7 @@ const DropzoneHash = ({ useModal, handleOnDropFile }) => {
                 color='primary'
                 onClick={handleClickOpen}
               >
-                Abrir dialogo
+                {dropZoneDialogButton}
               </Button>
               <Dialog
                 fullWidth={true}
@@ -141,7 +150,7 @@ const DropzoneHash = ({ useModal, handleOnDropFile }) => {
                 aria-describedby='alert-dialog-slide-description'
               >
                 <DialogTitle id='alert-dialog-slide-title'>
-                  Selección de Archivo
+                  {dropZoneDialogText}
                 </DialogTitle>
                 <DialogContent className={classes.modalBox} {...getRootProps()}>
                   {file === null ? (
@@ -154,8 +163,8 @@ const DropzoneHash = ({ useModal, handleOnDropFile }) => {
                       <Typography>
                         <VerticalAlignTopIcon />
                       </Typography>
-                      <Typography>Arrastrá y Soltá el Archivo Aquí</Typography>
-                      <DropzoneButton>Buscar Archivo</DropzoneButton>
+                      <Typography>{dropZoneText}</Typography>
+                      <DropzoneButton>{dropZoneButtonText}</DropzoneButton>
                     </div>
                   ) : progress < 100 ? (
                     <LinearProgress variant='determinate' value={progress} />
@@ -173,10 +182,10 @@ const DropzoneHash = ({ useModal, handleOnDropFile }) => {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose} color='primary'>
-                    Cancelar
+                    {cancelButtonText}
                   </Button>
                   <Button onClick={handleClose} color='primary'>
-                    Enviar
+                    {sendButtonText}
                   </Button>
                 </DialogActions>
               </Dialog>
@@ -199,8 +208,8 @@ const DropzoneHash = ({ useModal, handleOnDropFile }) => {
           <Typography>
             <VerticalAlignTopIcon />
           </Typography>
-          <Typography>Arrastrá y Soltá el Archivo Aquí</Typography>
-          <DropzoneButton>Buscar Archivo</DropzoneButton>
+          <Typography>{dropZoneText}</Typography>
+          <DropzoneButton>{dropZoneButtonText}</DropzoneButton>
         </div>
       ) : progress < 100 ? (
         <LinearProgress variant='determinate' value={progress} />
@@ -221,12 +230,24 @@ const DropzoneHash = ({ useModal, handleOnDropFile }) => {
 
 DropzoneHash.propTypes = {
   useModal: PropTypes.bool,
-  handleOnDropFile: PropTypes.func
+  handleOnDropFile: PropTypes.func,
+  dropZoneButtonText: PropTypes.string,
+  dropZoneText: PropTypes.string,
+  dropZoneDialogText: PropTypes.string,
+  dropZoneDialogButton: PropTypes.string,
+  cancelButtonText: PropTypes.string,
+  sendButtonText: PropTypes.string
 }
 
 DropzoneHash.defaultProps = {
   useModal: true,
-  handleOnDropFile: () => {}
+  handleOnDropFile: () => {},
+  dropZoneButtonText: 'Buscar Archivo',
+  dropZoneText: 'Arrastrá y Soltá el Archivo Aquí',
+  dropZoneDialogText: 'Selección de Archivo',
+  dropZoneDialogButton: 'Abrir dialogo',
+  cancelButtonText: 'Cancelar',
+  sendButtonText: 'Enviar'
 }
 
 export default DropzoneHash
