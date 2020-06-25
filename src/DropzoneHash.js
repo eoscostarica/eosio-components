@@ -38,9 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
   dropzoneBox: {
     maxWidth: 620,
-    minHeight: 300,
-    cursor: 'pointer',
+    height: '100%',
     backgroundColor: theme.palette.background.lightgray,
+    cursor: 'pointer',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-evenly',
@@ -53,6 +53,12 @@ const useStyles = makeStyles((theme) => ({
     '&': {
       textAlign: 'center'
     }
+  },
+  fullHeight: {
+    height: '100%'
+  },
+  modalBox: {
+    height: 300
   }
 }))
 
@@ -65,7 +71,7 @@ const DropzoneButton = styled(Button)({
   marginRight: 'auto'
 })
 
-const DropzoneHash = ({ useModal }) => {
+const DropzoneHash = ({ useModal, handleOnDropFile }) => {
   const [open, setOpen] = React.useState(false)
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0)
@@ -93,13 +99,22 @@ const DropzoneHash = ({ useModal }) => {
   const handleInputHashCreator = () => {
     const result = sha256.finalize()
     const isHasValid = SHA256_REGEX_VALIDATOR.test(result)
-    isHasValid
-      ? setFile((file) => ({ ...file, filehash: String(result) }))
-      : setFile(null)
+    if (isHasValid) {
+      setFile((file) => {
+        const resultFile = { ...file, filehash: String(result) }
+        handleOnDropFile(resultFile)
+
+        return resultFile
+      })
+    } else {
+      setFile(null)
+      handleOnDropFile(null)
+    }
   }
 
   const handleFileDeletion = () => {
     setFile(null)
+    handleOnDropFile(null)
   }
 
   if (useModal) {
@@ -128,7 +143,7 @@ const DropzoneHash = ({ useModal }) => {
                 <DialogTitle id='alert-dialog-slide-title'>
                   Selección de Archivo
                 </DialogTitle>
-                <DialogContent {...getRootProps()}>
+                <DialogContent className={classes.modalBox} {...getRootProps()}>
                   {file === null ? (
                     <div className={classes.dropzoneBox}>
                       <input
@@ -173,45 +188,45 @@ const DropzoneHash = ({ useModal }) => {
   }
 
   return (
-    <Grid item xs={12}>
-      <Box {...getRootProps()}>
-        {file === null ? (
-          <div className={classes.dropzoneBox}>
-            <input
-              multiple='false'
-              onClick={(e) => e.preventDefault()}
-              {...getInputProps()}
-            />
-            <Typography>
-              <VerticalAlignTopIcon />
-            </Typography>
-            <Typography>Arrastrá y Soltá el Archivo Aquí</Typography>
-            <DropzoneButton>Buscar Archivo</DropzoneButton>
-          </div>
-        ) : progress < 100 ? (
-          <LinearProgress variant='determinate' value={progress} />
-        ) : (
-          <FileComponent
-            onClick={handleFileDeletion}
-            filehash={file.filehash}
-            filesize={file.filesize}
-            filename={file.filename}
-            lastModifiedDate={file.lastModifiedDate}
-          >
-            {file.name}
-          </FileComponent>
-        )}
-      </Box>
-    </Grid>
+    <Box className={classes.fullHeight} {...getRootProps()}>
+      {file === null ? (
+        <div className={classes.dropzoneBox}>
+          <input
+            multiple='false'
+            onClick={(e) => e.preventDefault()}
+            {...getInputProps()}
+          />
+          <Typography>
+            <VerticalAlignTopIcon />
+          </Typography>
+          <Typography>Arrastrá y Soltá el Archivo Aquí</Typography>
+          <DropzoneButton>Buscar Archivo</DropzoneButton>
+        </div>
+      ) : progress < 100 ? (
+        <LinearProgress variant='determinate' value={progress} />
+      ) : (
+        <FileComponent
+          onClick={handleFileDeletion}
+          filehash={file.filehash}
+          filesize={file.filesize}
+          filename={file.filename}
+          lastModifiedDate={file.lastModifiedDate}
+        >
+          {file.name}
+        </FileComponent>
+      )}
+    </Box>
   )
 }
 
 DropzoneHash.propTypes = {
-  useModal: PropTypes.bool
+  useModal: PropTypes.bool,
+  handleOnDropFile: PropTypes.func
 }
 
 DropzoneHash.defaultProps = {
-  useModal: true
+  useModal: true,
+  handleOnDropFile: () => {}
 }
 
 export default DropzoneHash

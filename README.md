@@ -33,6 +33,7 @@ $ npm install eoscr-components --save
 | Get Account Information | Get an account information               | `<AccountInfo />`   |
 | Input Hash              | Input Text to create or validate HASH256 | `<InputHash />`     |
 | Dropzone Hash           | Drop zone to handle files                | `<DropzoneHash />`  |
+| Backdrop                | Backdrop                                 | `<Backdrop />`      |
 
 ## Run locally
 

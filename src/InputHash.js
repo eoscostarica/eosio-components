@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(1)
   },
@@ -22,34 +22,37 @@ const InputHash = ({
   messageError,
   useHashValidator,
   label,
-  variant
+  variant,
+  messageSuccess,
+  ...props
 }) => {
   const classes = useStyles()
   const [hash, setHash] = useState(null)
   const [value, setValue] = useState('')
   const [isValidHash, setIsValidHash] = useState(false)
+  const helperText = value.length ? messageSuccess : ''
   const extraProps = useHashValidator
     ? {
-        error: value.length && !isValidHash,
-        helperText: value.length && !isValidHash ? messageError : null
+        error: Boolean(value.length) && !isValidHash,
+        helperText: value.length && !isValidHash ? messageError : helperText
       }
     : {}
 
-  const handleInputHashValidator = value => {
+  const handleInputHashValidator = (value) => {
     const isHasValid = SHA256_REGEX_VALIDATOR.test(value)
 
     value.length ? setIsValidHash(isHasValid) : setHash(null)
     handleOnChange({ hash: value, isValid: isHasValid })
   }
 
-  const handleInputHashCreator = value => {
+  const handleInputHashCreator = (value) => {
     const result = sha256(value)
 
     value.length ? setHash(sha256(result)) : setHash(null)
     handleOnChange(result)
   }
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     event.preventDefault()
     const { value } = event.target
 
@@ -67,6 +70,7 @@ const InputHash = ({
         variant={variant}
         onChange={handleChange}
         {...extraProps}
+        {...props}
       />
       <Typography variant='subtitle2' className={classes.hashResult}>
         {hash}
@@ -78,6 +82,7 @@ const InputHash = ({
 InputHash.propTypes = {
   handleOnChange: PropTypes.func,
   messageError: PropTypes.string,
+  messageSuccess: PropTypes.string,
   useHashValidator: PropTypes.bool,
   label: PropTypes.string,
   variant: PropTypes.string
@@ -86,6 +91,7 @@ InputHash.propTypes = {
 InputHash.defaultProps = {
   handleOnChange: () => {},
   messageError: 'Incorrect hash',
+  messageSuccess: 'Hash is correct',
   useHashValidator: false,
   label: '',
   variant: 'filled'
