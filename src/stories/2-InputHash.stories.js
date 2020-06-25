@@ -8,5 +8,14 @@ export default {
   component: InputHash
 }
 
-export const InputHashCreator = () => <InputHash handleOnChange={action('Result')} />
-export const InputHashValidator = () => <InputHash useHashValidator handleOnChange={action('Result')} />
+export const InputHashCreator = () => (
+  <InputHash handleOnChange={action('Result')} />
+)
+export const InputHashValidator = () => (
+  <InputHash
+    useHashValidator
+    handleOnChange={action('Result')}
+    messageSuccess='Longitud de hash correcta'
+    multiline
+  />
+)

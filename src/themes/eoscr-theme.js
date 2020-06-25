@@ -2,6 +2,9 @@ import { createMuiTheme } from '@material-ui/core/styles'
 
 const EOSCR_THEME = {
   palette: {
+    background: {
+      lightgray: '#efefef'
+    },
     primary: {
       main: '#212121',
       light: '#757575',
