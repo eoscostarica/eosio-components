@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
 import DeleteIcon from '@material-ui/icons/Delete'
 import DescriptionIcon from '@material-ui/icons/Description'
-//#endregion 
+//#endregion
 
 //#region global declarations
 const DetailsContainer = styled(withTheme(Container))((props) => ({
@@ -21,7 +21,8 @@ const DetailsContainer = styled(withTheme(Container))((props) => ({
 
 const FileDetails = styled(withTheme(Typography))((props) => ({
   color: props.theme.typography.caption.color,
-  fontSize: props.theme.typography.caption.fontSize
+  fontSize: props.theme.typography.caption.fontSize,
+  overflowWrap: 'anywhere'
 }))
 
 const FileDetailsHeader = styled(Typography)({
@@ -57,7 +58,7 @@ const FileComponent = ({
         <DescriptionIcon />
         <FileDetailsHeader>
           {filename}{' '}
-          <StyledButton onClick={onClick} variant="contained">
+          <StyledButton onClick={onClick} variant='contained'>
             <DeleteIcon />
           </StyledButton>
         </FileDetailsHeader>
@@ -79,4 +80,3 @@ FileComponent.propTypes = {
 }
 
 export default FileComponent
-
