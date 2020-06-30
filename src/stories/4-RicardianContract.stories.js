@@ -15,5 +15,13 @@ export const ricardianContract = () => {
   const actionName = text('actionName', undefined)
   const showClauses = boolean('showClauses', true)
 
-  return <RicardianContract httpEndpoint={httpEndpoint} contractName={contractName} actionName={actionName} showClauses={showClauses} url='https://jungle.bloks.io' />
+  return (
+    <RicardianContract
+      httpEndpoint={httpEndpoint}
+      contractName={contractName}
+      actionName={actionName}
+      showClauses={showClauses}
+      url='https://jungle.bloks.io'
+    />
+  )
 }
