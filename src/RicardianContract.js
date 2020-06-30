@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RicardianContract = ({ name }) => {
+const RicardianContract = ({ name, url }) => {
   const classes = useStyles()
   const [hash, setHash] = useState('')
   const [action, setAction] = useState([])
@@ -124,7 +124,7 @@ const RicardianContract = ({ name }) => {
       <Typography variant='body1'>
         {'Name: '}
         <Link
-          href={`https://jungle.bloks.io/account/${name}?loadContract=true&tab=Actions`}
+          href={`${url}/account/${name}?loadContract=true&tab=Actions`}
           variant='body2'
           target='_blank'
           rel='noopener noreferrer'
@@ -136,7 +136,7 @@ const RicardianContract = ({ name }) => {
       <Typography variant='body1'>
         {'Hash: '}
         <Link
-          href={`https://jungle.bloks.io/account/${name}?loadContract=true&tab=ABI`}
+          href={`${url}/account/${name}?loadContract=true&tab=ABI`}
           variant='body2'
           target='_blank'
           rel='noopener noreferrer'
@@ -152,7 +152,12 @@ const RicardianContract = ({ name }) => {
 }
 
 RicardianContract.propTypes = {
-  name: PropTypes.string
+  name: PropTypes.string,
+  url: PropTypes.string
+}
+
+RicardianContract.defaultProps = {
+  url: 'https://bloks.io'
 }
 
 export default RicardianContract

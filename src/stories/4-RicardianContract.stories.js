@@ -12,5 +12,5 @@ export default {
 export const ricardianContract = () => {
   const name = text('name', 'consent2life')
 
-  return <RicardianContract name={name} />
+  return <RicardianContract name={name} url='https://jungle.bloks.io' />
 }
