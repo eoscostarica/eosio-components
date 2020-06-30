@@ -4,10 +4,12 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import Link from '@material-ui/core/Link'
 import Divider from '@material-ui/core/Divider'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import { makeStyles } from '@material-ui/core/styles'
 import EosApi from 'eosjs-api'
 
-const defaultIcon = 'https://icons.iconarchive.com/icons/custom-icon-design/mono-general-2/512/document-icon.png'
+const defaultIcon =
+  'https://icons.iconarchive.com/icons/custom-icon-design/mono-general-2/512/document-icon.png'
 
 const useStyles = makeStyles((theme) => ({
   ricardianContractContainer: {
@@ -50,11 +52,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RicardianContract = ({ name, url, httpEndpoint, contractName, actionName, showClauses }) => {
+const RicardianContract = ({
+  name,
+  url,
+  httpEndpoint,
+  contractName,
+  actionName,
+  showClauses,
+  loadingMessage
+}) => {
   const classes = useStyles()
   const [hash, setHash] = useState('')
   const [action, setAction] = useState([])
   const [clauses, setClauses] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const eosApi = useCallback(
     EosApi({
@@ -79,7 +90,11 @@ const RicardianContract = ({ name, url, httpEndpoint, contractName, actionName, 
       return (
         <Box>
           <Box className={classes.boxTitle}>
-            <img alt='icon' src={_icon || defaultIcon} onError={useDefaultLogo} />
+            <img
+              alt='icon'
+              src={_icon || defaultIcon}
+              onError={useDefaultLogo}
+            />
             <Box className={classes.boxText}>
               <Typography color='primary' variant='h4'>
                 {_title}
@@ -100,18 +115,18 @@ const RicardianContract = ({ name, url, httpEndpoint, contractName, actionName, 
   useEffect(() => {
     const getData = async () => {
       const { abi = {} } = await eosApi.getAbi(contractName || name)
-      const { code_hash: hash = '' } = await eosApi.getCodeHash(contractName || name)
+      const { code_hash: hash = '' } = await eosApi.getCodeHash(
+        contractName || name
+      )
 
       if (!abi || !abi.actions.length) return
 
       let actions = abi.actions.filter(
         ({ ricardian_contract: ricardianContract }) => !!ricardianContract
       )
-      
+
       if (actionName) {
-        actions = actions.filter(
-          ({ name }) => name === actionName
-        )
+        actions = actions.filter(({ name }) => name === actionName)
       }
 
       if (actions.lenght < 1) return
@@ -131,40 +146,64 @@ const RicardianContract = ({ name, url, httpEndpoint, contractName, actionName, 
       setAction(actions)
       setClauses(clauses)
       setHash(hash)
+      setLoading(false)
     }
 
+    setLoading(true)
     getData()
-  }, [name, eosApi, contractName, actionName, showClauses, formatRicardianClause])
+  }, [
+    name,
+    eosApi,
+    contractName,
+    actionName,
+    showClauses,
+    formatRicardianClause
+  ])
 
   return (
     <Box className={classes.ricardianContractContainer}>
-      <Typography variant='h3'>Ricardian contract</Typography>
-      <Typography variant='body1'>
-        {'Name: '}
-        <Link
-          href={`${url}/account/${contractName || name}?loadContract=true&tab=Actions`}
-          variant='body2'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          {contractName || name}
-        </Link>
-      </Typography>
+      {loading ? (
+        <Box mt={5}>
+          <Typography variant='h5' align='center'>
+            {(loadingMessage || '').toUpperCase()}
+          </Typography>
+          <LinearProgress color='secondary' />
+        </Box>
+      ) : (
+        <>
+          <Typography variant='h3'>Ricardian contract</Typography>
+          <Typography variant='body1'>
+            {'Name: '}
+            <Link
+              href={`${url}/account/${
+                contractName || name
+              }?loadContract=true&tab=Actions`}
+              variant='body2'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              {contractName || name}
+            </Link>
+          </Typography>
 
-      <Typography variant='body1'>
-        {'Hash: '}
-        <Link
-          href={`${url}/account/${contractName || name}?loadContract=true&tab=ABI`}
-          variant='body2'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          {hash || ''}
-        </Link>
-      </Typography>
+          <Typography variant='body1'>
+            {'Hash: '}
+            <Link
+              href={`${url}/account/${
+                contractName || name
+              }?loadContract=true&tab=ABI`}
+              variant='body2'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              {hash || ''}
+            </Link>
+          </Typography>
 
-      {action.map((item) => item)}
-      {clauses.map((clause) => clause)}
+          {action.map((item) => item)}
+          {clauses.map((clause) => clause)}
+        </>
+      )}
     </Box>
   )
 }
@@ -176,13 +215,15 @@ RicardianContract.propTypes = {
   showClauses: PropTypes.bool,
   api: PropTypes.any,
   name: PropTypes.string,
-  url: PropTypes.string
+  url: PropTypes.string,
+  loadingMessage: PropTypes.string
 }
 
 RicardianContract.defaultProps = {
   httpEndpoint: 'https://jungle.eosio.cr',
   url: 'https://bloks.io',
-  showClauses: true
+  showClauses: true,
+  loadingMessage: 'Fetching ricardian clauses from blockchain'
 }
 
 export default RicardianContract
