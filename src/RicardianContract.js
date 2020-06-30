@@ -59,7 +59,8 @@ const RicardianContract = ({
   contractName,
   actionName,
   showClauses,
-  loadingMessage
+  loadingMessage,
+  LinearProgressColor
 }) => {
   const classes = useStyles()
   const [hash, setHash] = useState('')
@@ -160,50 +161,52 @@ const RicardianContract = ({
     formatRicardianClause
   ])
 
-  return (
-    <Box className={classes.ricardianContractContainer}>
-      {loading ? (
+  if (loading) {
+    return (
+      <Box className={classes.ricardianContractContainer}>
         <Box mt={5}>
           <Typography variant='h5' align='center'>
             {(loadingMessage || '').toUpperCase()}
           </Typography>
-          <LinearProgress color='secondary' />
+          <LinearProgress color={LinearProgressColor} />
         </Box>
-      ) : (
-        <>
-          <Typography variant='h3'>Ricardian contract</Typography>
-          <Typography variant='body1'>
-            {'Name: '}
-            <Link
-              href={`${url}/account/${
-                contractName || name
-              }?loadContract=true&tab=Actions`}
-              variant='body2'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              {contractName || name}
-            </Link>
-          </Typography>
+      </Box>
+    )
+  }
 
-          <Typography variant='body1'>
-            {'Hash: '}
-            <Link
-              href={`${url}/account/${
-                contractName || name
-              }?loadContract=true&tab=ABI`}
-              variant='body2'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              {hash || ''}
-            </Link>
-          </Typography>
+  return (
+    <Box className={classes.ricardianContractContainer}>
+      <Typography variant='h3'>Ricardian contract</Typography>
+      <Typography variant='body1'>
+        {'Name: '}
+        <Link
+          href={`${url}/account/${
+            contractName || name
+          }?loadContract=true&tab=Actions`}
+          variant='body2'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          {contractName || name}
+        </Link>
+      </Typography>
 
-          {action.map((item) => item)}
-          {clauses.map((clause) => clause)}
-        </>
-      )}
+      <Typography variant='body1'>
+        {'Hash: '}
+        <Link
+          href={`${url}/account/${
+            contractName || name
+          }?loadContract=true&tab=ABI`}
+          variant='body2'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          {hash || ''}
+        </Link>
+      </Typography>
+
+      {action.map((item) => item)}
+      {clauses.map((clause) => clause)}
     </Box>
   )
 }
@@ -216,14 +219,16 @@ RicardianContract.propTypes = {
   api: PropTypes.any,
   name: PropTypes.string,
   url: PropTypes.string,
-  loadingMessage: PropTypes.string
+  loadingMessage: PropTypes.string,
+  LinearProgressColor: PropTypes.string
 }
 
 RicardianContract.defaultProps = {
   httpEndpoint: 'https://jungle.eosio.cr',
   url: 'https://bloks.io',
   showClauses: true,
-  loadingMessage: 'Fetching ricardian clauses from blockchain'
+  loadingMessage: 'Fetching ricardian clauses from blockchain',
+  LinearProgressColor: 'secondary'
 }
 
 export default RicardianContract
