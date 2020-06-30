@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Card from '@material-ui/core/Card'
 import PropTypes from 'prop-types'
+import clsx from 'clsx'
 import CardContent from '@material-ui/core/CardContent'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
@@ -37,11 +38,12 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto'
   },
   dropzoneBox: {
-    maxWidth: 620,
+    width: '100%',
     height: '100%',
     backgroundColor: theme.palette.background.lightgray,
     cursor: 'pointer',
     display: 'flex',
+    maxWidth: 620,
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     border: 'dashed 2px #212121',
@@ -79,7 +81,8 @@ const DropzoneHash = ({
   dropZoneDialogText,
   dropZoneDialogButton,
   sendButtonText,
-  cancelButtonText
+  cancelButtonText,
+  customStyle
 }) => {
   const [open, setOpen] = React.useState(false)
   const [file, setFile] = useState(null)
@@ -197,7 +200,7 @@ const DropzoneHash = ({
   }
 
   return (
-    <Box className={classes.fullHeight} {...getRootProps()}>
+    <Box className={clsx(classes.fullHeight, customStyle)} {...getRootProps()}>
       {file === null ? (
         <div className={classes.dropzoneBox}>
           <input
@@ -236,7 +239,8 @@ DropzoneHash.propTypes = {
   dropZoneDialogText: PropTypes.string,
   dropZoneDialogButton: PropTypes.string,
   cancelButtonText: PropTypes.string,
-  sendButtonText: PropTypes.string
+  sendButtonText: PropTypes.string,
+  customStyle: PropTypes.any
 }
 
 DropzoneHash.defaultProps = {
@@ -247,7 +251,8 @@ DropzoneHash.defaultProps = {
   dropZoneDialogText: 'Selección de Archivo',
   dropZoneDialogButton: 'Abrir dialogo',
   cancelButtonText: 'Cancelar',
-  sendButtonText: 'Enviar'
+  sendButtonText: 'Enviar',
+  customStyle: {}
 }
 
 export default DropzoneHash
