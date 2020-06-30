@@ -1,5 +1,5 @@
 import React from 'react'
-import { withKnobs, text } from '@storybook/addon-knobs'
+import { withKnobs, text, boolean } from '@storybook/addon-knobs'
 
 import RicardianContract from '../RicardianContract'
 
@@ -10,7 +10,10 @@ export default {
 }
 
 export const ricardianContract = () => {
-  const name = text('name', 'consent2life')
+  const httpEndpoint = text('httpEndpoint', 'https://jungle.eosio.cr')
+  const contractName = text('contractName', 'consent2life')
+  const actionName = text('actionName', undefined)
+  const showClauses = boolean('showClauses', true)
 
-  return <RicardianContract name={name} url='https://jungle.bloks.io' />
+  return <RicardianContract httpEndpoint={httpEndpoint} contractName={contractName} actionName={actionName} showClauses={showClauses} url='https://jungle.bloks.io' />
 }
