@@ -1,8 +1,11 @@
 //#region imports
-import React, { useState } from 'react'
+import React from 'react'
 import InfiniteLoader from 'react-virtualized/dist/commonjs/InfiniteLoader'
 import { Table, Column } from 'react-virtualized/dist/commonjs/Table'
 import { makeStyles } from '@material-ui/styles'
+import PropTypes from 'prop-types'
+import TableCell from '@material-ui/core/TableCell'
+import clsx from 'clsx'
 //#endregion
 
 //#region declarations
@@ -17,22 +20,12 @@ const useStyles = makeStyles(() => ({
     justifySelf: 'center',
     justifyContent: 'center',
     padding: '0',
-    // temporary right-to-left patch, waiting for
-    // https://github.com/bvaughn/react-virtualized/issues/454
     '& .ReactVirtualized__Table__headerRow': {
       flip: false,
       margin: 'auto'
     },
     '& .ReactVirtualized__Table__Grid': {
       margin: 'auto'
-    }
-  },
-  tableRow: {
-    cursor: 'pointer'
-  },
-  tableRowHover: {
-    '&:hover': {
-      backgroundColor: 'gray'
     }
   },
   tableCell: {
@@ -48,19 +41,25 @@ const useStyles = makeStyles(() => ({
 }))
 //#endregion
 
-const InfiniteTable = ({
-  /** Are there more items to load? (This information comes from the most recent API request.) */
+const InfiniteRegistryTableLoader = ({
+  /** Are there more items to load? 
+   * (This information comes from the most recent API request.) 
+   * */
   hasNextPage,
-  /** Are we currently loading a page of items? (This may be an in-flight flag in your Redux store for example.) */
+  /** 
+   * Currently loading a page of items? 
+   * */
   isNextPageLoading,
-  /** List of items loaded so far */
   rows,
-  /** Callback function (eg. Redux action-creator) responsible for loading the next page of items */
+  /** Callback function 
+   * responsible for loading the next page of items */
   loadNextPage,
   columns,
   onRowClick,
   width,
-  height
+  height,
+  rowHeight,
+  headerHeight
 }) => {
   const classes = useStyles()
 
@@ -68,7 +67,7 @@ const InfiniteTable = ({
     return (
       <TableCell
         component='div'
-        onClick={columnIndex === 4 ? () => handleClickOpen() : undefined}
+        // onClick={columnIndex === 4 ? () => handleClickOpen() : undefined}
         className={clsx(
           classes.tableCell,
           classes.flexContainer,
@@ -108,8 +107,6 @@ const InfiniteTable = ({
     )
   }
 
-  // Only load 1 page of items at a time.
-  // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
   const loadMoreRows = isNextPageLoading
     ? (e) => {
         console.log(e)
@@ -118,4 +115,71 @@ const InfiniteTable = ({
 
   // Every row is loaded except for our loading indicator row.
   const isRowLoaded = ({ index }) => !hasNextPage || index < rows.size
+
+  return (
+    <>
+      <InfiniteLoader
+        isRowLoaded={isRowLoaded}
+        loadMoreRows={loadMoreRows}
+        rowCount={1000}
+      >
+        {({ onRowsRendered, registerChild }) => (
+          <Table
+            ref={registerChild}
+            onRowsRendered={onRowsRendered}
+            //rowRenderer={rowRenderer}
+            height={height}
+            width={width}
+            rowHeight={rowHeight || 48}
+            gridStyle={{
+              direction: 'inherit'
+            }}
+            rowCount={rows.length}
+            rowGetter={({ index }) => rows[index]}
+            headerHeight={headerHeight || 48}
+            className={classes.table}
+            rowClassName={classes.flexContainer}
+          >
+            {columns.map(({ dataKey, ...other }, index) => {
+              return (
+                <Column
+                  key={dataKey}
+                  headerRenderer={(headerProps) =>
+                    headerRenderer({
+                      ...headerProps,
+                      columnIndex: index
+                    })
+                  }
+                  className={classes.flex}
+                  cellRenderer={cellRenderer}
+                  dataKey={dataKey}
+                  {...other}
+                />
+              )
+            })}
+          </Table>
+        )}
+      </InfiniteLoader>
+    </>
+  )
 }
+
+InfiniteRegistryTableLoader.propTypes = {
+  hasNextPage: PropTypes.bool,
+  isNextPageLoading: PropTypes.bool,
+  rows: PropTypes.array,
+  loadNextPage: PropTypes.func,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      dataKey: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      numeric: PropTypes.bool,
+      width: PropTypes.number.isRequired
+    })
+  ).isRequired,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  rowHeight: PropTypes.number,
+  headerHeight: PropTypes.number
+}
+export default InfiniteRegistryTableLoader
