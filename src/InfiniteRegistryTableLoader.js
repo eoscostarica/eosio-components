@@ -1,4 +1,3 @@
-//#region imports
 import React from 'react'
 import InfiniteLoader from 'react-virtualized/dist/commonjs/InfiniteLoader'
 import { Table, Column } from 'react-virtualized/dist/commonjs/Table'
@@ -6,9 +5,7 @@ import { makeStyles } from '@material-ui/styles'
 import PropTypes from 'prop-types'
 import TableCell from '@material-ui/core/TableCell'
 import clsx from 'clsx'
-//#endregion
 
-//#region declarations
 const useStyles = makeStyles(() => ({
   flexContainer: {
     display: 'flex',
@@ -39,7 +36,6 @@ const useStyles = makeStyles(() => ({
     cursor: 'pointer'
   }
 }))
-//#endregion
 
 const InfiniteRegistryTableLoader = ({
   /** Are there more items to load? 
@@ -67,7 +63,6 @@ const InfiniteRegistryTableLoader = ({
     return (
       <TableCell
         component='div'
-        // onClick={columnIndex === 4 ? () => handleClickOpen() : undefined}
         className={clsx(
           classes.tableCell,
           classes.flexContainer,
@@ -127,7 +122,6 @@ const InfiniteRegistryTableLoader = ({
           <Table
             ref={registerChild}
             onRowsRendered={onRowsRendered}
-            //rowRenderer={rowRenderer}
             height={height}
             width={width}
             rowHeight={rowHeight || 48}
