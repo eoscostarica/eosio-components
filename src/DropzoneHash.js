@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, forwardRef } from 'react'
 import Card from '@material-ui/core/Card'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
@@ -22,7 +22,7 @@ import * as CryptoJS from 'crypto-js'
 import { parseFile } from './utils/filereader'
 import FileComponent from './FileComponent'
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
 })
 
@@ -82,10 +82,11 @@ const DropzoneHash = ({
   dropZoneDialogButton,
   sendButtonText,
   cancelButtonText,
-  customStyle
+  customStyle,
+  initFile
 }) => {
-  const [open, setOpen] = React.useState(false)
-  const [file, setFile] = useState(null)
+  const [open, setOpen] = useState(false)
+  const [file, setFile] = useState(initFile)
   const [progress, setProgress] = useState(0)
   const classes = useStyles()
   const sha256 = CryptoJS.algo.SHA256.create()
@@ -143,8 +144,8 @@ const DropzoneHash = ({
                 {dropZoneDialogButton}
               </Button>
               <Dialog
-                fullWidth={true}
-                maxWidth={'sm'}
+                fullWidth
+                maxWidth='sm'
                 open={open}
                 TransitionComponent={Transition}
                 keepMounted
@@ -240,7 +241,8 @@ DropzoneHash.propTypes = {
   dropZoneDialogButton: PropTypes.string,
   cancelButtonText: PropTypes.string,
   sendButtonText: PropTypes.string,
-  customStyle: PropTypes.any
+  customStyle: PropTypes.any,
+  initFile: PropTypes.any
 }
 
 DropzoneHash.defaultProps = {
@@ -252,7 +254,8 @@ DropzoneHash.defaultProps = {
   dropZoneDialogButton: 'Abrir dialogo',
   cancelButtonText: 'Cancelar',
   sendButtonText: 'Enviar',
-  customStyle: {}
+  customStyle: {},
+  initFile: null
 }
 
 export default DropzoneHash
