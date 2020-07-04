@@ -19,10 +19,10 @@ import { makeStyles } from '@material-ui/styles'
 import { useDropzone } from 'react-dropzone'
 import * as CryptoJS from 'crypto-js'
 
-import { parseFile } from './utils/filereader'
+import { parseFile } from './utils/fileReader'
 import FileComponent from './FileComponent'
 
-const Transition = forwardRef(function Transition(props, ref) {
+const Transition = forwardRef((props, ref) => {
   return <Slide direction='up' ref={ref} {...props} />
 })
 
@@ -82,11 +82,11 @@ const DropzoneHash = ({
   dropZoneDialogButton,
   sendButtonText,
   cancelButtonText,
-  customStyle,
-  initFile
+  customStyle
 }) => {
   const [open, setOpen] = useState(false)
-  const [file, setFile] = useState(initFile)
+  const [file, setFile] = useState(null)
+  const [stringReader] = useState([])
   const [progress, setProgress] = useState(0)
   const classes = useStyles()
   const sha256 = CryptoJS.algo.SHA256.create()
@@ -98,9 +98,10 @@ const DropzoneHash = ({
       filesize: `${(files[0].size / (1024 * 1024)).toFixed(2)} MB`,
       lastModifiedDate: `${files[0].lastModifiedDate}`
     }))
+
     parseFile(
       files[0],
-      (r) => sha256.update(String(r)),
+      (r) => stringReader.push(String(r)),
       (p) => setProgress(Math.trunc(p))
     )
     handleInputHashCreator()
@@ -110,8 +111,13 @@ const DropzoneHash = ({
   const handleClose = () => setOpen(false)
 
   const handleInputHashCreator = () => {
+    for (let index = 0; index < stringReader.length; index++) {
+      sha256.update(stringReader[index])
+    }
+
     const result = sha256.finalize()
     const isHasValid = SHA256_REGEX_VALIDATOR.test(result)
+
     if (isHasValid) {
       setFile((file) => {
         const resultFile = { ...file, filehash: String(result) }
@@ -241,8 +247,7 @@ DropzoneHash.propTypes = {
   dropZoneDialogButton: PropTypes.string,
   cancelButtonText: PropTypes.string,
   sendButtonText: PropTypes.string,
-  customStyle: PropTypes.any,
-  initFile: PropTypes.any
+  customStyle: PropTypes.any
 }
 
 DropzoneHash.defaultProps = {
@@ -254,8 +259,7 @@ DropzoneHash.defaultProps = {
   dropZoneDialogButton: 'Abrir dialogo',
   cancelButtonText: 'Cancelar',
   sendButtonText: 'Enviar',
-  customStyle: {},
-  initFile: null
+  customStyle: {}
 }
 
 export default DropzoneHash

@@ -1,4 +1,3 @@
-//#region imports
 import React from 'react'
 import { styled, withTheme } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
@@ -8,9 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
 import DeleteIcon from '@material-ui/icons/Delete'
 import DescriptionIcon from '@material-ui/icons/Description'
-//#endregion
 
-//#region global declarations
 const DetailsContainer = styled(withTheme(Container))((props) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -42,8 +39,6 @@ const FileBox = styled(withTheme(Box))({
   flexDirection: 'row',
   justifyContent: 'start'
 })
-
-//#endregion
 
 const FileComponent = ({
   filename,
