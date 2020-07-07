@@ -19,7 +19,7 @@ import { makeStyles } from '@material-ui/styles'
 import { useDropzone } from 'react-dropzone'
 import * as CryptoJS from 'crypto-js'
 
-import { parseFile } from './utils/fileReader'
+import { parseFile } from './utils/filereader'
 import FileComponent from './FileComponent'
 
 const Transition = forwardRef((props, ref) => {
