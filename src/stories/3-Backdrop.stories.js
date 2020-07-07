@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
-import { withKnobs, number } from "@storybook/addon-knobs";
+import { withKnobs, number } from '@storybook/addon-knobs'
 
 import BackdropComponent from '../Backdrop'
 
@@ -14,9 +14,9 @@ export default {
   title: 'Backdrop',
   component: BackdropComponent,
   decorators: [withKnobs],
-  viewport: { 
-    defaultViewport: 'iphonex' 
-  },
+  viewport: {
+    defaultViewport: 'iphonex'
+  }
 }
 
 const useStyles = makeStyles({
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
 
 export const Backdrop = () => {
   const classes = useStyles()
-  const minHeight = number("minHeight", 56)
+  const minHeight = number('minHeight', 56)
 
   const backLayer = (
     <div className={classes.backLayer}>
@@ -76,26 +76,27 @@ export const Backdrop = () => {
 
   const frontLayer = (
     <div className={classes.frontLayer}>
-      {[1,2,3].map(() => (<Typography>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-      </Typography>))}
+      {[1, 2, 3].map(() => (
+        <Typography key={Math.random()}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
+          ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor
+          sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit
+          amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+          labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem
+          ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor
+          sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+          incididunt ut labore et dolore magna aliqua.
+        </Typography>
+      ))}
     </div>
   )
 
@@ -104,7 +105,7 @@ export const Backdrop = () => {
       className={classes.backdrop}
       backLayer={backLayer}
       frontLayer={frontLayer}
-      backLayerOpen={true}
+      backLayerOpen
       layerHeight={minHeight}
       headerText='Settings'
     />

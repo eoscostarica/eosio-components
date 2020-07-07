@@ -21,27 +21,27 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main
   },
   backLayer: {
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   backlayerTransition: {
     transitionDuration: `${TRANSITION_DURATION}ms`,
     transitionProperty: 'height',
-    transitionTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
+    transitionTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)'
   },
   headerBox: {
     display: 'flex',
     justifyContent: 'space-between',
-    padding: theme.spacing(1, 2),
+    padding: theme.spacing(1, 2)
   },
   frontLayer: {
     width: '100%',
     flex: 1,
     borderRadius: theme.spacing(2, 2, 0, 0),
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   contentWrapper: {
     position: 'relative',
@@ -50,12 +50,12 @@ const useStyles = makeStyles((theme) => ({
   frontLayerContent: {
     position: 'absolute',
     width: '100%',
-    height: '100%',
+    height: '100%'
   },
   iconDrop: {
     fontSize: 25,
-    padding: 0,
-  },
+    padding: 0
+  }
 }))
 
 const Backdrop = ({
@@ -64,7 +64,7 @@ const Backdrop = ({
   layerHeight,
   classes: extraClasses,
   className,
-  headerText,
+  headerText
 }) => {
   const theme = useTheme()
   const classes = useStyles()
@@ -104,7 +104,7 @@ const Backdrop = ({
           extraClasses.backLayer
         )}
         style={{
-          height: frontLayerHeight,
+          height: frontLayerHeight
         }}
       >
         {backLayer}
@@ -114,18 +114,14 @@ const Backdrop = ({
         ref={frontLayerRef}
       >
         <div className={classes.headerBox}>
-          <Typography variant="h6">{headerText}</Typography>
+          <Typography variant='h6'>{headerText}</Typography>
           {isMobile && (
             <IconButton
-              aria-label=""
+              aria-label=''
               classes={{ root: classes.iconDrop }}
               onClick={handleOnClick}
             >
-              {frontLayerHeight === layerHeight ? (
-                <DropDown />
-              ) : (
-                <DropUp />
-              )}
+              {frontLayerHeight === layerHeight ? <DropDown /> : <DropUp />}
             </IconButton>
           )}
         </div>
@@ -143,7 +139,7 @@ Backdrop.defaultProps = {
   backLayer: null,
   className: null,
   classes: {},
-  headerText: 'Subheader',
+  headerText: 'Subheader'
 }
 
 Backdrop.propTypes = {
@@ -152,7 +148,7 @@ Backdrop.propTypes = {
   backLayer: PropTypes.node,
   className: PropTypes.string,
   classes: PropTypes.objectOf(PropTypes.any),
-  headerText: PropTypes.string,
+  headerText: PropTypes.string
 }
 
 export default Backdrop

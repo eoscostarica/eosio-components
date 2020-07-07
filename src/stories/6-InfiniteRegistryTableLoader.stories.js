@@ -10,7 +10,6 @@ export default {
 }
 
 export const RegistryLoader = () => {
-  //#region samples
   const [, setWidth] = useState(400)
   const [columnWidth, setColumnWidth] = useState(200)
   const sample = [
@@ -82,7 +81,6 @@ export const RegistryLoader = () => {
       dataKey: 'certificate'
     }
   ]
-  //#endregion samples
 
   const onResize = ({ width }) => {
     setWidth(width)
@@ -98,8 +96,8 @@ export const RegistryLoader = () => {
     <AutoSizer onResize={onResize}>
       {({ height, width }) => (
         <InfiniteRegistryTableLoader
-          hasNextPage={true}
-          isNextPageLoading={true}
+          hasNextPage
+          isNextPageLoading
           rows={rows}
           height={height || 500}
           width={width}
