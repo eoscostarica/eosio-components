@@ -4,7 +4,6 @@ import { useTheme } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import Paper from '@material-ui/core/Paper'
-import Typography from '@material-ui/core/Typography'
 import DropUp from '@material-ui/icons/ArrowDropUp'
 import DropDown from '@material-ui/icons/ArrowDropDown'
 import IconButton from '@material-ui/core/IconButton'
@@ -12,7 +11,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const TRANSITION_DURATION = 250
 
-const useStyles = makeStyles((theme) => ({
+const useRootStyles = makeStyles({
   root: {
     position: 'fixed',
     display: 'flex',
@@ -21,8 +20,13 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: theme.palette.primary.main
-  },
+    backgroundColor: (props) => props.color,
+    borderRight: (props) => `2px solid ${props.color}`,
+    borderLeft: (props) => `2px solid ${props.color}`
+  }
+})
+
+const useStyles = makeStyles((theme) => ({
   backLayer: {
     overflow: 'hidden'
   },
@@ -64,14 +68,17 @@ const Backdrop = ({
   layerHeight,
   classes: extraClasses,
   className,
-  headerText
+  headerText,
+  backgroundColor
 }) => {
   const theme = useTheme()
   const classes = useStyles()
+  const rootClasses = useRootStyles({ color: backgroundColor })
   const frontLayerRef = createRef()
-  const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [frontLayerHeight, setFrontLayerHeight] = useState(layerHeight)
   const [transaction, setTransaction] = useState(false)
+  const [isFirstTime, setIsFirstTime] = useState(true)
 
   const handleOnClick = () => {
     const contentHeight = frontLayerRef.current.clientHeight
@@ -92,11 +99,25 @@ const Backdrop = ({
   )
 
   useEffect(() => {
-    setNewHeight()
-  }, [setNewHeight])
+    if (isMobile && frontLayerRef.current && isFirstTime) {
+      const contentHeight = frontLayerRef.current.clientHeight
+
+      setNewHeight(contentHeight)
+      setIsFirstTime(false)
+    }
+
+    if (
+      !isMobile &&
+      frontLayerRef.current &&
+      frontLayerRef.current.clientHeight === layerHeight
+    ) {
+      setNewHeight()
+      setIsFirstTime(true)
+    }
+  }, [isMobile, frontLayerRef])
 
   return (
-    <div className={clsx(className, classes.root, extraClasses.root)}>
+    <div className={clsx(className, rootClasses.root, extraClasses.root)}>
       <div
         className={clsx(
           classes.backLayer,
@@ -114,7 +135,7 @@ const Backdrop = ({
         ref={frontLayerRef}
       >
         <div className={classes.headerBox}>
-          <Typography variant='h6'>{headerText}</Typography>
+          {headerText}
           {isMobile && (
             <IconButton
               aria-label=''
@@ -139,7 +160,8 @@ Backdrop.defaultProps = {
   backLayer: null,
   className: null,
   classes: {},
-  headerText: 'Subheader'
+  headerText: <span>Settings</span>,
+  backgroundColor: '#00bace'
 }
 
 Backdrop.propTypes = {
@@ -148,7 +170,8 @@ Backdrop.propTypes = {
   backLayer: PropTypes.node,
   className: PropTypes.string,
   classes: PropTypes.objectOf(PropTypes.any),
-  headerText: PropTypes.string
+  headerText: PropTypes.node,
+  backgroundColor: PropTypes.string
 }
 
 export default Backdrop

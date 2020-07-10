@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   backdrop: {
     position: 'relative',
     width: '100vw',
-    height: '100vh',
+    height: 'calc(100vh - 56px)',
     overflowY: 'hidden'
   },
   frontLayer: {
@@ -53,24 +53,9 @@ export const Backdrop = () => {
 
   const backLayer = (
     <div className={classes.backLayer}>
-      <div className={classes.menu}>
-        <AppBar position='static'>
-          <Toolbar>
-            <IconButton
-              edge='start'
-              className={classes.menuButton}
-              color='inherit'
-              aria-label='menu'
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant='h6' className={classes.title}>
-              News
-            </Typography>
-            <Button color='inherit'>Login</Button>
-          </Toolbar>
-        </AppBar>
-      </div>
+      <Typography variant='h6' className={classes.title}>
+        Some content here!
+      </Typography>
     </div>
   )
 
@@ -101,13 +86,38 @@ export const Backdrop = () => {
   )
 
   return (
-    <BackdropComponent
-      className={classes.backdrop}
-      backLayer={backLayer}
-      frontLayer={frontLayer}
-      backLayerOpen
-      layerHeight={minHeight}
-      headerText='Settings'
-    />
+    <div>
+      <div className={classes.menu}>
+        <AppBar position='static'>
+          <Toolbar>
+            <IconButton
+              edge='start'
+              className={classes.menuButton}
+              color='inherit'
+              aria-label='menu'
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant='h6' className={classes.title}>
+              News
+            </Typography>
+            <Button color='inherit'>Login</Button>
+          </Toolbar>
+        </AppBar>
+      </div>
+      <BackdropComponent
+        className={classes.backdrop}
+        backLayer={backLayer}
+        frontLayer={frontLayer}
+        backLayerOpen
+        layerHeight={minHeight}
+        headerText={
+          <Typography variant='h6' className={classes.title}>
+            Header Title
+          </Typography>
+        }
+        backgroundColor='gray'
+      />
+    </div>
   )
 }
