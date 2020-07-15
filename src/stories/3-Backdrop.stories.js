@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import { withKnobs, number } from '@storybook/addon-knobs'
 
-import BackdropComponent from '../Backdrop'
+import BackdropComponent from '../components/Backdrop'
 
 export default {
   title: 'Backdrop',

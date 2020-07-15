@@ -16,11 +16,11 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import VpnKey from '@material-ui/icons/VpnKey'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-import { eosApi } from './api/eosjs-api'
+import { eosApi } from '../../api/eosjs-api'
 import ProgressBar from './ProgressBar'
 import BPAvatar from './BPAvatar'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: 400,
     display: 'flex',
@@ -186,7 +186,7 @@ const AccountInfo = ({ customBtnStyle }) => {
     }
   }
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     event.preventDefault()
     const { value } = event.target
 
@@ -298,9 +298,9 @@ const AccountInfo = ({ customBtnStyle }) => {
                           {account.account_name || 'defaulteos12'}
                         </Typography>
                         <Typography variant='h6' color='textSecondary'>
-                          {`EOS  balance: ${(account &&
-                            account.core_liquid_balance) ||
-                            '0 EOS'}`}
+                          {`EOS  balance: ${
+                            (account && account.core_liquid_balance) || '0 EOS'
+                          }`}
                         </Typography>
                       </Grid>
                     </Grid>
@@ -403,7 +403,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                                 {`Voting for ${account.voter_info.producers.length} Block Producers:`}
                               </Typography>
                               <Grid className={classes.list}>
-                                {account.voter_info.producers.map(value => (
+                                {account.voter_info.producers.map((value) => (
                                   <BPAvatar key={value} name={value} />
                                 ))}
                               </Grid>
@@ -423,9 +423,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                               Is Proxy:
                             </Typography>
                             <Typography>
-                              {Boolean(account.voter_info.is_proxy)
-                                ? 'True'
-                                : 'False'}
+                              {account.voter_info.is_proxy ? 'True' : 'False'}
                             </Typography>
                           </div>
                         </ExpansionPanelDetails>

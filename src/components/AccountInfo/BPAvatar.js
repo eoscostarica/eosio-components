@@ -5,7 +5,7 @@ import Avatar from '@material-ui/core/Avatar'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
-import getRgbColorsFromHex from './utils/getRgbColorsFromHex'
+import getRgbColorsFromHex from '../../utils/getRgbColorsFromHex'
 
 const useStyles = makeStyles({
   avatar: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   }
 })
 
-const useStylesBase = makeStyles(theme => ({
+const useStylesBase = makeStyles((theme) => ({
   bpAvatar: {
     display: 'flex',
     flexWrap: 'wrap',

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import InfiniteRegistryTableLoader from '../InfiniteRegistryTableLoader'
 import LockIcon from '@material-ui/icons/Lock'
 import IconButton from '@material-ui/core/IconButton'
 import { AutoSizer } from 'react-virtualized'
+
+import InfiniteRegistryTableLoader from '../components/InfiniteRegistryTableLoader'
 
 export default {
   title: 'InfiniteRegistryTableLoader',

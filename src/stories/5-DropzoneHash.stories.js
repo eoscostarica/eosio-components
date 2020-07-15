@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles'
 import { action } from '@storybook/addon-actions'
 import Box from '@material-ui/core/Box'
 
-import DropzoneHash from '../DropzoneHash'
+import DropzoneHash from '../components/DropzoneHash'
 
 const useStyles = makeStyles({
   dropBox: {

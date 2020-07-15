@@ -1,7 +1,7 @@
 import React from 'react'
 import { action } from '@storybook/addon-actions'
 
-import InputHash from '../InputHash'
+import InputHash from '../components/InputHash'
 
 export default {
   title: 'InputHash',
