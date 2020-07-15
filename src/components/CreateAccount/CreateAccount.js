@@ -10,10 +10,10 @@ import Backdrop from '@material-ui/core/Backdrop'
 import IconButton from '@material-ui/core/IconButton'
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import { api } from './api/eosjs-api'
-import config from './config'
+import { api } from '../../api/eosjs-api'
+import config from '../../config'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: 400,
     display: 'flex',
@@ -211,7 +211,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
     }
   }
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     event.preventDefault()
     const { name, value } = event.target
     const regexValidation = {
@@ -350,7 +350,7 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
                 <div className={classes.captcha}>
                   <ReCAPTCHA
                     sitekey={config.sitekey}
-                    onChange={value => console.log({ value })}
+                    onChange={(value) => console.log({ value })}
                   />
                 </div>
               </div>

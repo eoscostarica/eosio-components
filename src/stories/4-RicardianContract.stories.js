@@ -1,7 +1,7 @@
 import React from 'react'
 import { withKnobs, text, boolean } from '@storybook/addon-knobs'
 
-import RicardianContract from '../RicardianContract'
+import RicardianContract from '../components/RicardianContract'
 
 export default {
   title: 'RicardianContract',

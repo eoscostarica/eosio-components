@@ -1,9 +1,9 @@
-import CreateAccount from './CreateAccount'
-import AccountInfo from './AccountInfo'
-import InputHash from './InputHash'
-import RicardianContract from './RicardianContract'
-import DropzoneHash from './DropzoneHash'
-import Backdrop from './Backdrop'
+import CreateAccount from './components/CreateAccount'
+import AccountInfo from './components/AccountInfo'
+import InputHash from './components/InputHash/InputHash'
+import RicardianContract from './components/RicardianContract'
+import DropzoneHash from './components/DropzoneHash'
+import Backdrop from './components/Backdrop'
 
 export {
   CreateAccount,

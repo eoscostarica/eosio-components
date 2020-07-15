@@ -1,6 +1,6 @@
 import React from 'react'
 
-import CreateAccount from '../CreateAccount'
+import CreateAccount from '../components/CreateAccount'
 
 export default {
   title: 'CreateAccount',
