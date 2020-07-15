@@ -15,7 +15,7 @@ A collection of React Components for EOSIO.
 
 ## Version
 
-- 1.1.0
+- 1.1.1
 
 ### Installation
 
@@ -27,13 +27,14 @@ $ npm install eoscr-components --save
 
 ## Components
 
-|                         | Description                              | Tag                 |
-| ----------------------- | ---------------------------------------- | ------------------- |
-| Create Account          | Form to create a new account             | `<CreateAccount />` |
-| Get Account Information | Get an account information               | `<AccountInfo />`   |
-| Input Hash              | Input Text to create or validate HASH256 | `<InputHash />`     |
-| Dropzone Hash           | Drop zone to handle files                | `<DropzoneHash />`  |
-| Backdrop                | Backdrop                                 | `<Backdrop />`      |
+|                         | Description                              | Tag                   |
+| ----------------------- | ---------------------------------------- | --------------------- |
+| Create Account          | Form to create a new account             | `<CreateAccount />`   |
+| Get Account Information | Get an account information               | `<AccountInfo />`     |
+| Input Hash              | Input Text to create or validate HASH256 | `<InputHash />`       |
+| Dropzone Hash           | Drop zone to handle files                | `<DropzoneHash />`    |
+| Backdrop                | Backdrop                                 | `<Backdrop />`        |
+| BPJsonGenerator         | BPJsonGenerator                          | `<BPJsonGenerator />` |
 
 ## Run locally
 
