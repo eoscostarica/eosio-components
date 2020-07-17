@@ -224,6 +224,9 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(0, 5)
     }
   },
+  nodeListItem: {
+    width: '100%',
+  },
   lgBox: {
     padding: 0,
     width: '100%'
@@ -333,7 +336,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 id='standard-basic'
                 error={requiredFieldsValidation.candidate_name.isError}
                 label='Candidate Name'
-                value={producerData.candidate_name}
+                value={producerData.candidate_name || ''}
                 helperText={
                   requiredFieldsValidation.candidate_name.isError &&
                   requiredFieldsValidation.candidate_name.message
@@ -346,7 +349,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 id='standard-basic'
                 error={requiredFieldsValidation.email.isError}
                 label='Email'
-                value={producerData.email}
+                value={producerData.email || ''}
                 helperText={
                   requiredFieldsValidation.email.isError &&
                   requiredFieldsValidation.email.message
@@ -364,7 +367,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 id='standard-basic'
                 error={requiredFieldsValidation.website.isError}
                 label='Website'
-                value={producerData.website}
+                value={producerData.website || ''}
                 helperText={
                   requiredFieldsValidation.website.isError &&
                   requiredFieldsValidation.website.message
@@ -379,7 +382,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 id='standard-basic'
                 error={requiredFieldsValidation.code_of_conduct.isError}
                 label='Code of Conduct'
-                value={producerData.code_of_conduct}
+                value={producerData.code_of_conduct || ''}
                 helperText={
                   requiredFieldsValidation.code_of_conduct.isError &&
                   requiredFieldsValidation.code_of_conduct.message
@@ -400,7 +403,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   variant='outlined'
                   id='standard-basic'
                   label='Logo 256px'
-                  value={producerData.branding.logo_256}
+                  value={producerData.branding.logo_256 || ''}
                   error={
                     producerData.branding.logo_256.length &&
                     !urlInputValidation(producerData.branding.logo_256)
@@ -426,7 +429,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                     producerData.branding.logo_1024.length &&
                     !urlInputValidation(producerData.branding.logo_1024)
                   }
-                  value={producerData.branding.logo_1024}
+                  value={producerData.branding.logo_1024 || ''}
                 />
                 <ImagePreview
                   url={producerData.branding.logo_1024}
@@ -448,7 +451,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                     producerData.branding.logo_svg.length &&
                     !urlInputValidation(producerData.branding.logo_svg)
                   }
-                  value={producerData.branding.logo_svg}
+                  value={producerData.branding.logo_svg || ''}
                 />
                 <ImagePreview
                   url={producerData.branding.logo_svg}
@@ -471,7 +474,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant='outlined'
                 id='standard-basic'
-                value={producerData.location.name}
+                value={producerData.location.name || ''}
                 label='Name'
               />
               <TextField
@@ -480,7 +483,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant='outlined'
                 id='standard-basic'
-                value={producerData.location.country}
+                value={producerData.location.country || ''}
                 label='Country'
               />
             </Box>
@@ -491,7 +494,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant='outlined'
                 id='standard-basic'
-                value={producerData.location.latitude}
+                value={producerData.location.latitude || ''}
                 label='Latitude'
                 type='number'
               />
@@ -501,7 +504,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant='outlined'
                 id='standard-basic'
-                value={producerData.location.longitude}
+                value={producerData.location.longitude || ''}
                 label='Longitude'
                 type='number'
               />
@@ -521,7 +524,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   variant='outlined'
                   id='standard-basic'
                   label='Github'
-                  value={producerData.social.github}
+                  value={producerData.social.github || ''}
                 />
                 <TextField
                   onChange={(e) =>
@@ -530,7 +533,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   variant='outlined'
                   id='standard-basic'
                   label='Twitter'
-                  value={producerData.social.twitter}
+                  value={producerData.social.twitter || ''}
                 />
                 <TextField
                   onChange={(e) =>
@@ -539,7 +542,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   variant='outlined'
                   id='standard-basic'
                   label='Youtube'
-                  value={producerData.social.youtube}
+                  value={producerData.social.youtube || ''}
                 />
               </Box>
               <Box className={classes.socialBox}>
@@ -550,7 +553,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   variant='outlined'
                   id='standard-basic'
                   label='facebook'
-                  value={producerData.social.facebook}
+                  value={producerData.social.facebook || ''}
                 />
                 <TextField
                   onChange={(e) =>
@@ -559,7 +562,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   variant='outlined'
                   id='standard-basic'
                   label='Telegram'
-                  value={producerData.social.telegram}
+                  value={producerData.social.telegram || ''}
                 />
                 <TextField
                   onChange={(e) =>
@@ -568,7 +571,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   variant='outlined'
                   id='standard-basic'
                   label='Steemit'
-                  value={producerData.social.steemit}
+                  value={producerData.social.steemit || ''}
                 />
               </Box>
               <Box className={classes.socialBox}>
@@ -579,7 +582,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   variant='outlined'
                   id='standard-basic'
                   label='Reddit'
-                  value={producerData.social.reddit}
+                  value={producerData.social.reddit || ''}
                 />
                 <TextField
                   onChange={(e) =>
@@ -588,7 +591,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   variant='outlined'
                   id='standard-basic'
                   label='Keybase'
-                  value={producerData.social.keybase}
+                  value={producerData.social.keybase || ''}
                 />
                 <TextField
                   onChange={(e) =>
@@ -597,7 +600,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   variant='outlined'
                   id='standard-basic'
                   label='Webchat'
-                  value={producerData.social.webchat}
+                  value={producerData.social.webchat || ''}
                 />
               </Box>
             </Box>
@@ -621,42 +624,40 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 </Typography>
               )}
               {Boolean((nodeData || []).length) && (
-                <>
-                  <List className={classes.nodeList}>
-                    {nodeData.map((node) => {
-                      return (
-                        <>
-                          <ListItem>
-                            <ListItemText
-                              primary={node.node_type}
-                              secondary={node.location.name}
-                            />
-                            <ListItemSecondaryAction>
-                              <IconButton
-                                edge='end'
-                                aria-label='delete'
-                                onClick={() => {
-                                  setEditNode(node)
-                                  setOpenModal(true)
-                                }}
-                              >
-                                <EditIcon />
-                              </IconButton>
-                              <IconButton
-                                edge='end'
-                                aria-label='delete'
-                                onClick={() => handleOnDelete(node.node_type)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </ListItemSecondaryAction>
-                          </ListItem>
-                          <Divider />
-                        </>
-                      )
-                    })}
-                  </List>
-                </>
+                <List className={classes.nodeList}>
+                  {nodeData.map((node, index) => {
+                    return (
+                      <div className={classes.nodeListItem} key={`bpjosn-node-${index}`}>
+                        <ListItem>
+                          <ListItemText
+                            primary={node.node_type}
+                            secondary={node.location.name}
+                          />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              edge='end'
+                              aria-label='delete'
+                              onClick={() => {
+                                setEditNode(node)
+                                setOpenModal(true)
+                              }}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton
+                              edge='end'
+                              aria-label='delete'
+                              onClick={() => handleOnDelete(node.node_type)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                        <Divider />
+                      </div>
+                    )
+                  })}
+                </List>
               )}
 
               <Button
@@ -669,16 +670,18 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
               </Button>
             </Box>
 
-            <Box className={classes.submitButtonBox}>
-              <Button
-                variant='contained'
-                color='primary'
-                className={classes.submitButton}
-                onClick={handleOnSubmit}
-              >
-                Submit
-              </Button>
-            </Box>
+            {onSubmit && (
+              <Box className={classes.submitButtonBox}>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  className={classes.submitButton}
+                  onClick={handleOnSubmit}
+                >
+                  Submit
+                </Button>
+              </Box>
+            )}
           </Box>
         </Box>
       </form>
@@ -729,7 +732,7 @@ BPJsonForm.propTypes = {
   onSubmit: PropTypes.func
 }
 
-BPJsonForm.propTypes = {
+BPJsonForm.defaultProps = {
   bpJson: {}
 }
 
