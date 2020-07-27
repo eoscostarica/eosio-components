@@ -277,7 +277,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                 )}
 
                 {account && (
-                  <>
+                  <div>
                     <Grid container direction='row' alignItems='center'>
                       <Identicon
                         string={account.account_name || 'default'}
@@ -398,7 +398,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                           )}
 
                           {account.voter_info.producers.length && (
-                            <>
+                            <div>
                               <Typography className={classes.subTitleInfo}>
                                 {`Voting for ${account.voter_info.producers.length} Block Producers:`}
                               </Typography>
@@ -407,7 +407,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                                   <BPAvatar key={value} name={value} />
                                 ))}
                               </Grid>
-                            </>
+                            </div>
                           )}
 
                           <div className={classes.detailBox}>
@@ -470,7 +470,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                         </ExpansionPanelDetails>
                       </ExpansionPanel>
                     </Grid>
-                  </>
+                  </div>
                 )}
               </div>
             </Grid>

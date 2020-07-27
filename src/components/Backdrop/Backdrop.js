@@ -116,6 +116,10 @@ const Backdrop = ({
     }
   }, [isMobile, frontLayerRef])
 
+  useEffect(() => {
+    setNewHeight(layerHeight)
+  }, [layerHeight])
+
   return (
     <div className={clsx(className, rootClasses.root, extraClasses.root)}>
       <div
@@ -134,7 +138,7 @@ const Backdrop = ({
         className={clsx(classes.frontLayer, extraClasses.frontLayer)}
         ref={frontLayerRef}
       >
-        <div className={classes.headerBox}>
+        <div className={clsx(classes.headerBox, extraClasses.headerBox)}>
           {headerText}
           {isMobile && (
             <IconButton
