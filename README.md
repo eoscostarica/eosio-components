@@ -15,7 +15,7 @@ A collection of React Components for EOSIO.
 
 ## Version
 
-- 1.1.5
+- 1.1.7
 
 ### Installation
 

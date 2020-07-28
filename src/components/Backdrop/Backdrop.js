@@ -59,6 +59,10 @@ const useStyles = makeStyles((theme) => ({
   iconDrop: {
     fontSize: 25,
     padding: 0
+  },
+  secondaryPage: {
+    width: '100%',
+    height: '100%'
   }
 }))
 
@@ -69,7 +73,8 @@ const Backdrop = ({
   classes: extraClasses,
   className,
   headerText,
-  backgroundColor
+  backgroundColor,
+  useSecondaryPage
 }) => {
   const theme = useTheme()
   const classes = useStyles()
@@ -120,6 +125,13 @@ const Backdrop = ({
     setNewHeight(layerHeight)
   }, [layerHeight])
 
+  if (useSecondaryPage)
+    return (
+      <div className={clsx(classes.secondaryPage, extraClasses.secondaryPage)}>
+        {frontLayer}
+      </div>
+    )
+
   return (
     <div className={clsx(className, rootClasses.root, extraClasses.root)}>
       <div
@@ -165,7 +177,8 @@ Backdrop.defaultProps = {
   className: null,
   classes: {},
   headerText: <span>Settings</span>,
-  backgroundColor: '#00bace'
+  backgroundColor: '#00bace',
+  useSecondaryPage: false
 }
 
 Backdrop.propTypes = {
@@ -175,7 +188,8 @@ Backdrop.propTypes = {
   className: PropTypes.string,
   classes: PropTypes.objectOf(PropTypes.any),
   headerText: PropTypes.node,
-  backgroundColor: PropTypes.string
+  backgroundColor: PropTypes.string,
+  useSecondaryPage: PropTypes.bool
 }
 
 export default Backdrop
