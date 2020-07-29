@@ -46,7 +46,7 @@ export const VisualCertificateWrapper = () => {
     return (
       <Box mt={5} width='100%'>
         <Typography variant='h5' align='center'>
-          {'Loading BP Json...'.toUpperCase()}
+          {'Loading transaction info...'.toUpperCase()}
         </Typography>
         <LinearProgress color='secondary' />
       </Box>
