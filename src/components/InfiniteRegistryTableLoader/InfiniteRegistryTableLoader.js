@@ -62,7 +62,7 @@ const InfiniteRegistryTableLoader = ({
   const cellRenderer = ({ cellData, columnIndex }) => {
     return (
       <TableCell
-        component='div'
+        component="div"
         className={clsx(
           classes.tableCell,
           classes.flexContainer,
@@ -71,7 +71,7 @@ const InfiniteRegistryTableLoader = ({
           },
           columnIndex === 4 ? classes.click : undefined
         )}
-        variant='body'
+        variant="body"
         style={{ height: 48 }}
         align={
           (columnIndex != null && columns[columnIndex].numeric) || false
@@ -87,13 +87,13 @@ const InfiniteRegistryTableLoader = ({
   const headerRenderer = ({ label, columnIndex }) => {
     return (
       <TableCell
-        component='div'
+        component="div"
         className={clsx(
           classes.tableCell,
           classes.flexContainer,
           classes.noClick
         )}
-        variant='head'
+        variant="head"
         style={{ height: 48 }}
         align={columns[columnIndex].numeric || false ? 'right' : 'left'}
       >
@@ -172,6 +172,7 @@ InfiniteRegistryTableLoader.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   rowHeight: PropTypes.number,
-  headerHeight: PropTypes.number
+  headerHeight: PropTypes.number,
+  onRowClick: PropTypes.func
 }
 export default InfiniteRegistryTableLoader

@@ -92,21 +92,21 @@ const RicardianContract = ({
         <Box>
           <Box className={classes.boxTitle}>
             <img
-              alt='icon'
+              alt="icon"
               src={_icon || defaultIcon}
               onError={useDefaultLogo}
             />
             <Box className={classes.boxText}>
-              <Typography color='primary' variant='h4'>
+              <Typography color="primary" variant="h4">
                 {_title}
               </Typography>
-              <Typography color='primary' variant='subtitle2'>
+              <Typography color="primary" variant="subtitle2">
                 {version}
               </Typography>
             </Box>
           </Box>
           <Divider className={classes.divider} />
-          <Typography variant='body1'>{summary}</Typography>
+          <Typography variant="body1">{summary}</Typography>
         </Box>
       )
     },
@@ -165,7 +165,7 @@ const RicardianContract = ({
     return (
       <Box className={classes.ricardianContractContainer}>
         <Box mt={5}>
-          <Typography variant='h5' align='center'>
+          <Typography variant="h5" align="center">
             {(loadingMessage || '').toUpperCase()}
           </Typography>
           <LinearProgress color={LinearProgressColor} />
@@ -176,30 +176,30 @@ const RicardianContract = ({
 
   return (
     <Box className={classes.ricardianContractContainer}>
-      <Typography variant='h3'>Ricardian contract</Typography>
-      <Typography variant='body1'>
+      <Typography variant="h3">Ricardian contract</Typography>
+      <Typography variant="body1">
         {'Name: '}
         <Link
           href={`${url}/account/${
             contractName || name
           }?loadContract=true&tab=Actions`}
-          variant='body2'
-          target='_blank'
-          rel='noopener noreferrer'
+          variant="body2"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {contractName || name}
         </Link>
       </Typography>
 
-      <Typography variant='body1'>
+      <Typography variant="body1">
         {'Hash: '}
         <Link
           href={`${url}/account/${
             contractName || name
           }?loadContract=true&tab=ABI`}
-          variant='body2'
-          target='_blank'
-          rel='noopener noreferrer'
+          variant="body2"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {hash || ''}
         </Link>
@@ -216,7 +216,6 @@ RicardianContract.propTypes = {
   contractName: PropTypes.string,
   actionName: PropTypes.string,
   showClauses: PropTypes.bool,
-  api: PropTypes.any,
   name: PropTypes.string,
   url: PropTypes.string,
   loadingMessage: PropTypes.string,

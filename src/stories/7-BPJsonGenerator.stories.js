@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -67,18 +68,18 @@ export const EditBPJson = ({ ual }) => {
 
   if (loading)
     return (
-      <Box mt={5} width='100%'>
-        <Typography variant='h5' align='center'>
+      <Box mt={5} width="100%">
+        <Typography variant="h5" align="center">
           {'Loading BP Json...'.toUpperCase()}
         </Typography>
-        <LinearProgress color='secondary' />
+        <LinearProgress color="secondary" />
       </Box>
     )
 
   if (isNotABP)
     return (
-      <Box mt={5} width='100%'>
-        <Typography variant='h5' align='center'>
+      <Box mt={5} width="100%">
+        <Typography variant="h5" align="center">
           {'You need to register as Block Producer!'.toUpperCase()}
         </Typography>
       </Box>
@@ -97,4 +98,8 @@ export const EditBPJson = ({ ual }) => {
       </Card>
     </Grid>
   )
+}
+
+EditBPJson.propTypes = {
+  ual: PropTypes.any
 }
