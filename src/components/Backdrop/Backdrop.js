@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, createRef } from 'react'
+import React, { useState, useCallback, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { useTheme } from '@material-ui/core/styles'
 import clsx from 'clsx'
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Backdrop = ({
+const Backdrop = forwardRef(({
   frontLayer,
   backLayer,
   layerHeight,
@@ -75,11 +75,11 @@ const Backdrop = ({
   headerText,
   backgroundColor,
   useSecondaryPage
-}) => {
+}, ref) => {
   const theme = useTheme()
   const classes = useStyles()
   const rootClasses = useRootStyles({ color: backgroundColor })
-  const frontLayerRef = createRef()
+  const frontLayerRef = useRef()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [frontLayerHeight, setFrontLayerHeight] = useState(layerHeight)
   const [transaction, setTransaction] = useState(false)
@@ -89,6 +89,14 @@ const Backdrop = ({
     const contentHeight = frontLayerRef.current.clientHeight
     setNewHeight(contentHeight)
   }
+
+  useImperativeHandle(ref, () => ({
+    toggleOnClickMobile: () => {
+      if (isMobile) {
+        handleOnClick()
+      }
+    }
+  }))
 
   const setNewHeight = useCallback(
     async (value) => {
@@ -168,7 +176,7 @@ const Backdrop = ({
       </Paper>
     </div>
   )
-}
+})
 
 Backdrop.defaultProps = {
   layerHeight: 56,

@@ -155,16 +155,16 @@ const AccountInfo = ({ customBtnStyle }) => {
       if (Object.keys(account).length === 0) throw new Error('No Account data!')
 
       const {
-        ram_usage,
-        ram_quota,
-        cpu_limit,
-        net_limit,
+        ram_usage: ramUsage,
+        ram_quota: ramQuota,
+        cpu_limit: cpuLimit,
+        net_limit: netLimit,
         permissions
       } = account
 
-      const ram = ((ram_usage * 100) / ram_quota || 0).toFixed()
-      const cpu = ((cpu_limit.used * 100) / cpu_limit.max || 0).toFixed()
-      const net = ((net_limit.used * 100) / net_limit.max || 0).toFixed()
+      const ram = ((ramUsage * 100) / ramQuota || 0).toFixed()
+      const cpu = ((cpuLimit.used * 100) / cpuLimit.max || 0).toFixed()
+      const net = ((netLimit.used * 100) / netLimit.max || 0).toFixed()
       const keys = {
         active: {
           label: permissions[0].perm_name,
@@ -196,16 +196,16 @@ const AccountInfo = ({ customBtnStyle }) => {
   return (
     <div>
       <Button
-        size='large'
-        color='secondary'
+        size="large"
+        color="secondary"
         onClick={handleOpen}
         className={customBtnStyle}
       >
         Get account info
       </Button>
       <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
         onClose={handleOpen}
@@ -216,20 +216,20 @@ const AccountInfo = ({ customBtnStyle }) => {
         }}
       >
         <div className={classes.paper}>
-          <form noValidate autoComplete='off'>
+          <form noValidate autoComplete="off">
             <Grid
               container
-              direction='column'
-              justify='space-between'
+              direction="column"
+              justify="space-between"
               className={classes.root}
             >
               <div className={classes.deleteBtn}>
-                <Typography variant='h6' gutterBottom color='primary'>
+                <Typography variant="h6" gutterBottom color="primary">
                   Get account info
                 </Typography>
                 <IconButton
                   classes={{ root: classes.iconBtnPadding }}
-                  aria-label='delete'
+                  aria-label="delete"
                   onClick={() => setOpen(false)}
                 >
                   X
@@ -238,37 +238,37 @@ const AccountInfo = ({ customBtnStyle }) => {
               <div className={classes.contentBox}>
                 <Grid
                   container
-                  direction='row'
-                  justify='flex-start'
+                  direction="row"
+                  justify="flex-start"
                   className={classes.gridBox}
                 >
                   <TextField
-                    variant='filled'
-                    label='Account Name'
-                    placeholder='eoscrtest123'
-                    autoComplete='off'
-                    name='accountName'
+                    variant="filled"
+                    label="Account Name"
+                    placeholder="eoscrtest123"
+                    autoComplete="off"
+                    name="accountName"
                     onChange={handleChange}
                   />
                   <Button
-                    size='large'
-                    variant='contained'
-                    color='secondary'
+                    size="large"
+                    variant="contained"
+                    color="secondary"
                     onClick={handleOnSubmit}
                   >
                     Get
                   </Button>
                 </Grid>
                 {loading && (
-                  <Grid container alignItems='center' justify='center'>
+                  <Grid container alignItems="center" justify="center">
                     <CircularProgress />
                   </Grid>
                 )}
                 {isError && (
-                  <Grid container alignItems='center' justify='center'>
+                  <Grid container alignItems="center" justify="center">
                     <Typography
-                      variant='h4'
-                      color='primary'
+                      variant="h4"
+                      color="primary"
                       className={classes.accountName}
                     >
                       Account not found!
@@ -278,52 +278,52 @@ const AccountInfo = ({ customBtnStyle }) => {
 
                 {account && (
                   <div>
-                    <Grid container direction='row' alignItems='center'>
+                    <Grid container direction="row" alignItems="center">
                       <Identicon
                         string={account.account_name || 'default'}
                         size={60}
-                        fg='#757575'
+                        fg="#757575"
                       />
                       <Grid
                         container
-                        direction='column'
+                        direction="column"
                         xs={9}
                         className={classes.accountInfo}
                       >
                         <Typography
-                          variant='h4'
-                          color='primary'
+                          variant="h4"
+                          color="primary"
                           className={classes.accountName}
                         >
                           {account.account_name || 'defaulteos12'}
                         </Typography>
-                        <Typography variant='h6' color='textSecondary'>
+                        <Typography variant="h6" color="textSecondary">
                           {`EOS  balance: ${
                             (account && account.core_liquid_balance) || '0 EOS'
                           }`}
                         </Typography>
                       </Grid>
                     </Grid>
-                    <Grid container direction='row' justify='space-around'>
+                    <Grid container direction="row" justify="space-around">
                       <ProgressBar
-                        name='ram'
-                        backgroundColor='#fff'
+                        name="ram"
+                        backgroundColor="#fff"
                         percent={(account && account.ram) || 0}
                       />
                       <ProgressBar
-                        name='cpu'
-                        backgroundColor='#fff'
+                        name="cpu"
+                        backgroundColor="#fff"
                         percent={(account && account.cpu) || 0}
                       />
                       <ProgressBar
-                        name='net'
-                        backgroundColor='#fff'
+                        name="net"
+                        backgroundColor="#fff"
                         percent={(account && account.net) || 0}
                       />
                     </Grid>
                     <Grid
                       container
-                      direction='column'
+                      direction="column"
                       className={classes.gridBox}
                     >
                       <ExpansionPanel
@@ -335,10 +335,10 @@ const AccountInfo = ({ customBtnStyle }) => {
                             root: classes.expanded
                           }}
                           expandIcon={<ExpandMoreIcon />}
-                          aria-controls='panel1a-content'
-                          id='panel1a-header'
+                          aria-controls="panel1a-content"
+                          id="panel1a-header"
                         >
-                          <Typography variant='h6' color='primary'>
+                          <Typography variant="h6" color="primary">
                             Resources
                           </Typography>
                         </ExpansionPanelSummary>
@@ -378,10 +378,10 @@ const AccountInfo = ({ customBtnStyle }) => {
                             root: classes.expanded
                           }}
                           expandIcon={<ExpandMoreIcon />}
-                          aria-controls='panel3a-content'
-                          id='panel3a-header'
+                          aria-controls="panel3a-content"
+                          id="panel3a-header"
                         >
-                          <Typography variant='h6' color='primary'>
+                          <Typography variant="h6" color="primary">
                             Voter Information
                           </Typography>
                         </ExpansionPanelSummary>
@@ -437,10 +437,10 @@ const AccountInfo = ({ customBtnStyle }) => {
                             root: classes.expanded
                           }}
                           expandIcon={<ExpandMoreIcon />}
-                          aria-controls='panel2a-content'
-                          id='panel2a-header'
+                          aria-controls="panel2a-content"
+                          id="panel2a-header"
                         >
-                          <Typography variant='h6' color='primary'>
+                          <Typography variant="h6" color="primary">
                             Keys
                           </Typography>
                         </ExpansionPanelSummary>
