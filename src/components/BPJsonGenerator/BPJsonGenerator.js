@@ -225,7 +225,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   nodeListItem: {
-    width: '100%',
+    width: '100%'
   },
   lgBox: {
     padding: 0,
@@ -618,16 +618,14 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             <Box className={classes.addNewNode}>
               <Typography variant='h2'>Node List</Typography>
               <Divider />
-              {Boolean(!(nodeData || []).length) && (
-                <Typography variant='body1' align='center'>
-                  Nothing to display
-                </Typography>
-              )}
-              {Boolean((nodeData || []).length) && (
+              {(nodeData || []).length ? (
                 <List className={classes.nodeList}>
                   {nodeData.map((node, index) => {
                     return (
-                      <div className={classes.nodeListItem} key={`bpjosn-node-${index}`}>
+                      <div
+                        className={classes.nodeListItem}
+                        key={`bpjosn-node-${index}`}
+                      >
                         <ListItem>
                           <ListItemText
                             primary={node.node_type}
@@ -658,6 +656,10 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                     )
                   })}
                 </List>
+              ) : (
+                <Typography variant='body1' align='center'>
+                  Nothing to display
+                </Typography>
               )}
 
               <Button

@@ -38,16 +38,16 @@ const useStyles = makeStyles(() => ({
 }))
 
 const InfiniteRegistryTableLoader = ({
-  /** Are there more items to load? 
-   * (This information comes from the most recent API request.) 
+  /** Are there more items to load?
+   * (This information comes from the most recent API request.)
    * */
   hasNextPage,
-  /** 
-   * Currently loading a page of items? 
+  /**
+   * Currently loading a page of items?
    * */
   isNextPageLoading,
   rows,
-  /** Callback function 
+  /** Callback function
    * responsible for loading the next page of items */
   loadNextPage,
   columns,
@@ -62,7 +62,7 @@ const InfiniteRegistryTableLoader = ({
   const cellRenderer = ({ cellData, columnIndex }) => {
     return (
       <TableCell
-        component='div'
+        component="div"
         className={clsx(
           classes.tableCell,
           classes.flexContainer,
@@ -71,7 +71,7 @@ const InfiniteRegistryTableLoader = ({
           },
           columnIndex === 4 ? classes.click : undefined
         )}
-        variant='body'
+        variant="body"
         style={{ height: 48 }}
         align={
           (columnIndex != null && columns[columnIndex].numeric) || false
@@ -87,13 +87,13 @@ const InfiniteRegistryTableLoader = ({
   const headerRenderer = ({ label, columnIndex }) => {
     return (
       <TableCell
-        component='div'
+        component="div"
         className={clsx(
           classes.tableCell,
           classes.flexContainer,
           classes.noClick
         )}
-        variant='head'
+        variant="head"
         style={{ height: 48 }}
         align={columns[columnIndex].numeric || false ? 'right' : 'left'}
       >
@@ -112,49 +112,47 @@ const InfiniteRegistryTableLoader = ({
   const isRowLoaded = ({ index }) => !hasNextPage || index < rows.size
 
   return (
-    <>
-      <InfiniteLoader
-        isRowLoaded={isRowLoaded}
-        loadMoreRows={loadMoreRows}
-        rowCount={1000}
-      >
-        {({ onRowsRendered, registerChild }) => (
-          <Table
-            ref={registerChild}
-            onRowsRendered={onRowsRendered}
-            height={height}
-            width={width}
-            rowHeight={rowHeight || 48}
-            gridStyle={{
-              direction: 'inherit'
-            }}
-            rowCount={rows.length}
-            rowGetter={({ index }) => rows[index]}
-            headerHeight={headerHeight || 48}
-            className={classes.table}
-            rowClassName={classes.flexContainer}
-          >
-            {columns.map(({ dataKey, ...other }, index) => {
-              return (
-                <Column
-                  key={dataKey}
-                  headerRenderer={(headerProps) =>
-                    headerRenderer({
-                      ...headerProps,
-                      columnIndex: index
-                    })
-                  }
-                  className={classes.flex}
-                  cellRenderer={cellRenderer}
-                  dataKey={dataKey}
-                  {...other}
-                />
-              )
-            })}
-          </Table>
-        )}
-      </InfiniteLoader>
-    </>
+    <InfiniteLoader
+      isRowLoaded={isRowLoaded}
+      loadMoreRows={loadMoreRows}
+      rowCount={1000}
+    >
+      {({ onRowsRendered, registerChild }) => (
+        <Table
+          ref={registerChild}
+          onRowsRendered={onRowsRendered}
+          height={height}
+          width={width}
+          rowHeight={rowHeight || 48}
+          gridStyle={{
+            direction: 'inherit'
+          }}
+          rowCount={rows.length}
+          rowGetter={({ index }) => rows[index]}
+          headerHeight={headerHeight || 48}
+          className={classes.table}
+          rowClassName={classes.flexContainer}
+        >
+          {columns.map(({ dataKey, ...other }, index) => {
+            return (
+              <Column
+                key={dataKey}
+                headerRenderer={(headerProps) =>
+                  headerRenderer({
+                    ...headerProps,
+                    columnIndex: index
+                  })
+                }
+                className={classes.flex}
+                cellRenderer={cellRenderer}
+                dataKey={dataKey}
+                {...other}
+              />
+            )
+          })}
+        </Table>
+      )}
+    </InfiniteLoader>
   )
 }
 
@@ -174,6 +172,7 @@ InfiniteRegistryTableLoader.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   rowHeight: PropTypes.number,
-  headerHeight: PropTypes.number
+  headerHeight: PropTypes.number,
+  onRowClick: PropTypes.func
 }
 export default InfiniteRegistryTableLoader

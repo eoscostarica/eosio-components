@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, createRef } from 'react'
+import React, { useState, useCallback, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { useTheme } from '@material-ui/core/styles'
 import clsx from 'clsx'
@@ -59,22 +59,27 @@ const useStyles = makeStyles((theme) => ({
   iconDrop: {
     fontSize: 25,
     padding: 0
+  },
+  secondaryPage: {
+    width: '100%',
+    height: '100%'
   }
 }))
 
-const Backdrop = ({
+const Backdrop = forwardRef(({
   frontLayer,
   backLayer,
   layerHeight,
   classes: extraClasses,
   className,
   headerText,
-  backgroundColor
-}) => {
+  backgroundColor,
+  useSecondaryPage
+}, ref) => {
   const theme = useTheme()
   const classes = useStyles()
   const rootClasses = useRootStyles({ color: backgroundColor })
-  const frontLayerRef = createRef()
+  const frontLayerRef = useRef()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const [frontLayerHeight, setFrontLayerHeight] = useState(layerHeight)
   const [transaction, setTransaction] = useState(false)
@@ -84,6 +89,14 @@ const Backdrop = ({
     const contentHeight = frontLayerRef.current.clientHeight
     setNewHeight(contentHeight)
   }
+
+  useImperativeHandle(ref, () => ({
+    toggleOnClickMobile: () => {
+      if (isMobile) {
+        handleOnClick()
+      }
+    }
+  }))
 
   const setNewHeight = useCallback(
     async (value) => {
@@ -116,6 +129,17 @@ const Backdrop = ({
     }
   }, [isMobile, frontLayerRef])
 
+  useEffect(() => {
+    setNewHeight(layerHeight)
+  }, [layerHeight])
+
+  if (useSecondaryPage)
+    return (
+      <div className={clsx(classes.secondaryPage, extraClasses.secondaryPage)}>
+        {frontLayer}
+      </div>
+    )
+
   return (
     <div className={clsx(className, rootClasses.root, extraClasses.root)}>
       <div
@@ -134,7 +158,7 @@ const Backdrop = ({
         className={clsx(classes.frontLayer, extraClasses.frontLayer)}
         ref={frontLayerRef}
       >
-        <div className={classes.headerBox}>
+        <div className={clsx(classes.headerBox, extraClasses.headerBox)}>
           {headerText}
           {isMobile && (
             <IconButton
@@ -152,7 +176,7 @@ const Backdrop = ({
       </Paper>
     </div>
   )
-}
+})
 
 Backdrop.defaultProps = {
   layerHeight: 56,
@@ -161,7 +185,8 @@ Backdrop.defaultProps = {
   className: null,
   classes: {},
   headerText: <span>Settings</span>,
-  backgroundColor: '#00bace'
+  backgroundColor: '#00bace',
+  useSecondaryPage: false
 }
 
 Backdrop.propTypes = {
@@ -171,7 +196,8 @@ Backdrop.propTypes = {
   className: PropTypes.string,
   classes: PropTypes.objectOf(PropTypes.any),
   headerText: PropTypes.node,
-  backgroundColor: PropTypes.string
+  backgroundColor: PropTypes.string,
+  useSecondaryPage: PropTypes.bool
 }
 
 export default Backdrop
