@@ -8,7 +8,7 @@ import config from '../config'
 
 const signatureProvider = new JsSignatureProvider([])
 
-const rpc = new JsonRpc(config.eosApiHost || 'https://jungle.eosio.cr', {
+const rpc = new JsonRpc('https://jungle3.cryptolions.io', {
   fetch
 })
 const api = new Api({
