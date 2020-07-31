@@ -34,6 +34,7 @@
     "@eoscostarica/eoscr-theme": "^1.0.3",
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.9.14",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.1.0",
