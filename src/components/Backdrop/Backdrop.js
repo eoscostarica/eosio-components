@@ -1,4 +1,11 @@
-import React, { useState, useCallback, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle
+} from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { useTheme } from '@material-ui/core/styles'
 import clsx from 'clsx'
@@ -66,117 +73,115 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Backdrop = forwardRef(({
-  frontLayer,
-  backLayer,
-  layerHeight,
-  classes: extraClasses,
-  className,
-  headerText,
-  backgroundColor,
-  useSecondaryPage
-}, ref) => {
-  const theme = useTheme()
-  const classes = useStyles()
-  const rootClasses = useRootStyles({ color: backgroundColor })
-  const frontLayerRef = useRef()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-  const [frontLayerHeight, setFrontLayerHeight] = useState(layerHeight)
-  const [transaction, setTransaction] = useState(false)
-  const [isFirstTime, setIsFirstTime] = useState(true)
-
-  const handleOnClick = () => {
-    const contentHeight = frontLayerRef.current.clientHeight
-    setNewHeight(contentHeight)
-  }
-
-  useImperativeHandle(ref, () => ({
-    toggleOnClickMobile: () => {
-      if (isMobile) {
-        handleOnClick()
-      }
-    }
-  }))
-
-  const setNewHeight = useCallback(
-    async (value) => {
-      const snappedY = value || layerHeight
-
-      setTransaction(true)
-      setFrontLayerHeight(snappedY)
-      setTimeout(() => {
-        setTransaction(false)
-      }, TRANSITION_DURATION)
+const Backdrop = forwardRef(
+  (
+    {
+      frontLayer,
+      backLayer,
+      layerHeight,
+      classes: extraClasses,
+      className,
+      headerText,
+      backgroundColor,
+      isStaticPage
     },
-    [layerHeight]
-  )
+    ref
+  ) => {
+    const theme = useTheme()
+    const classes = useStyles()
+    const rootClasses = useRootStyles({ color: backgroundColor })
+    const frontLayerRef = useRef()
+    const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
+    const [frontLayerHeight, setFrontLayerHeight] = useState(layerHeight)
+    const [transaction, setTransaction] = useState(false)
+    const [isFirstTime, setIsFirstTime] = useState(true)
 
-  useEffect(() => {
-    if (isMobile && frontLayerRef.current && isFirstTime) {
+    const handleOnClick = () => {
       const contentHeight = frontLayerRef.current.clientHeight
-
       setNewHeight(contentHeight)
-      setIsFirstTime(false)
     }
 
-    if (
-      !isMobile &&
-      frontLayerRef.current &&
-      frontLayerRef.current.clientHeight === layerHeight
-    ) {
-      setNewHeight()
-      setIsFirstTime(true)
-    }
-  }, [isMobile, frontLayerRef])
+    useImperativeHandle(ref, () => ({
+      toggleOnClickMobile: () => {
+        if (isMobile) {
+          handleOnClick()
+        }
+      }
+    }))
 
-  useEffect(() => {
-    setNewHeight(layerHeight)
-  }, [layerHeight])
+    const setNewHeight = useCallback(
+      async (value) => {
+        const snappedY = value || layerHeight
 
-  if (useSecondaryPage)
-    return (
-      <div className={clsx(classes.secondaryPage, extraClasses.secondaryPage)}>
-        {frontLayer}
-      </div>
+        setTransaction(true)
+        setFrontLayerHeight(snappedY)
+        setTimeout(() => {
+          setTransaction(false)
+        }, TRANSITION_DURATION)
+      },
+      [layerHeight]
     )
 
-  return (
-    <div className={clsx(className, rootClasses.root, extraClasses.root)}>
-      <div
-        className={clsx(
-          classes.backLayer,
-          transaction ? classes.backlayerTransition : null,
-          extraClasses.backLayer
-        )}
-        style={{
-          height: frontLayerHeight
-        }}
-      >
-        {backLayer}
-      </div>
-      <Paper
-        className={clsx(classes.frontLayer, extraClasses.frontLayer)}
-        ref={frontLayerRef}
-      >
-        <div className={clsx(classes.headerBox, extraClasses.headerBox)}>
-          {headerText}
-          {isMobile && (
-            <IconButton
-              aria-label=''
-              classes={{ root: classes.iconDrop }}
-              onClick={handleOnClick}
-            >
-              {frontLayerHeight === layerHeight ? <DropDown /> : <DropUp />}
-            </IconButton>
+    useEffect(() => {
+      if (isMobile && frontLayerRef.current && isFirstTime) {
+        const contentHeight = frontLayerRef.current.clientHeight
+
+        setNewHeight(contentHeight)
+        setIsFirstTime(false)
+      }
+
+      if (
+        !isMobile &&
+        frontLayerRef.current &&
+        frontLayerRef.current.clientHeight === layerHeight
+      ) {
+        setNewHeight()
+        setIsFirstTime(true)
+      }
+    }, [isMobile, frontLayerRef])
+
+    useEffect(() => {
+      setNewHeight(layerHeight)
+    }, [layerHeight])
+
+    return (
+      <div className={clsx(className, rootClasses.root, extraClasses.root)}>
+        <div
+          className={clsx(
+            classes.backLayer,
+            transaction ? classes.backlayerTransition : null,
+            extraClasses.backLayer
           )}
+          style={{
+            height: frontLayerHeight
+          }}
+        >
+          {backLayer}
         </div>
-        <div className={classes.contentWrapper}>
-          <div className={classes.frontLayerContent}>{frontLayer}</div>
-        </div>
-      </Paper>
-    </div>
-  )
-})
+        <Paper
+          className={clsx(classes.frontLayer, extraClasses.frontLayer)}
+          ref={frontLayerRef}
+        >
+          <div className={clsx(classes.headerBox, extraClasses.headerBox)}>
+            {headerText}
+            {isMobile && !isStaticPage && (
+              <IconButton
+                aria-label=""
+                classes={{ root: classes.iconDrop }}
+                onClick={handleOnClick}
+              >
+                {frontLayerHeight === layerHeight ? <DropDown /> : <DropUp />}
+              </IconButton>
+            )}
+          </div>
+          <div className={classes.contentWrapper}>
+            <div className={classes.frontLayerContent}>{frontLayer}</div>
+          </div>
+        </Paper>
+      </div>
+    )
+  }
+)
 
 Backdrop.defaultProps = {
   layerHeight: 56,
@@ -186,7 +191,7 @@ Backdrop.defaultProps = {
   classes: {},
   headerText: <span>Settings</span>,
   backgroundColor: '#00bace',
-  useSecondaryPage: false
+  isStaticPage: false
 }
 
 Backdrop.propTypes = {
@@ -197,7 +202,7 @@ Backdrop.propTypes = {
   classes: PropTypes.objectOf(PropTypes.any),
   headerText: PropTypes.node,
   backgroundColor: PropTypes.string,
-  useSecondaryPage: PropTypes.bool
+  isStaticPage: PropTypes.bool
 }
 
 export default Backdrop
