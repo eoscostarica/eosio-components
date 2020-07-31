@@ -44,11 +44,11 @@ export const VisualCertificateWrapper = () => {
 
   if (loading)
     return (
-      <Box mt={5} width='100%'>
-        <Typography variant='h5' align='center'>
+      <Box mt={5} width="100%">
+        <Typography variant="h5" align="center">
           {'Loading transaction info...'.toUpperCase()}
         </Typography>
-        <LinearProgress color='secondary' />
+        <LinearProgress color="secondary" />
       </Box>
     )
 
@@ -56,8 +56,25 @@ export const VisualCertificateWrapper = () => {
     <Grid item xs={12}>
       <VisualCertificate
         txData={txData}
+        messages={{
+          success: 'Transacción verificada correctamente',
+          error: 'No se pudo verificar la existencia de la transacción'
+        }}
+        title="Detalles de la transacción"
+        fileText="Archivo"
+        accountText="Usuario"
+        lastModifiedText="Última modificación"
+        verifyText="Verificar"
+        verifying="Verificando"
+        blockNumText="# block"
+        transactionIdText="ID transacción"
+        queryTimeText="Tiempo de consulta"
+        contractAccountText="Cuenta del contrato"
+        seeInExplorerText="Ver en explorador"
         handleClose={handleClose}
         open={open}
+        closeText="Cerrar"
+        chainUrl="https://jungle3.bloks.io/transaction/"
       />
     </Grid>
   )

@@ -27,11 +27,29 @@ const MessagesBox = styled(Paper)({
   padding: '3%'
 })
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction='up' ref={ref} {...props} />
+const Transition = React.forwardRef((props, ref) => {
+  return <Slide direction="up" ref={ref} {...props} />
 })
 
-const VisualCertificate = ({ open, handleClose, txData }) => {
+const VisualCertificate = ({
+  open,
+  handleClose,
+  txData,
+  messages,
+  title,
+  fileText,
+  accountText,
+  lastModifiedText,
+  verifyText,
+  verifyingText,
+  blockNumText,
+  transactionIdText,
+  queryTimeText,
+  contractAccountText,
+  seeInExplorerText,
+  closeText,
+  chainUrl
+}) => {
   const [verifying, setVerifying] = useState(false)
   const [verificationDetails, setVerificationDetails] = useState()
 
@@ -41,7 +59,7 @@ const VisualCertificate = ({ open, handleClose, txData }) => {
       .history_get_transaction(tx)
       .then((x) => {
         setVerificationDetails({
-          content: `Transacción ${tx} verificada correctamente`,
+          content: messages.success,
           severity: 'success',
           block_num: x.block_num,
           id: x.id,
@@ -51,7 +69,7 @@ const VisualCertificate = ({ open, handleClose, txData }) => {
       })
       .catch(() => {
         setVerificationDetails({
-          content: `No se pudo verificar la existencia de la transacción ${tx}`,
+          content: messages.error,
           severity: 'error'
         })
       })
@@ -62,24 +80,25 @@ const VisualCertificate = ({ open, handleClose, txData }) => {
     <Dialog
       fullWidth={true}
       maxWidth={'md'}
+      style={{ overflowY: 'auto' }}
       open={open}
       TransitionComponent={Transition}
       keepMounted
       onClose={handleClose}
-      aria-labelledby='alert-dialog-slide-title'
-      aria-describedby='alert-dialog-slide-description'
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle>Detalles de la transacción</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <StyledDialogContent>
-        <Box display='flex' flexDirection='column' justifyContent='start'>
+        <Box display="flex" flexDirection="column" justifyContent="start">
           <Typography>
-            <strong>Título:</strong> {txData.file}
+            <strong>{fileText}:</strong> {txData.file}
           </Typography>
           <Typography>
-            <strong>Usuario:</strong> {txData.account}
+            <strong>{accountText}:</strong> {txData.account}
           </Typography>
           <Typography>
-            <strong>Última modificación:</strong> {txData.lastModified}
+            <strong>{lastModifiedText}:</strong> {txData.lastModified}
           </Typography>
           <Typography>
             <strong>Hash: </strong>
@@ -89,15 +108,14 @@ const VisualCertificate = ({ open, handleClose, txData }) => {
           </Typography>
         </Box>
         <br />
-        <Box display='flex' justifyContent='center' flexDirection='row'>
+        <Box display="flex" justifyContent="center" flexDirection="row">
           <Button
             onClick={() => verifyTransaction(txData.tx)}
-            variant='contained'
-            color='primary'
-            // disabled={messages.length > 0 && messages.length < 6}
+            variant="contained"
+            color="primary"
             endIcon={<FindInPageIcon />}
           >
-            {verifying ? 'Verificando' : 'Verificar'}
+            {verifying ? verifyingText : verifyText}
             <>
               {verifying && (
                 <CircularProgress style={{ color: 'white' }} size={24} />
@@ -109,7 +127,7 @@ const VisualCertificate = ({ open, handleClose, txData }) => {
         {verificationDetails && (
           <Alert
             style={{ backgroundColor: 'green', color: 'white' }}
-            severity='success'
+            severity="success"
           >
             {verificationDetails.content}
           </Alert>
@@ -118,44 +136,44 @@ const VisualCertificate = ({ open, handleClose, txData }) => {
         {verificationDetails && verificationDetails.severity === 'success' && (
           <MessagesBox elevation={3}>
             <Typography>
-              <strong># bloque: </strong> {verificationDetails.block_num}
+              <strong>{blockNumText}: </strong> {verificationDetails.block_num}
             </Typography>
             <Typography>
-              <strong>ID transacción: </strong> {verificationDetails.id}
+              <strong>{transactionIdText}: </strong> {verificationDetails.id}
             </Typography>
             <Typography>
-              <strong>Tiempo de consulta: </strong>
-              {verificationDetails.query_time} milisegundos
+              <strong>{queryTimeText}: </strong>
+              {verificationDetails.query_time} ms
             </Typography>
             <Typography>
-              <strong>Cuenta del contrato: </strong>
+              <strong>{contractAccountText}: </strong>
               {verificationDetails.contract_account}
             </Typography>
             <Box
-              display='flex'
-              flexDirection='row'
-              justifyContent='flex-end'
-              alignContent='flex-end'
+              display="flex"
+              flexDirection="row"
+              justifyContent="flex-end"
+              alignContent="flex-end"
             >
-              <Button variant='outlined' disableElevation>
+              <Button variant="outlined" disableElevation>
                 <Link
-                  href={`https://jungle3.bloks.io/transaction/${verificationDetails.id}`}
-                  target='_blank'
+                  href={`${chainUrl}${verificationDetails.id}`}
+                  target="_blank"
                 >
                   {' '}
-                  Ver en explorador{' '}
+                  {seeInExplorerText}
                 </Link>
               </Button>
             </Box>
           </MessagesBox>
         )}
         {verificationDetails && verificationDetails.severity === 'error' && (
-          <Alert severity='error'>{verificationDetails.content}</Alert>
+          <Alert severity="error">{verificationDetails.content}</Alert>
         )}
       </StyledDialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color='primary'>
-          Cerrar
+        <Button onClick={handleClose} color="primary">
+          {closeText}
         </Button>
       </DialogActions>
     </Dialog>
@@ -165,7 +183,21 @@ const VisualCertificate = ({ open, handleClose, txData }) => {
 VisualCertificate.propTypes = {
   open: PropTypes.bool,
   handleCose: PropTypes.func,
-  txData: PropTypes.object
+  txData: PropTypes.object,
+  messages: PropTypes.object,
+  title: PropTypes.string,
+  fileText: PropTypes.string,
+  accountText: PropTypes.string,
+  lastModifiedText: PropTypes.string,
+  verifyText: PropTypes.string,
+  verifyingText: PropTypes.string,
+  blockNumText: PropTypes.string,
+  transactionIdText: PropTypes.string,
+  queryTimeText: PropTypes.string,
+  contractAccountText: PropTypes.string,
+  seeInExplorerText: PropTypes.string,
+  closeText: PropTypes.string,
+  chainUrl: PropTypes.string
 }
 
 export default VisualCertificate
