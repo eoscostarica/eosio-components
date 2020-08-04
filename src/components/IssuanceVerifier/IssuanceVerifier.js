@@ -1,0 +1,3 @@
+const IssuanceVerifier = ({}) => {
+  ;<Dialog></Dialog>
+}
