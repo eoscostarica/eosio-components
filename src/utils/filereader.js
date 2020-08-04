@@ -10,7 +10,9 @@ export const parseFile = (file, callback, progress) => {
       progress((offset / fileSize) * 100)
       callback(evt.target.result)
     } else return callback(new Error('Ha ocurrido un error leyendo el archivo'))
+
     if (offset >= fileSize) return callback(true)
+
     chunkReaderBlock(offset, chunkSize, file)
   }
 

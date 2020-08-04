@@ -120,27 +120,19 @@ const DropzoneHash = ({
 }
 
 DropzoneHash.propTypes = {
-  useModal: PropTypes.bool,
   handleOnDropFile: PropTypes.func,
-  dropZoneButtonText: PropTypes.string,
-  dropZoneText: PropTypes.string,
   dropZoneDialogText: PropTypes.string,
   dropZoneDialogButton: PropTypes.string,
   cancelButtonText: PropTypes.string,
-  sendButtonText: PropTypes.string,
-  customStyle: PropTypes.any
+  sendButtonText: PropTypes.string
 }
 
 DropzoneHash.defaultProps = {
-  useModal: true,
   handleOnDropFile: () => {},
-  dropZoneButtonText: 'Buscar Archivo',
-  dropZoneText: 'Arrastrá y Soltá el Archivo Aquí',
   dropZoneDialogText: 'Selección de Archivo',
   dropZoneDialogButton: 'Abrir dialogo',
   cancelButtonText: 'Cancelar',
-  sendButtonText: 'Enviar',
-  customStyle: {}
+  sendButtonText: 'Enviar'
 }
 
 export default DropzoneHash
