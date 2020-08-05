@@ -13,6 +13,7 @@ const DetailsContainer = styled(withTheme(Container))((props) => ({
   flexDirection: 'column',
   justifyContent: 'space-evenly',
   padding: '5px',
+  minHeight: '150px',
   background: props.theme.palette.background.lightgray
 }))
 
@@ -53,7 +54,7 @@ const FileComponent = ({
         <DescriptionIcon />
         <FileDetailsHeader>
           {filename}{' '}
-          <StyledButton onClick={onClick} variant='contained'>
+          <StyledButton onClick={onClick} variant="contained">
             <DeleteIcon />
           </StyledButton>
         </FileDetailsHeader>
