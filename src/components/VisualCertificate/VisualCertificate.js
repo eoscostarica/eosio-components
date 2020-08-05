@@ -78,8 +78,8 @@ const VisualCertificate = ({
 
   return (
     <Dialog
-      fullWidth={true}
-      maxWidth={'md'}
+      fullWidth
+      maxWidth="md"
       style={{ overflowY: 'auto' }}
       open={open}
       TransitionComponent={Transition}
