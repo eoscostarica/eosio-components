@@ -2,7 +2,6 @@ import React, {
   useState,
   useCallback,
   useEffect,
-  useRef,
   forwardRef,
   useImperativeHandle
 } from 'react'
@@ -65,7 +64,9 @@ const useStyles = makeStyles((theme) => ({
   },
   iconDrop: {
     fontSize: 25,
-    padding: 0
+    padding: 0,
+    width: 35,
+    height: 35
   },
   secondaryPage: {
     width: '100%',
@@ -78,26 +79,31 @@ const Backdrop = forwardRef(
     {
       frontLayer,
       backLayer,
-      layerHeight,
+      layerHeightUp,
       classes: extraClasses,
       className,
       headerText,
       backgroundColor,
-      isStaticPage
+      isStaticPage,
+      layerHeightDown
     },
     ref
   ) => {
     const theme = useTheme()
     const classes = useStyles()
     const rootClasses = useRootStyles({ color: backgroundColor })
-    const frontLayerRef = useRef()
     const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
-    const [frontLayerHeight, setFrontLayerHeight] = useState(layerHeight)
+    const [frontLayerHeight, setFrontLayerHeight] = useState(layerHeightUp)
     const [transaction, setTransaction] = useState(false)
-    const [isFirstTime, setIsFirstTime] = useState(true)
+    const [isArrowUp, setIsArrowUp] = useState(false)
 
     const handleOnClick = () => {
-      const contentHeight = frontLayerRef.current.clientHeight
+      const height = window.innerHeight
+      const contentHeight = isArrowUp
+        ? height - layerHeightDown
+        : height - (height - layerHeightUp)
+
+      setIsArrowUp(!isArrowUp)
       setNewHeight(contentHeight)
     }
 
@@ -109,40 +115,31 @@ const Backdrop = forwardRef(
       }
     }))
 
-    const setNewHeight = useCallback(
-      async (value) => {
-        const snappedY = value || layerHeight
-
-        setTransaction(true)
-        setFrontLayerHeight(snappedY)
-        setTimeout(() => {
-          setTransaction(false)
-        }, TRANSITION_DURATION)
-      },
-      [layerHeight]
-    )
+    const setNewHeight = useCallback(async (value) => {
+      setTransaction(true)
+      setFrontLayerHeight(value)
+      setTimeout(() => {
+        setTransaction(false)
+      }, TRANSITION_DURATION)
+    }, [])
 
     useEffect(() => {
-      if (isMobile && frontLayerRef.current && isFirstTime) {
-        const contentHeight = frontLayerRef.current.clientHeight
+      const height = window.innerHeight
 
-        setNewHeight(contentHeight)
-        setIsFirstTime(false)
+      if (isStaticPage) {
+        setNewHeight(height - (height - layerHeightUp))
+
+        return
       }
 
-      if (
-        !isMobile &&
-        frontLayerRef.current &&
-        frontLayerRef.current.clientHeight === layerHeight
-      ) {
-        setNewHeight()
-        setIsFirstTime(true)
-      }
-    }, [isMobile, frontLayerRef])
+      if (isMobile) {
+        setNewHeight(height - layerHeightDown)
 
-    useEffect(() => {
-      setNewHeight(layerHeight)
-    }, [layerHeight])
+        return
+      }
+
+      if (!isMobile) setNewHeight(height - (height - layerHeightUp))
+    }, [isMobile, layerHeightDown, layerHeightUp, setNewHeight, isStaticPage])
 
     return (
       <div className={clsx(className, rootClasses.root, extraClasses.root)}>
@@ -158,10 +155,7 @@ const Backdrop = forwardRef(
         >
           {backLayer}
         </div>
-        <Paper
-          className={clsx(classes.frontLayer, extraClasses.frontLayer)}
-          ref={frontLayerRef}
-        >
+        <Paper className={clsx(classes.frontLayer, extraClasses.frontLayer)}>
           <div className={clsx(classes.headerBox, extraClasses.headerBox)}>
             {headerText}
             {isMobile && !isStaticPage && (
@@ -170,7 +164,7 @@ const Backdrop = forwardRef(
                 classes={{ root: classes.iconDrop }}
                 onClick={handleOnClick}
               >
-                {frontLayerHeight === layerHeight ? <DropDown /> : <DropUp />}
+                {isArrowUp ? <DropDown /> : <DropUp />}
               </IconButton>
             )}
           </div>
@@ -184,7 +178,8 @@ const Backdrop = forwardRef(
 )
 
 Backdrop.defaultProps = {
-  layerHeight: 56,
+  layerHeightUp: 200,
+  layerHeightDown: 51,
   frontLayer: null,
   backLayer: null,
   className: null,
@@ -195,7 +190,8 @@ Backdrop.defaultProps = {
 }
 
 Backdrop.propTypes = {
-  layerHeight: PropTypes.number,
+  layerHeightUp: PropTypes.number,
+  layerHeightDown: PropTypes.number,
   frontLayer: PropTypes.node,
   backLayer: PropTypes.node,
   className: PropTypes.string,

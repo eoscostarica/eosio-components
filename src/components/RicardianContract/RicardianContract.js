@@ -60,13 +60,16 @@ const RicardianContract = ({
   actionName,
   showClauses,
   loadingMessage,
-  LinearProgressColor
+  LinearProgressColor,
+  errorMessage,
+  LinearProgressOverrideClasses
 }) => {
   const classes = useStyles()
   const [hash, setHash] = useState('')
   const [action, setAction] = useState([])
   const [clauses, setClauses] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState({ isError: false, message: '' })
 
   const eosApi = useCallback(
     EosApi({
@@ -115,39 +118,48 @@ const RicardianContract = ({
 
   useEffect(() => {
     const getData = async () => {
-      const { abi = {} } = await eosApi.getAbi(contractName || name)
-      const { code_hash: hash = '' } = await eosApi.getCodeHash(
-        contractName || name
-      )
-
-      if (!abi || !abi.actions.length) return
-
-      let actions = abi.actions.filter(
-        ({ ricardian_contract: ricardianContract }) => !!ricardianContract
-      )
-
-      if (actionName) {
-        actions = actions.filter(({ name }) => name === actionName)
-      }
-
-      if (actions.lenght < 1) return
-
-      actions = actions.map(({ ricardian_contract: ricardianContract }) =>
-        formatRicardianClause(ricardianContract)
-      )
-
-      let clauses = []
-
-      if (showClauses) {
-        clauses = abi.ricardian_clauses.map(({ body }) =>
-          formatRicardianClause(body)
+      try {
+        const { abi = {} } = await eosApi.getAbi(contractName || name)
+        const { code_hash: hash = '' } = await eosApi.getCodeHash(
+          contractName || name
         )
-      }
 
-      setAction(actions)
-      setClauses(clauses)
-      setHash(hash)
-      setLoading(false)
+        if (!abi || !abi.actions.length) return
+
+        let actions = abi.actions.filter(
+          ({ ricardian_contract: ricardianContract }) => !!ricardianContract
+        )
+
+        if (actionName) {
+          actions = actions.filter(({ name }) => name === actionName)
+        }
+
+        if (actions.lenght < 1) return
+
+        actions = actions.map(({ ricardian_contract: ricardianContract }) =>
+          formatRicardianClause(ricardianContract)
+        )
+
+        let clauses = []
+
+        if (showClauses) {
+          clauses = abi.ricardian_clauses.map(({ body }) =>
+            formatRicardianClause(body)
+          )
+        }
+
+        setAction(actions)
+        setClauses(clauses)
+        setHash(hash)
+        setLoading(false)
+        setError({ isError: false, message: '' })
+      } catch (error) {
+        setLoading(false)
+        setError({
+          isError: true,
+          message: errorMessage
+        })
+      }
     }
 
     setLoading(true)
@@ -158,8 +170,17 @@ const RicardianContract = ({
     contractName,
     actionName,
     showClauses,
-    formatRicardianClause
+    formatRicardianClause,
+    errorMessage
   ])
+
+  if (error.isError) {
+    return (
+      <Box className={classes.ricardianContractContainer}>
+        <Typography variant="h3">{error.message}</Typography>
+      </Box>
+    )
+  }
 
   if (loading) {
     return (
@@ -168,7 +189,10 @@ const RicardianContract = ({
           <Typography variant="h5" align="center">
             {(loadingMessage || '').toUpperCase()}
           </Typography>
-          <LinearProgress color={LinearProgressColor} />
+          <LinearProgress
+            color={LinearProgressColor}
+            classes={LinearProgressOverrideClasses}
+          />
         </Box>
       </Box>
     )
@@ -219,7 +243,9 @@ RicardianContract.propTypes = {
   name: PropTypes.string,
   url: PropTypes.string,
   loadingMessage: PropTypes.string,
-  LinearProgressColor: PropTypes.string
+  LinearProgressColor: PropTypes.string,
+  errorMessage: PropTypes.string,
+  LinearProgressOverrideClasses: PropTypes.object
 }
 
 RicardianContract.defaultProps = {
@@ -227,7 +253,9 @@ RicardianContract.defaultProps = {
   url: 'https://bloks.io',
   showClauses: true,
   loadingMessage: 'Fetching ricardian clauses from blockchain',
-  LinearProgressColor: 'secondary'
+  LinearProgressColor: 'secondary',
+  errorMessage: 'Error getting Ricardian Contract Data',
+  LinearProgressOverrideClasses: {}
 }
 
 export default RicardianContract
