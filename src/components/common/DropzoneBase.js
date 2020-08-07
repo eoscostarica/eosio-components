@@ -90,7 +90,7 @@ const DropzoneBase = ({
   }
 
   return (
-    <>
+    <React.Fragment>
       {!progress ? (
         <DropzoneBox {...getRootProps()}>
           <input
@@ -120,7 +120,7 @@ const DropzoneBase = ({
           {message.content}
         </Alert>
       </Snackbar>
-    </>
+    </React.Fragment>
   )
 }
 
