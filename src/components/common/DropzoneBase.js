@@ -126,7 +126,6 @@ const DropzoneBase = ({
 
 DropzoneBase.propTypes = {
   fileChange: PropTypes.func.isRequired,
-  file: PropTypes.object.isRequired,
   progressChange: PropTypes.func.isRequired,
   dropzoneCaption: PropTypes.string,
   dropzoneButtonText: PropTypes.string,
