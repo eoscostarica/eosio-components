@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/styles'
-import { action } from '@storybook/addon-actions'
 
 import DropzoneHash from '../components/DropzoneHash'
 
@@ -17,11 +16,13 @@ export default {
 }
 
 export const dropzone = () => {
+  const [file, setFile] = useState(null)
   const classes = useStyles()
 
   return (
     <DropzoneHash
-      handleOnDropFile={action('File')}
+      file={file}
+      handleOnDropFile={(resultFile) => setFile(resultFile)}
       customStyle={classes.dropBox}
     />
   )

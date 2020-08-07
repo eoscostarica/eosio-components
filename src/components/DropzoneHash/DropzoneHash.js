@@ -3,7 +3,6 @@ import Card from '@material-ui/core/Card'
 import PropTypes from 'prop-types'
 import CardContent from '@material-ui/core/CardContent'
 import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Box from '@material-ui/core/Box'
 import { makeStyles } from '@material-ui/styles'
@@ -32,13 +31,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const DropzoneHash = ({ handleOnDropFile, sendButtonText, handleSend }) => {
-  const [file, setFile] = useState(null)
+const DropzoneHash = ({ file, handleOnDropFile }) => {
   const [progress, setProgress] = useState(0)
   const classes = useStyles()
 
   const handleFileDeletion = () => {
-    setFile(null)
+    file(null)
     handleOnDropFile(null)
   }
   return (
@@ -54,7 +52,7 @@ const DropzoneHash = ({ handleOnDropFile, sendButtonText, handleSend }) => {
             <Box className={classes.dropzoneBox}>
               {file === null ? (
                 <DropzoneBase
-                  fileChange={(f) => setFile(f)}
+                  fileChange={(f) => handleOnDropFile(f)}
                   progressChange={(p) => setProgress(p)}
                 />
               ) : progress < 100 ? (
@@ -75,15 +73,6 @@ const DropzoneHash = ({ handleOnDropFile, sendButtonText, handleSend }) => {
                     {file.name}
                   </FileComponent>
                   <br />
-                  <Box
-                    display="flex"
-                    flexDirection="row"
-                    justifyContent="flex-end"
-                  >
-                    <Button onClick={handleSend} color="primary">
-                      {sendButtonText}
-                    </Button>
-                  </Box>
                 </Box>
               )}
             </Box>
@@ -97,7 +86,7 @@ const DropzoneHash = ({ handleOnDropFile, sendButtonText, handleSend }) => {
 DropzoneHash.propTypes = {
   handleOnDropFile: PropTypes.func,
   sendButtonText: PropTypes.string,
-  handleSend: PropTypes.func
+  file: PropTypes.object
 }
 
 DropzoneHash.defaultProps = {

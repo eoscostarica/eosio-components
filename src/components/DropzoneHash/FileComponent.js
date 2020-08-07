@@ -12,7 +12,7 @@ const DetailsContainer = styled(withTheme(Container))((props) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-evenly',
-  padding: '5px',
+  padding: '3%',
   minHeight: '150px',
   background: props.theme.palette.background.lightgray
 }))
