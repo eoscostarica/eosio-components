@@ -16,13 +16,13 @@ const SHA256_REGEX_VALIDATOR = /\b[A-Fa-f0-9]{64}\b/
 const DropzoneBox = styled(Box)({
   width: '100%',
   height: '100%',
-  backgroundColor: 'lightgray',
+  backgroundColor: '#efefef',
   cursor: 'pointer',
   display: 'flex',
   maxWidth: 620,
   flexDirection: 'column',
   justifyContent: 'space-evenly',
-  border: 'dashed 2px #212121',
+  border: 'dashed 1px #212121',
   borderRadius: 2,
   alignContent: 'center',
   textAlign: 'center',
@@ -36,7 +36,7 @@ const DropzoneBox = styled(Box)({
 const DropzoneButton = styled(Button)({
   width: '236px',
   height: '36px',
-  border: '.5px solid lightgray',
+  border: '.5px solid #efefwf',
   borderRadius: '2px',
   marginLeft: 'auto',
   marginRight: 'auto'
@@ -90,7 +90,7 @@ const DropzoneBase = ({
   }
 
   return (
-    <>
+    <React.Fragment>
       {!progress ? (
         <DropzoneBox {...getRootProps()}>
           <input
@@ -102,7 +102,9 @@ const DropzoneBase = ({
           <Typography>
             <VerticalAlignTopIcon />
           </Typography>
-          <Typography>{dropzoneCaption}</Typography>
+          <Typography style={{ textTransform: 'none' }}>
+            {dropzoneCaption}
+          </Typography>
           <DropzoneButton>{dropzoneButtonText}</DropzoneButton>
         </DropzoneBox>
       ) : (
@@ -120,7 +122,7 @@ const DropzoneBase = ({
           {message.content}
         </Alert>
       </Snackbar>
-    </>
+    </React.Fragment>
   )
 }
 
@@ -133,7 +135,7 @@ DropzoneBase.propTypes = {
 }
 
 DropzoneBase.defaultProps = {
-  dropzoneCaption: 'Arrastrá y Soltá el Archivo Aquí',
+  dropzoneCaption: 'Arrastra y suelta el archivo aquí',
   dropzoneButtonText: 'Buscar Archivo',
   readErrorMessage: 'Ha ocurrido un error al leer el archivo'
 }
