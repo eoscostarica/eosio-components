@@ -31,12 +31,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const DropzoneHash = ({ file, handleOnDropFile }) => {
+const DropzoneHash = ({ file, handleOnDropFile, deleteFile }) => {
   const [progress, setProgress] = useState(0)
   const classes = useStyles()
 
   const handleFileDeletion = () => {
-    file(null)
+    deleteFile()
     handleOnDropFile(null)
   }
   return (
@@ -86,7 +86,8 @@ const DropzoneHash = ({ file, handleOnDropFile }) => {
 DropzoneHash.propTypes = {
   handleOnDropFile: PropTypes.func,
   sendButtonText: PropTypes.string,
-  file: PropTypes.object
+  file: PropTypes.object,
+  deleteFile: PropTypes.func
 }
 
 DropzoneHash.defaultProps = {

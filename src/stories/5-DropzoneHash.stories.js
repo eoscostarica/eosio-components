@@ -22,6 +22,7 @@ export const dropzone = () => {
   return (
     <DropzoneHash
       file={file}
+      deleteFile={() => setFile(null)}
       handleOnDropFile={(resultFile) => setFile(resultFile)}
       customStyle={classes.dropBox}
     />
