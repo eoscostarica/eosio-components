@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import CardContent from '@material-ui/core/CardContent'
 import Grid from '@material-ui/core/Grid'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import { makeStyles } from '@material-ui/styles'
 import DropzoneBase from '../common'
@@ -50,14 +51,27 @@ const DropzoneHash = ({ file, handleOnDropFile, deleteFile }) => {
             alignContent="center"
           >
             <Box className={classes.dropzoneBox}>
-              {file === null ? (
+              {file === null && (
                 <DropzoneBase
                   fileChange={(f) => handleOnDropFile(f)}
                   progressChange={(p) => setProgress(p)}
                 />
-              ) : progress < 100 ? (
-                <LinearProgress variant="determinate" value={progress} />
-              ) : (
+              )}
+              {progress > 0 && progress < 100 && (
+                <Box display="flex" alignItems="center">
+                  <Box width="100%" mr={1}>
+                    <LinearProgress variant="determinate" value={progress} />
+                  </Box>
+                  <Box minWidth={35}>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                    >{`${Math.round(progress)}%`}</Typography>
+                  </Box>
+                </Box>
+              )}
+
+              {file !== null && (
                 <Box
                   display="flex"
                   flexDirection="column"
