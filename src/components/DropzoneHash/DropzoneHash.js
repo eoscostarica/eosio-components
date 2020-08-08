@@ -11,8 +11,30 @@ import DropzoneBase from '../common'
 
 import FileComponent from './FileComponent'
 
+const useStyles = makeStyles((theme) => ({
+  papper: {
+    [theme.breakpoints.up('md')]: {
+      width: 660
+    },
+    height: 400,
+    backgroundColor: 'red',
+    margin: 'auto'
+  },
+  fullHeight: {
+    height: '100%'
+  },
+  dropzoneBox: {
+    height: '50vh',
+    display: 'flex',
+    justifyItems: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}))
+
 const DropzoneHash = ({ file, handleOnDropFile, deleteFile }) => {
   const [progress, setProgress] = useState(0)
+  const classes = useStyles()
 
   const handleFileDeletion = () => {
     deleteFile()
