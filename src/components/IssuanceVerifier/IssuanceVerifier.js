@@ -4,12 +4,18 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Alert from '@material-ui/lab/Alert'
 import PropTypes from 'prop-types'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import Link from '@material-ui/core/Link'
 import { rpc } from '../../api/eosjs-api'
 
 const IssuanceVerifier = ({
+  code,
+  scope,
+  table,
   hash,
   nodeLink,
-  verified,
+  errorMsg,
+  successMsg,
   verificationState,
   analyzeAnotherDoc,
   showInExplorer,
@@ -22,9 +28,9 @@ const IssuanceVerifier = ({
     const verifyTrxExistence = async () => {
       const { rows } = await rpc.get_table_rows({
         json: true,
-        code: 'notarioeoscr', // TODO: obtener por props
-        scope: 'notarioeoscr', // TODO: obtener por props
-        table: 'libro', // TODO: obtener por props
+        code: code,
+        scope: scope,
+        table: table,
         limit: 1,
         reverse: false,
         lower_bound: hash,
@@ -39,14 +45,14 @@ const IssuanceVerifier = ({
         setVerified({
           state: false,
           severity: 'error',
-          message: 'No se ha podido verificar la emisión de este documento' // TODO: obtener por props
+          message: errorMsg
         })
       else {
         setTx(txId)
         setVerified({
           state: true,
           severity: 'success',
-          message: 'Emisión de documento verificada' // TODO: obtener por props
+          message: successMsg
         })
       }
     }
@@ -65,7 +71,7 @@ const IssuanceVerifier = ({
             <Button
               onClick={(e) => {
                 e.preventDefault()
-                setFile(null)
+                //setFile(null)
                 setVerified(undefined)
               }}
               variant="contained"
@@ -97,15 +103,31 @@ const IssuanceVerifier = ({
   )
 }
 
-// TODO: agregar nuevos elementos a obtener por props
 IssuanceVerifier.propTypes = {
+  code: PropTypes.string.isRequired,
+  scope: PropTypes.string.isRequired,
+  table: PropTypes.string.isRequired,
   hash: PropTypes.string.isRequired,
-  nodeLink: PropTypes.string.isRequired,
-  verified: PropTypes.bool.isRequired,
-  verificationState: PropTypes.string.isRequired,
-  analyzeAnotherDoc: PropTypes.string.isRequired,
-  showInExplorer: PropTypes.string.isRequired,
-  verifyingDocState: PropTypes.string.isRequired
+  nodeLink: PropTypes.string,
+  errorMsg: PropTypes.string,
+  successMsg: PropTypes.string,
+  verificationState: PropTypes.string,
+  analyzeAnotherDoc: PropTypes.string,
+  showInExplorer: PropTypes.string,
+  verifyingDocState: PropTypes.string
+}
+
+IssuanceVerifier.defaultProps = {
+  code: 'notarioeoscr',
+  scope: 'notarioeoscr',
+  table: 'libro',
+  nodeLink: 'https://jungle3.bloks.io/transaction',
+  errorMsg: 'No se ha podido verificar la emisión de este documento',
+  successMsg: 'Emisión de documento verificada',
+  verificationState: 'Estado de verificación',
+  analyzeAnotherDoc: 'Analizar otro documento',
+  showInExplorer: 'Ver en explorador',
+  verifyingDocState: 'Verificando estado de documento...'
 }
 
 export default IssuanceVerifier
