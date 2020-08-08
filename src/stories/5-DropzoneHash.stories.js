@@ -24,7 +24,6 @@ export const dropzone = () => {
       file={file}
       deleteFile={() => setFile(null)}
       handleOnDropFile={(resultFile) => setFile(resultFile)}
-      customStyle={classes.dropBox}
     />
   )
 }
