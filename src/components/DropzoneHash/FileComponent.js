@@ -12,14 +12,15 @@ const DetailsContainer = styled(withTheme(Container))((props) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-evenly',
-  padding: '5px',
+  padding: '3%',
+  minHeight: '150px',
+  width: '100%',
   background: props.theme.palette.background.lightgray
 }))
 
 const FileDetails = styled(withTheme(Typography))((props) => ({
   color: props.theme.typography.caption.color,
-  fontSize: props.theme.typography.caption.fontSize,
-  overflowWrap: 'anywhere'
+  fontSize: props.theme.typography.caption.fontSize
 }))
 
 const FileDetailsHeader = styled(Typography)({
@@ -53,7 +54,7 @@ const FileComponent = ({
         <DescriptionIcon />
         <FileDetailsHeader>
           {filename}{' '}
-          <StyledButton onClick={onClick} variant='contained'>
+          <StyledButton onClick={onClick} variant="contained">
             <DeleteIcon />
           </StyledButton>
         </FileDetailsHeader>

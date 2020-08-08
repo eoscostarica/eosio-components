@@ -1,7 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/styles'
-import { action } from '@storybook/addon-actions'
-import Box from '@material-ui/core/Box'
 
 import DropzoneHash from '../components/DropzoneHash'
 
@@ -17,19 +15,16 @@ export default {
   component: DropzoneHash
 }
 
-export const DropzoneModal = () => (
-  <DropzoneHash useModal handleOnDropFile={action('File')} />
-)
 export const dropzone = () => {
+  const [file, setFile] = useState(null)
   const classes = useStyles()
 
   return (
-    <Box height={200}>
-      <DropzoneHash
-        useModal={false}
-        handleOnDropFile={action('File')}
-        customStyle={classes.dropBox}
-      />
-    </Box>
+    <DropzoneHash
+      file={file}
+      deleteFile={() => setFile(null)}
+      handleOnDropFile={(resultFile) => setFile(resultFile)}
+      customStyle={classes.dropBox}
+    />
   )
 }

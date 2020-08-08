@@ -1,32 +1,15 @@
-import React, { useState, forwardRef } from 'react'
+import React, { useState } from 'react'
 import Card from '@material-ui/core/Card'
 import PropTypes from 'prop-types'
-import clsx from 'clsx'
 import CardContent from '@material-ui/core/CardContent'
 import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import Box from '@material-ui/core/Box'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop'
-import Slide from '@material-ui/core/Slide'
-import { styled } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
 import { makeStyles } from '@material-ui/styles'
-import { useDropzone } from 'react-dropzone'
-import * as CryptoJS from 'crypto-js'
+import DropzoneBase from '../common'
 
-import { parseFile } from '../../utils/filereader'
 import FileComponent from './FileComponent'
-
-const Transition = forwardRef((props, ref) => {
-  return <Slide direction='up' ref={ref} {...props} />
-})
-
-const SHA256_REGEX_VALIDATOR = /\b[A-Fa-f0-9]{64}\b/
 
 const useStyles = makeStyles((theme) => ({
   papper: {
@@ -37,229 +20,93 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'red',
     margin: 'auto'
   },
-  dropzoneBox: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: theme.palette.background.lightgray,
-    cursor: 'pointer',
-    display: 'flex',
-    maxWidth: 620,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    border: 'dashed 2px #212121',
-    borderRadius: 2,
-    alignContent: 'center',
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    padding: '2%',
-    '&': {
-      textAlign: 'center'
-    }
-  },
   fullHeight: {
     height: '100%'
   },
-  modalBox: {
-    height: 300
+  dropzoneBox: {
+    height: '50vh',
+    display: 'flex',
+    justifyItems: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }))
 
-const DropzoneButton = styled(Button)({
-  width: '236px',
-  height: '36px',
-  border: '.5px solid lightgray',
-  borderRadius: '2px',
-  marginLeft: 'auto',
-  marginRight: 'auto'
-})
-
-const DropzoneHash = ({
-  useModal,
-  handleOnDropFile,
-  dropZoneButtonText,
-  dropZoneText,
-  dropZoneDialogText,
-  dropZoneDialogButton,
-  sendButtonText,
-  cancelButtonText,
-  customStyle
-}) => {
-  const [open, setOpen] = useState(false)
-  const [file, setFile] = useState(null)
-  const [stringReader] = useState([])
+const DropzoneHash = ({ file, handleOnDropFile, deleteFile }) => {
   const [progress, setProgress] = useState(0)
   const classes = useStyles()
-  const sha256 = CryptoJS.algo.SHA256.create()
-
-  const onDrop = (files) => {
-    setFile((file) => ({
-      ...file,
-      filename: files[0].name,
-      filesize: `${(files[0].size / (1024 * 1024)).toFixed(2)} MB`,
-      lastModifiedDate: `${files[0].lastModifiedDate}`
-    }))
-
-    parseFile(
-      files[0],
-      (r) => stringReader.push(String(r)),
-      (p) => setProgress(Math.trunc(p))
-    )
-    handleInputHashCreator()
-  }
-  const { getRootProps, getInputProps } = useDropzone({ onDrop })
-  const handleClickOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
-
-  const handleInputHashCreator = () => {
-    for (let index = 0; index < stringReader.length; index++) {
-      sha256.update(stringReader[index])
-    }
-
-    const result = sha256.finalize()
-    const isHasValid = SHA256_REGEX_VALIDATOR.test(result)
-
-    if (isHasValid) {
-      setFile((file) => {
-        const resultFile = { ...file, filehash: String(result) }
-        handleOnDropFile(resultFile)
-
-        return resultFile
-      })
-    } else {
-      setFile(null)
-      handleOnDropFile(null)
-    }
-  }
 
   const handleFileDeletion = () => {
-    setFile(null)
+    deleteFile()
     handleOnDropFile(null)
   }
-
-  if (useModal) {
-    return (
-      <Grid item xs={12}>
-        <Card>
-          <CardContent>
-            <CardContent>
-              <Button
-                variant='outlined'
-                color='primary'
-                onClick={handleClickOpen}
-              >
-                {dropZoneDialogButton}
-              </Button>
-              <Dialog
-                fullWidth
-                maxWidth='sm'
-                open={open}
-                TransitionComponent={Transition}
-                keepMounted
-                onClose={handleClose}
-                aria-labelledby='alert-dialog-slide-title'
-                aria-describedby='alert-dialog-slide-description'
-              >
-                <DialogTitle id='alert-dialog-slide-title'>
-                  {dropZoneDialogText}
-                </DialogTitle>
-                <DialogContent className={classes.modalBox} {...getRootProps()}>
-                  {file === null ? (
-                    <div className={classes.dropzoneBox}>
-                      <input
-                        multiple='false'
-                        onClick={(e) => e.preventDefault()}
-                        {...getInputProps()}
-                      />
-                      <Typography>
-                        <VerticalAlignTopIcon />
-                      </Typography>
-                      <Typography>{dropZoneText}</Typography>
-                      <DropzoneButton>{dropZoneButtonText}</DropzoneButton>
-                    </div>
-                  ) : progress < 100 ? (
-                    <LinearProgress variant='determinate' value={progress} />
-                  ) : (
-                    <FileComponent
-                      onClick={handleFileDeletion}
-                      filehash={file.filehash}
-                      filesize={file.filesize}
-                      filename={file.filename}
-                      lastModifiedDate={file.lastModifiedDate}
-                    >
-                      {file.name}
-                    </FileComponent>
-                  )}
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose} color='primary'>
-                    {cancelButtonText}
-                  </Button>
-                  <Button onClick={handleClose} color='primary'>
-                    {sendButtonText}
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </CardContent>
-          </CardContent>
-        </Card>
-      </Grid>
-    )
-  }
-
   return (
-    <Box className={clsx(classes.fullHeight, customStyle)} {...getRootProps()}>
-      {file === null ? (
-        <div className={classes.dropzoneBox}>
-          <input
-            multiple='false'
-            onClick={(e) => e.preventDefault()}
-            {...getInputProps()}
-          />
-          <Typography>
-            <VerticalAlignTopIcon />
-          </Typography>
-          <Typography>{dropZoneText}</Typography>
-          <DropzoneButton>{dropZoneButtonText}</DropzoneButton>
-        </div>
-      ) : progress < 100 ? (
-        <LinearProgress variant='determinate' value={progress} />
-      ) : (
-        <FileComponent
-          onClick={handleFileDeletion}
-          filehash={file.filehash}
-          filesize={file.filesize}
-          filename={file.filename}
-          lastModifiedDate={file.lastModifiedDate}
-        >
-          {file.name}
-        </FileComponent>
-      )}
-    </Box>
+    <Grid item xs={12}>
+      <Card>
+        <CardContent>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignContent="center"
+          >
+            <Box className={classes.dropzoneBox}>
+              {file === null && (
+                <DropzoneBase
+                  fileChange={(f) => handleOnDropFile(f)}
+                  progressChange={(p) => setProgress(p)}
+                />
+              )}
+              {progress > 0 && progress < 100 && (
+                <Box display="flex" alignItems="center">
+                  <Box width="100%" mr={1}>
+                    <LinearProgress variant="determinate" value={progress} />
+                  </Box>
+                  <Box minWidth={35}>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                    >{`${Math.round(progress)}%`}</Typography>
+                  </Box>
+                </Box>
+              )}
+
+              {file !== null && (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                >
+                  <FileComponent
+                    onClick={handleFileDeletion}
+                    filehash={file.filehash}
+                    filesize={file.filesize}
+                    filename={file.filename}
+                    lastModifiedDate={file.lastModifiedDate}
+                  >
+                    {file.name}
+                  </FileComponent>
+                  <br />
+                </Box>
+              )}
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
+    </Grid>
   )
 }
 
 DropzoneHash.propTypes = {
-  useModal: PropTypes.bool,
   handleOnDropFile: PropTypes.func,
-  dropZoneButtonText: PropTypes.string,
-  dropZoneText: PropTypes.string,
-  dropZoneDialogText: PropTypes.string,
-  dropZoneDialogButton: PropTypes.string,
-  cancelButtonText: PropTypes.string,
   sendButtonText: PropTypes.string,
-  customStyle: PropTypes.any
+  file: PropTypes.object,
+  deleteFile: PropTypes.func
 }
 
 DropzoneHash.defaultProps = {
-  useModal: true,
   handleOnDropFile: () => {},
-  dropZoneButtonText: 'Buscar Archivo',
-  dropZoneText: 'Arrastrá y Soltá el Archivo Aquí',
-  dropZoneDialogText: 'Selección de Archivo',
-  dropZoneDialogButton: 'Abrir dialogo',
-  cancelButtonText: 'Cancelar',
-  sendButtonText: 'Enviar',
-  customStyle: {}
+  sendButtonText: 'Enviar'
 }
 
 export default DropzoneHash
