@@ -64,7 +64,7 @@ const IssuanceVerifier = ({
   }, [file])
 
   return (
-    <React.Fragment>
+    <>
       {showDropzone && (
         <DropzoneHash
           file={file}
@@ -110,7 +110,7 @@ const IssuanceVerifier = ({
           </Box>
         </Box>
       )}
-    </React.Fragment>
+    </>
   )
 }
 
