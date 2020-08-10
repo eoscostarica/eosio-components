@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Alert from '@material-ui/lab/Alert'
 import PropTypes from 'prop-types'
 import Link from '@material-ui/core/Link'
+
 import { rpc } from '../../api/eosjs-api'
 import DropzoneHash from '../DropzoneHash/DropzoneHash'
 
@@ -97,7 +98,6 @@ const IssuanceVerifier = ({
             </Button>
             {verified.severity === 'success' && (
               <Button color="secondary">
-                {' '}
                 <Link
                   href={`${nodeLink}/${tx}`}
                   target="_blank"
