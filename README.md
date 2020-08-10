@@ -27,14 +27,18 @@ $ npm install eoscr-components --save
 
 ## Components
 
-|                         | Description                              | Tag                   |
-| ----------------------- | ---------------------------------------- | --------------------- |
-| Create Account          | Form to create a new account             | `<CreateAccount />`   |
-| Get Account Information | Get an account information               | `<AccountInfo />`     |
-| Input Hash              | Input Text to create or validate HASH256 | `<InputHash />`       |
-| Dropzone Hash           | Drop zone to handle files                | `<DropzoneHash />`    |
-| Backdrop                | Backdrop                                 | `<Backdrop />`        |
-| BPJsonGenerator         | BPJsonGenerator                          | `<BPJsonGenerator />` |
+|                               | Description                                                                                          | Tag                               |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------- |
+| Create Account                | Form to create a new account                                                                         | `<CreateAccount />`               |
+| Get Account Information       | Get an account information                                                                           | `<AccountInfo />`                 |
+| Input Hash                    | Input Text to create or validate HASH256                                                             | `<InputHash />`                   |
+| Dropzone Hash                 | Drop zone to handle files                                                                            | `<DropzoneHash />`                |
+| Backdrop                      | Backdrop                                                                                             | `<Backdrop />`                    |
+| BPJsonGenerator               | BPJsonGenerator                                                                                      | `<BPJsonGenerator />`             |
+| InfiniteRegistryTableLoader   | Provides infinite scroll and dynamic load                                                            | `<InfiniteRegistryTableLoader />` |
+| VisualCertificate             | Displays visual certificate with information and resources to verify the validity of the transaction | `<VisualCertificate />`           |
+| Issuance Verifier             | Dropzone that validates the issuance of a file                                                       | `<IssuanceVerifier />`            |
+| Ricardian Contract Visualizer | Shows Ricarian clauses                                                                               | `<RicardianContract />`           |
 
 ## Run locally
 
@@ -77,7 +81,14 @@ eoscr-components/
 │   │   ├── 2-InputHash.stories.js
 │   │   ├── 3-Backdrop.stories.js
 │   │   ├── 4-RicardianContract.stories.js
-│   │   └── 5-DropzoneHash.stories.js
+│   │   ├── 5-DropzoneHash.stories.js
+│   │   ├── 6-InfiniteRegistryTableLoader.stories.js
+│   │   ├── 7-BPJsonGenerator.stories.js
+│   │   ├── 8-VisualCertificate.stories.js
+│   │   └── 9-IssuanceVerifier.stories.js
+│   │
+│   ├── themes
+│   │   └── index.js
 │   │
 │   ├── utils
 │   │   ├── convertHex2RGB.js
@@ -85,15 +96,45 @@ eoscr-components/
 │   │   ├── filereader.js
 │   │   └── getRgbColorsFromHex.js
 │   │
-│   ├── AccountInfo.js
-│   ├── Backdrop.js
-│   ├── BPAvatar.js
-│   ├── CreateAccount.js
-│   ├── DropzoneHash.js
-│   ├── FileComponent.js
-│   ├── InputHash.js
-│   ├── ProgressBar.js
-│   ├── RicardianContract.js
+│   ├── AccountInfo
+│   │   ├── AccountInfo.js
+│   │   ├── BPAvatar.js
+│   │   ├── ProgressBar.js
+│   │   └── index.js
+│   ├── Backdrop
+│   │   ├── Backdrop.js
+│   │   └── index.js
+│   ├── BPJsonGenerator
+│   │   ├── BPJsonGenerator.js
+│   │   ├── ImagePreview.js
+│   │   ├── Modal.js
+│   │   ├── NodesForm.js
+│   │   └── index.js
+│   ├── common
+│   │   ├── DropzoneBase.js
+│   │   └── index.js
+│   ├── CreateAccount
+│   │   ├── CreateAccount.js
+│   │   └── index.js
+│   ├── DropzoneHash
+│   │   ├── DropzoneHash.js
+│   │   ├── FileComponent.js
+│   │   └── index.js
+│   ├── InfiniteRegistryTableLoader
+│   │   ├── InfiniteRegistryTableLoader.js
+│   │   └── index.js
+│   ├── InputHash
+│   │   ├── InputHash.js
+│   │   └── index.js
+│   ├── IssuanceVerifier
+│   │   ├── IssuanceVerifier.js
+│   │   └── index.js
+│   ├── RicardianContract
+│   │   ├── RicardianContract.js
+│   │   └── index.js
+│   ├── VisualCertificate
+│   │   ├── VisualCertificate.js
+│   │   └── index.js
 │   └── index.js
 │
 ├── .eslintrc
