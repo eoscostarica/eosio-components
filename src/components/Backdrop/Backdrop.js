@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const TRANSITION_DURATION = 250
+const MIN_HEIGHT_TO_COLLAPSE = 450
 
 const useRootStyles = makeStyles({
   root: {
@@ -93,9 +94,11 @@ const Backdrop = forwardRef(
     const classes = useStyles()
     const rootClasses = useRootStyles({ color: backgroundColor })
     const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
+    const isLandscape = useMediaQuery('(orientation: landscape)')
     const [frontLayerHeight, setFrontLayerHeight] = useState(layerHeightUp)
     const [transaction, setTransaction] = useState(false)
     const [isArrowUp, setIsArrowUp] = useState(false)
+    const [showHeader, setShowHeader] = useState(false)
 
     const handleOnClick = () => {
       const height = window.innerHeight
@@ -126,6 +129,11 @@ const Backdrop = forwardRef(
     useEffect(() => {
       const height = window.innerHeight
 
+      setShowHeader(
+        (height < MIN_HEIGHT_TO_COLLAPSE && isLandscape) ||
+          (isMobile && !isStaticPage)
+      )
+
       if (isStaticPage) {
         setNewHeight(height - (height - layerHeightUp))
 
@@ -138,8 +146,21 @@ const Backdrop = forwardRef(
         return
       }
 
-      if (!isMobile) setNewHeight(height - (height - layerHeightUp))
-    }, [isMobile, layerHeightDown, layerHeightUp, setNewHeight, isStaticPage])
+      if (!isMobile) {
+        setNewHeight(
+          isLandscape && height < MIN_HEIGHT_TO_COLLAPSE
+            ? height - layerHeightDown
+            : height - (height - layerHeightUp)
+        )
+      }
+    }, [
+      isMobile,
+      layerHeightDown,
+      layerHeightUp,
+      setNewHeight,
+      isStaticPage,
+      isLandscape
+    ])
 
     return (
       <div className={clsx(className, rootClasses.root, extraClasses.root)}>
@@ -158,7 +179,7 @@ const Backdrop = forwardRef(
         <Paper className={clsx(classes.frontLayer, extraClasses.frontLayer)}>
           <div className={clsx(classes.headerBox, extraClasses.headerBox)}>
             {headerText}
-            {isMobile && !isStaticPage && (
+            {showHeader && (
               <IconButton
                 aria-label=""
                 classes={{ root: classes.iconDrop }}

@@ -1,6 +1,7 @@
 {
   "name": "@eoscostarica/eoscr-components",
   "version": "2.0.0",
+  "version": "2.0.2",
   "description": "A collection of React Components for EOSIO",
   "author": "EOS Costa Rica",
   "license": "MIT",
