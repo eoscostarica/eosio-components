@@ -22,7 +22,7 @@ const IssuanceVerifier = ({
 }) => {
   const [verified, setVerified] = useState(undefined)
   const [showDropzone, setShowDropzone] = useState(true)
-  const [tx, setTx] = useState()
+  const [transaction, setTransaction] = useState()
   const [file, setFile] = useState(null)
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const IssuanceVerifier = ({
             message: errorMsg
           })
         else {
-          setTx(txId)
+          setTransaction(txId)
           setVerified({
             state: true,
             severity: 'success',
@@ -99,7 +99,7 @@ const IssuanceVerifier = ({
             {verified.severity === 'success' && (
               <Button color="secondary">
                 <Link
-                  href={`${nodeLink}/${tx}`}
+                  href={`${nodeLink}/${transaction}`}
                   target="_blank"
                   color="secondary"
                 >
