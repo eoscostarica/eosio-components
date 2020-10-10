@@ -30,17 +30,14 @@ const useStyles = makeStyles((theme) => ({
   closeIcon: {
     display: 'flex',
     justifyContent: 'flex-end',
+    padding: theme.spacing(2, 2, 0, 2),
     '& svg': {
       fontSize: 25,
       color: theme.palette.secondary.main
     }
   },
   bodyWrapper: {
-    height: '95%',
-    padding: theme.spacing(0, 2),
-    [theme.breakpoints.up('sm')]: {
-      height: '90%'
-    }
+    padding: theme.spacing(0, 2, 2, 2)
   }
 }))
 

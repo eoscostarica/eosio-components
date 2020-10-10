@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import axios from 'axios'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -19,11 +18,10 @@ export default {
   decorators: [withKnobs]
 }
 
-export const EditBPJson = ({ ual }) => {
-  const accountName = text('accountName', 'junglemorpho')
+export const EditBPJson = () => {
+  const accountName = text('accountName', 'eoscostarica')
   const [bpJson, setBpJson] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [isNotABP, setIsNotABP] = useState(false)
 
   useEffect(() => {
     const getData = async () => {
@@ -39,8 +37,8 @@ export const EditBPJson = ({ ual }) => {
         })
 
         if (!rows.length || rows[0].owner !== accountName) {
-          setIsNotABP(true)
           setLoading(false)
+          setBpJson(null)
 
           return
         }
@@ -60,6 +58,7 @@ export const EditBPJson = ({ ual }) => {
       } catch (error) {
         console.log({ message: error.message })
         setLoading(false)
+        setBpJson(null)
       }
     }
 
@@ -73,15 +72,6 @@ export const EditBPJson = ({ ual }) => {
           {'Loading BP Json...'.toUpperCase()}
         </Typography>
         <LinearProgress color="secondary" />
-      </Box>
-    )
-
-  if (isNotABP)
-    return (
-      <Box mt={5} width="100%">
-        <Typography variant="h5" align="center">
-          {'You need to register as Block Producer!'.toUpperCase()}
-        </Typography>
       </Box>
     )
 
@@ -100,6 +90,4 @@ export const EditBPJson = ({ ual }) => {
   )
 }
 
-EditBPJson.propTypes = {
-  ual: PropTypes.any
-}
+EditBPJson.propTypes = {}

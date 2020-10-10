@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -61,6 +61,7 @@ const IssuanceVerifier = ({
       }
       verifyTrxExistence()
     }
+    // eslint-disable-next-line
   }, [file])
 
   return (
