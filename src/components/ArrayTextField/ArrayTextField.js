@@ -109,7 +109,10 @@ const ArrayTextField = ({
 }
 
 ArrayTextField.propTypes = {
-  value: PropTypes.array
+  value: PropTypes.array,
+  onChange: PropTypes.func,
+  className: PropTypes.string,
+  ChipProps: PropTypes.object
 }
 
 ArrayTextField.defaultProps = {

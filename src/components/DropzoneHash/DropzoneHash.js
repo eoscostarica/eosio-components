@@ -24,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
     height: '100%'
   },
   dropzoneBox: {
+    width: '100%',
+    maxWidth: 620,
     height: '50vh',
     display: 'flex',
     justifyItems: 'center',
@@ -46,7 +48,7 @@ const DropzoneHash = ({ file, handleOnDropFile, deleteFile }) => {
         <CardContent>
           <Box
             display="flex"
-            flexDirection="column"
+            flexDirection="row"
             justifyContent="center"
             alignContent="center"
           >
@@ -99,14 +101,12 @@ const DropzoneHash = ({ file, handleOnDropFile, deleteFile }) => {
 
 DropzoneHash.propTypes = {
   handleOnDropFile: PropTypes.func,
-  sendButtonText: PropTypes.string,
   file: PropTypes.object,
   deleteFile: PropTypes.func
 }
 
 DropzoneHash.defaultProps = {
-  handleOnDropFile: () => {},
-  sendButtonText: 'Enviar'
+  handleOnDropFile: () => {}
 }
 
 export default DropzoneHash

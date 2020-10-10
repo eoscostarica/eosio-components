@@ -97,8 +97,7 @@
   },
   "optionalDependencies": {
     "@types/node": "*",
-    "typescript": "*",
-    "webpack": "*"
+    "typescript": "*"
   },
   "files": [
     "dist"

@@ -52,6 +52,29 @@ const initData = {
   }
 }
 
+const defaultValidationState = {
+  candidate_name: {
+    isError: false,
+    message: 'Candidate Name is required'
+  },
+  email: {
+    isError: false,
+    message: 'Email is required'
+  },
+  website: {
+    isError: false,
+    message: 'Website is required'
+  },
+  code_of_conduct: {
+    isError: false,
+    message: 'Code of Conduct is required'
+  },
+  ownership_disclosure: {
+    isError: false,
+    message: 'Ownership Disclosure is required'
+  }
+}
+
 const useStyles = makeStyles((theme) => ({
   wrapper: {
     display: 'flex',
@@ -88,28 +111,9 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   const [nodes, setNodes] = useState([])
   const [currentNodeIndex, setCurrentNodeIndex] = useState(null)
   const [shouldUpdateChain, setShouldUpdateChain] = useState(false)
-  const [requiredFieldsValidation, setRequiredFieldsValidation] = useState({
-    candidate_name: {
-      isError: false,
-      message: 'Candidate Name is required'
-    },
-    email: {
-      isError: false,
-      message: 'Email is required'
-    },
-    website: {
-      isError: false,
-      message: 'Website is required'
-    },
-    code_of_conduct: {
-      isError: false,
-      message: 'Code of Conduct is required'
-    },
-    ownership_disclosure: {
-      isError: false,
-      message: 'Ownership Disclosure is required'
-    }
-  })
+  const [requiredFieldsValidation, setRequiredFieldsValidation] = useState(
+    defaultValidationState
+  )
 
   const toCapitalCase = (string = '') => {
     return string
