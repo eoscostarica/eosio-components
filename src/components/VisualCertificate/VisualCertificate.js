@@ -182,7 +182,7 @@ const VisualCertificate = ({
 
 VisualCertificate.propTypes = {
   open: PropTypes.bool,
-  handleCose: PropTypes.func,
+  handleClose: PropTypes.func,
   txData: PropTypes.object,
   messages: PropTypes.object,
   title: PropTypes.string,

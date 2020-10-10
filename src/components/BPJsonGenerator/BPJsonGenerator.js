@@ -3,29 +3,31 @@ import PropTypes from 'prop-types'
 import ReactJson from 'react-json-view'
 import fileDownload from 'react-file-download'
 import { makeStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
-import IconButton from '@material-ui/core/IconButton'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
 
 import { urlInputValidation, formInputValidation } from '../../utils/validation'
+import ArrayTextField from '../ArrayTextField'
 
 import ImagePreview from './ImagePreview'
 import NodesForm from './NodesForm'
+import NodesList from './NodesList'
 
 const initData = {
   candidate_name: '',
   website: '',
   code_of_conduct: '',
+  ownership_disclosure: '',
   email: '',
+  github_user: [],
+  chain_resources: '',
+  other_resources: [],
   branding: {
     logo_256: '',
     logo_1024: '',
@@ -34,215 +36,70 @@ const initData = {
   location: {
     name: '',
     country: '',
-    latitude: 0,
-    longitude: 0
+    latitude: null,
+    longitude: null
   },
   social: {
-    steemit: '',
-    twitter: '',
-    facebook: '',
-    github: '',
-    reddit: '',
     keybase: '',
     telegram: '',
-    webchat: ''
+    twitter: '',
+    github: '',
+    youtube: '',
+    facebook: '',
+    hive: '',
+    reddit: '',
+    wechat: ''
+  }
+}
+
+const defaultValidationState = {
+  candidate_name: {
+    isError: false,
+    message: 'Candidate Name is required'
+  },
+  email: {
+    isError: false,
+    message: 'Email is required'
+  },
+  website: {
+    isError: false,
+    message: 'Website is required'
+  },
+  code_of_conduct: {
+    isError: false,
+    message: 'Code of Conduct is required'
+  },
+  ownership_disclosure: {
+    isError: false,
+    message: 'Ownership Disclosure is required'
   }
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  wrapper: {
     display: 'flex',
     flexDirection: 'column',
-    '& h2': {
-      textAlign: 'center',
-      fontSize: 25
-    },
-    '& h4': {
-      textAlign: 'center'
-    }
+    marginBottom: theme.spacing(2)
   },
-  org: {
-    width: '100%',
-    margin: theme.spacing(2, 0),
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    }
+  divider: {
+    marginBottom: theme.spacing(2)
   },
-  leftBoxOrg: {
-    display: 'flex',
-    flexDirection: 'column',
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    },
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      '& > .MuiTextField-root': {
-        width: '48%',
-        marginTop: theme.spacing(2)
-      }
-    }
+  formField: {
+    width: '100%'
   },
-  rightBoxOrg: {
-    display: 'flex',
-    flexDirection: 'column',
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    },
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      '& > .MuiTextField-root': {
-        width: '48%',
-        marginTop: theme.spacing(2)
-      }
-    }
+  checkbox: {
+    paddingTop: 0,
+    paddingBottom: 0
   },
-  branding: {
-    width: '100%',
-    margin: theme.spacing(2, 0)
+  caption: {
+    display: 'block'
   },
-  brandBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    '& .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    },
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      '& $imagePreviewBox': {
-        width: '32%'
-      }
-    }
-  },
-  location: {
-    width: '100%',
-    margin: theme.spacing(2, 0),
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    }
-  },
-  leftBoxLocation: {
-    display: 'flex',
-    flexDirection: 'column',
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    },
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      '& > .MuiTextField-root': {
-        width: '48%',
-        marginTop: theme.spacing(2)
-      }
-    }
-  },
-  rightBoxLocation: {
-    display: 'flex',
-    flexDirection: 'column',
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    },
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      '& > .MuiTextField-root': {
-        width: '48%',
-        marginTop: theme.spacing(2)
-      }
-    }
-  },
-  social: {
-    width: '100%',
-    margin: theme.spacing(2, 0)
-  },
-  socialBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    },
-    [theme.breakpoints.up('md')]: {
-      width: '32%'
-    }
-  },
-  socialBoxWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-      justifyContent: 'space-between'
-    }
-  },
-  imagePreviewBox: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  submitButtonBox: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  addNewNode: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    padding: '0',
-    alignItems: 'center',
-    [theme.breakpoints.up('md')]: {
-      padding: '0 25%'
-    }
-  },
-  addNodeBtn: {
+  btn: {
     height: 40,
-    width: 200,
-    marginTop: theme.spacing(1)
-  },
-  submitButton: {
-    height: 40,
-    marginTop: theme.spacing(4),
     width: '100%',
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.up('sm')]: {
-      width: 200
-    }
-  },
-  nodeList: {
-    width: '100%',
-    padding: 0,
-    [theme.breakpoints.up('sm')]: {
-      padding: theme.spacing(0, 5)
-    }
-  },
-  nodeListItem: {
-    width: '100%'
-  },
-  lgBox: {
-    padding: 0,
-    width: '100%'
-  },
-  lgBoxRight: {
-    padding: 0,
-    width: '100%'
-  },
-  jsonView: {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    padding: theme.spacing(2, 0),
-    '& h2': {
-      marginBottom: theme.spacing(2)
+      width: 300
     }
   }
 }))
@@ -250,479 +107,452 @@ const useStyles = makeStyles((theme) => ({
 const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   const classes = useStyles()
   const [openModal, setOpenModal] = useState(false)
-  const [producerData, setProducerData] = useState(initData)
-  const [nodeData, setNodeData] = useState()
-  const [editNode, setEditNode] = useState(null)
-  const [requiredFieldsValidation, setRequiredFieldsValidation] = useState({
-    candidate_name: { isError: false, message: 'Candidate Name is required' },
-    email: { isError: false, message: 'Email is required' },
-    website: { isError: false, message: 'Website is required' },
-    code_of_conduct: { isError: false, message: 'Code of Conduct is required' }
-  })
+  const [org, setOrg] = useState(initData)
+  const [nodes, setNodes] = useState([])
+  const [currentNodeIndex, setCurrentNodeIndex] = useState(null)
+  const [shouldUpdateChain, setShouldUpdateChain] = useState(false)
+  const [requiredFieldsValidation, setRequiredFieldsValidation] = useState(
+    defaultValidationState
+  )
+
+  const toCapitalCase = (string = '') => {
+    return string
+      .split('')
+      .map((char, index) => (index === 0 ? char.toUpperCase() : char))
+      .join('')
+  }
 
   const handleOnChange = (key, value, parent) => {
     if (parent === 'org') {
-      setProducerData({ ...producerData, [key]: value })
+      setOrg({ ...org, [key]: value })
       return
     }
-    setProducerData({
-      ...producerData,
-      [parent]: { ...producerData[parent], [key]: value }
+
+    setOrg({
+      ...org,
+      [parent]: { ...org[parent], [key]: value }
     })
   }
 
-  const handleOnDelete = (node) => {
-    const nodesFiltered = nodeData.filter(
-      ({ node_type: nodeType }) => nodeType !== node
-    )
-
-    setNodeData(nodesFiltered)
+  const handleOnSubmitNode = (nodes) => {
+    setNodes(nodes)
+    setCurrentNodeIndex(null)
   }
 
-  const handleOnChangeBranding = (key, value) => {
-    setProducerData({
-      ...producerData,
-      branding: { ...producerData.branding, [key]: value }
-    })
+  const handleOnDeleteNode = (index) => {
+    nodes.splice(index, 1)
+    setNodes([...nodes])
+  }
+
+  const handleOnEditNode = (index) => {
+    setCurrentNodeIndex(index)
+    setOpenModal(true)
   }
 
   const handleOnSubmit = () => {
-    const { formValidated, isValidForm } = formInputValidation(producerData)
-
+    const { formValidated, isValidForm } = formInputValidation(org)
     setRequiredFieldsValidation(formValidated)
 
     if (!isValidForm) return
 
     const producerJson = JSON.stringify(
       {
-        producer_account_name: accountName,
-        org: producerData,
-        nodes: nodeData
+        org,
+        nodes,
+        producer_account_name: accountName
       },
       null,
       '\t'
     )
-
-    onSubmit(accountName, producerJson)
+    fileDownload(producerJson, 'bp.json')
+    onSubmit({
+      shouldUpdateChain,
+      bpJson: producerJson
+    })
   }
 
   useEffect(() => {
-    setProducerData(bpJson ? bpJson.org : initData)
-    setNodeData(bpJson ? bpJson.nodes : [])
+    setOrg(bpJson ? bpJson.org : initData)
+    setNodes(bpJson ? bpJson.nodes : [])
   }, [bpJson])
 
   return (
     <Box>
-      <Typography variant='h4'>BP JSON Generator</Typography>
-      <Typography variant='body1'>
-        A simple way to create and update your node information on chain.
-      </Typography>
-      <Box height={30} />
-      {accountName && (
-        <Typography variant='h4'>{`Account Name: ${accountName}`}</Typography>
-      )}
-      <form className={classes.root} noValidate autoComplete='off'>
-        <Box className={classes.lgBox}>
-          <Box className={classes.org}>
-            <Typography variant='h2'>Organization Info</Typography>
-            <Divider />
-            <Box className={classes.leftBoxOrg}>
+      <Box className={classes.wrapper}>
+        <Typography variant="h4">BP JSON Generator</Typography>
+        <Typography variant="body1">
+          A simple way to create and update your node information on chain.
+        </Typography>
+      </Box>
+
+      <Box className={classes.wrapper}>
+        <Typography variant="h5">{`Account Name: ${accountName}`}</Typography>
+        <Divider className={classes.divider} />
+      </Box>
+
+      <Box className={classes.wrapper}>
+        <Typography variant="h5">Organization Info</Typography>
+        <Divider className={classes.divider} />
+        <Grid container spacing={3}>
+          <Grid container spacing={3} item>
+            <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
                   handleOnChange('candidate_name', e.target.value, 'org')
                 }
-                variant='outlined'
+                variant="outlined"
                 required
-                id='standard-basic'
                 error={requiredFieldsValidation.candidate_name.isError}
-                label='Candidate Name'
-                value={producerData.candidate_name || ''}
+                label="Candidate Name"
+                value={org.candidate_name || ''}
                 helperText={
                   requiredFieldsValidation.candidate_name.isError &&
                   requiredFieldsValidation.candidate_name.message
                 }
+                className={classes.formField}
               />
-              <TextField
-                onChange={(e) => handleOnChange('email', e.target.value, 'org')}
-                variant='outlined'
-                required
-                id='standard-basic'
-                error={requiredFieldsValidation.email.isError}
-                label='Email'
-                value={producerData.email || ''}
-                helperText={
-                  requiredFieldsValidation.email.isError &&
-                  requiredFieldsValidation.email.message
-                }
-              />
-            </Box>
-
-            <Box className={classes.rightBoxOrg}>
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
                   handleOnChange('website', e.target.value, 'org')
                 }
-                variant='outlined'
+                variant="outlined"
                 required
-                id='standard-basic'
                 error={requiredFieldsValidation.website.isError}
-                label='Website'
-                value={producerData.website || ''}
+                label="Website"
+                value={org.website || ''}
                 helperText={
                   requiredFieldsValidation.website.isError &&
                   requiredFieldsValidation.website.message
                 }
+                className={classes.formField}
               />
+            </Grid>
+          </Grid>
+          <Grid container spacing={3} item>
+            <Grid item xs={12} sm={4}>
               <TextField
                 onChange={(e) =>
                   handleOnChange('code_of_conduct', e.target.value, 'org')
                 }
-                variant='outlined'
+                variant="outlined"
                 required
-                id='standard-basic'
                 error={requiredFieldsValidation.code_of_conduct.isError}
-                label='Code of Conduct'
-                value={producerData.code_of_conduct || ''}
+                label="Code of Conduct"
+                value={org.code_of_conduct || ''}
                 helperText={
                   requiredFieldsValidation.code_of_conduct.isError &&
                   requiredFieldsValidation.code_of_conduct.message
                 }
+                className={classes.formField}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                onChange={(e) =>
+                  handleOnChange('ownership_disclosure', e.target.value, 'org')
+                }
+                variant="outlined"
+                required
+                error={requiredFieldsValidation.ownership_disclosure.isError}
+                label="Ownership disclosure"
+                value={org.ownership_disclosure || ''}
+                helperText={
+                  requiredFieldsValidation.ownership_disclosure.isError &&
+                  requiredFieldsValidation.ownership_disclosure.message
+                }
+                className={classes.formField}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                onChange={(e) => handleOnChange('email', e.target.value, 'org')}
+                variant="outlined"
+                required
+                error={requiredFieldsValidation.email.isError}
+                label="Email"
+                value={org.email || ''}
+                helperText={
+                  requiredFieldsValidation.email.isError &&
+                  requiredFieldsValidation.email.message
+                }
+                className={classes.formField}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={3} item>
+            <Grid item xs={12} sm={4}>
+              <ArrayTextField
+                onChange={(value) =>
+                  handleOnChange('github_user', value, 'org')
+                }
+                variant="outlined"
+                label="Github User"
+                value={org.github_user || []}
+                className={classes.formField}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                onChange={(e) =>
+                  handleOnChange('chain_resources', e.target.value, 'org')
+                }
+                variant="outlined"
+                label="Chain Resources"
+                value={org.chain_resources || ''}
+                className={classes.formField}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <ArrayTextField
+                onChange={(value) =>
+                  handleOnChange('other_resources', value, 'org')
+                }
+                variant="outlined"
+                label="Other Resources"
+                value={org.other_resources || []}
+                className={classes.formField}
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Box>
+
+      <Box className={classes.wrapper}>
+        <Typography variant="h5">Branding</Typography>
+        <Divider className={classes.divider} />
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={4}>
+            <Box>
+              <TextField
+                onChange={(e) =>
+                  handleOnChange('logo_256', e.target.value, 'branding')
+                }
+                variant="outlined"
+                label="Logo 256px"
+                error={!urlInputValidation(org.branding.logo_256)}
+                value={org.branding.logo_256 || ''}
+                helperText={
+                  !urlInputValidation(org.branding.logo_256) && 'Invalid URL'
+                }
+                className={classes.formField}
+              />
+              <ImagePreview
+                url={org.branding.logo_256}
+                label="Logo 256px"
+                isInvalidURL={!urlInputValidation(org.branding.logo_256)}
               />
             </Box>
-          </Box>
-
-          <Box className={classes.branding}>
-            <Typography variant='h2'>Branding</Typography>
-            <Divider />
-            <Box className={classes.brandBox}>
-              <Box className={classes.imagePreviewBox}>
-                <TextField
-                  onChange={(e) =>
-                    handleOnChangeBranding('logo_256', e.target.value)
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Logo 256px'
-                  value={producerData.branding.logo_256 || ''}
-                  error={
-                    producerData.branding.logo_256.length &&
-                    !urlInputValidation(producerData.branding.logo_256)
-                  }
-                />
-                <ImagePreview
-                  url={producerData.branding.logo_256}
-                  label='Logo 256px'
-                  isInvalidURL={
-                    !urlInputValidation(producerData.branding.logo_256)
-                  }
-                />
-              </Box>
-              <Box className={classes.imagePreviewBox}>
-                <TextField
-                  onChange={(e) =>
-                    handleOnChangeBranding('logo_1024', e.target.value)
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Logo 1024px'
-                  error={
-                    producerData.branding.logo_1024.length &&
-                    !urlInputValidation(producerData.branding.logo_1024)
-                  }
-                  value={producerData.branding.logo_1024 || ''}
-                />
-                <ImagePreview
-                  url={producerData.branding.logo_1024}
-                  label='Logo 1024px'
-                  isInvalidURL={
-                    !urlInputValidation(producerData.branding.logo_1024)
-                  }
-                />
-              </Box>
-              <Box className={classes.imagePreviewBox}>
-                <TextField
-                  onChange={(e) =>
-                    handleOnChangeBranding('logo_svg', e.target.value)
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Logo SVG'
-                  error={
-                    producerData.branding.logo_svg.length &&
-                    !urlInputValidation(producerData.branding.logo_svg)
-                  }
-                  value={producerData.branding.logo_svg || ''}
-                />
-                <ImagePreview
-                  url={producerData.branding.logo_svg}
-                  label='Logo SVG'
-                  isInvalidURL={
-                    !urlInputValidation(producerData.branding.logo_svg)
-                  }
-                />
-              </Box>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Box>
+              <TextField
+                onChange={(e) =>
+                  handleOnChange('logo_1024', e.target.value, 'branding')
+                }
+                variant="outlined"
+                label="Logo 1024px"
+                error={!urlInputValidation(org.branding.logo_1024)}
+                value={org.branding.logo_1024 || ''}
+                helperText={
+                  !urlInputValidation(org.branding.logo_1024) && 'Invalid URL'
+                }
+                className={classes.formField}
+              />
+              <ImagePreview
+                url={org.branding.logo_1024}
+                label="Logo 1024px"
+                isInvalidURL={!urlInputValidation(org.branding.logo_1024)}
+              />
             </Box>
-          </Box>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Box>
+              <TextField
+                onChange={(e) =>
+                  handleOnChange('logo_svg', e.target.value, 'branding')
+                }
+                variant="outlined"
+                label="Logo SVG"
+                error={!urlInputValidation(org.branding.logo_svg)}
+                value={org.branding.logo_svg || ''}
+                helperText={
+                  !urlInputValidation(org.branding.logo_svg) && 'Invalid URL'
+                }
+                className={classes.formField}
+              />
+              <ImagePreview
+                url={org.branding.logo_svg}
+                label="Logo SVG"
+                isInvalidURL={!urlInputValidation(org.branding.logo_svg)}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
 
-          <Box className={classes.location}>
-            <Typography variant='h2'>Location</Typography>
-            <Divider />
-            <Box className={classes.leftBoxLocation}>
+      <Box className={classes.wrapper}>
+        <Typography variant="h5">Location</Typography>
+        <Divider className={classes.divider} />
+        <Grid container spacing={3}>
+          <Grid container spacing={3} item>
+            <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
                   handleOnChange('name', e.target.value, 'location')
                 }
-                variant='outlined'
-                id='standard-basic'
-                value={producerData.location.name || ''}
-                label='Name'
+                variant="outlined"
+                label="Name"
+                value={org.location.name || ''}
+                className={classes.formField}
               />
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
                   handleOnChange('country', e.target.value, 'location')
                 }
-                variant='outlined'
-                id='standard-basic'
-                value={producerData.location.country || ''}
-                label='Country'
+                variant="outlined"
+                label="Country"
+                value={org.location.country || ''}
+                className={classes.formField}
               />
-            </Box>
-            <Box className={classes.rightBoxLocation}>
+            </Grid>
+          </Grid>
+          <Grid container spacing={3} item>
+            <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
                   handleOnChange('latitude', e.target.value, 'location')
                 }
-                variant='outlined'
-                id='standard-basic'
-                value={producerData.location.latitude || ''}
-                label='Latitude'
-                type='number'
+                variant="outlined"
+                type="number"
+                label="Latitude"
+                value={org.location.latitude || ''}
+                className={classes.formField}
               />
+            </Grid>
+            <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
                   handleOnChange('longitude', e.target.value, 'location')
                 }
-                variant='outlined'
-                id='standard-basic'
-                value={producerData.location.longitude || ''}
-                label='Longitude'
-                type='number'
+                variant="outlined"
+                type="number"
+                label="Longitude"
+                value={org.location.longitude || ''}
+                className={classes.formField}
               />
-            </Box>
-          </Box>
-        </Box>
-        <Box className={classes.lgBoxRight}>
-          <Box className={classes.social}>
-            <Typography variant='h2'>Social</Typography>
-            <Divider />
-            <Box className={classes.socialBoxWrapper}>
-              <Box className={classes.socialBox}>
-                <TextField
-                  onChange={(e) =>
-                    handleOnChange('github', e.target.value, 'social')
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Github'
-                  value={producerData.social.github || ''}
-                />
-                <TextField
-                  onChange={(e) =>
-                    handleOnChange('twitter', e.target.value, 'social')
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Twitter'
-                  value={producerData.social.twitter || ''}
-                />
-                <TextField
-                  onChange={(e) =>
-                    handleOnChange('youtube', e.target.value, 'social')
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Youtube'
-                  value={producerData.social.youtube || ''}
-                />
-              </Box>
-              <Box className={classes.socialBox}>
-                <TextField
-                  onChange={(e) =>
-                    handleOnChange('facebook', e.target.value, 'social')
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='facebook'
-                  value={producerData.social.facebook || ''}
-                />
-                <TextField
-                  onChange={(e) =>
-                    handleOnChange('telegram', e.target.value, 'social')
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Telegram'
-                  value={producerData.social.telegram || ''}
-                />
-                <TextField
-                  onChange={(e) =>
-                    handleOnChange('steemit', e.target.value, 'social')
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Steemit'
-                  value={producerData.social.steemit || ''}
-                />
-              </Box>
-              <Box className={classes.socialBox}>
-                <TextField
-                  onChange={(e) =>
-                    handleOnChange('reddit', e.target.value, 'social')
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Reddit'
-                  value={producerData.social.reddit || ''}
-                />
-                <TextField
-                  onChange={(e) =>
-                    handleOnChange('keybase', e.target.value, 'social')
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Keybase'
-                  value={producerData.social.keybase || ''}
-                />
-                <TextField
-                  onChange={(e) =>
-                    handleOnChange('webchat', e.target.value, 'social')
-                  }
-                  variant='outlined'
-                  id='standard-basic'
-                  label='Webchat'
-                  value={producerData.social.webchat || ''}
-                />
-              </Box>
-            </Box>
-          </Box>
-          <Box>
-            <NodesForm
-              nodes={nodeData}
-              setNode={setNodeData}
-              openModal={openModal}
-              setOpenModal={setOpenModal}
-              editNode={editNode}
-              setEditNode={setEditNode}
-            />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Box>
 
-            <Box className={classes.addNewNode}>
-              <Typography variant='h2'>Node List</Typography>
-              <Divider />
-              {(nodeData || []).length ? (
-                <List className={classes.nodeList}>
-                  {nodeData.map((node, index) => {
-                    return (
-                      <div
-                        className={classes.nodeListItem}
-                        key={`bpjosn-node-${index}`}
-                      >
-                        <ListItem>
-                          <ListItemText
-                            primary={node.node_type}
-                            secondary={node.location.name}
-                          />
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              edge='end'
-                              aria-label='delete'
-                              onClick={() => {
-                                setEditNode(node)
-                                setOpenModal(true)
-                              }}
-                            >
-                              <EditIcon />
-                            </IconButton>
-                            <IconButton
-                              edge='end'
-                              aria-label='delete'
-                              onClick={() => handleOnDelete(node.node_type)}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        <Divider />
-                      </div>
-                    )
-                  })}
-                </List>
-              ) : (
-                <Typography variant='body1' align='center'>
-                  Nothing to display
-                </Typography>
-              )}
+      <Box className={classes.wrapper}>
+        <Typography variant="h5">Social</Typography>
+        <Divider className={classes.divider} />
+        <Grid container spacing={3}>
+          {Object.keys(org.social).map((key) => (
+            <Grid item xs={12} sm={4} key={`social-item-${key}`}>
+              <TextField
+                onChange={(e) => handleOnChange(key, e.target.value, 'social')}
+                variant="outlined"
+                label={toCapitalCase(key)}
+                value={org.social[key] || ''}
+                className={classes.formField}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
 
-              <Button
-                variant='contained'
-                color='secondary'
-                className={classes.addNodeBtn}
-                onClick={() => setOpenModal(true)}
-              >
-                Add Node
-              </Button>
-            </Box>
-
-            {onSubmit && (
-              <Box className={classes.submitButtonBox}>
-                <Button
-                  variant='contained'
-                  color='primary'
-                  className={classes.submitButton}
-                  onClick={handleOnSubmit}
-                >
-                  Submit
-                </Button>
-              </Box>
+      <Box className={classes.wrapper}>
+        <Typography variant="h5">Node List</Typography>
+        <Divider className={classes.divider} />
+        <NodesForm
+          nodes={nodes}
+          nodeIndex={currentNodeIndex}
+          onSubmit={handleOnSubmitNode}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+        />
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            {(nodes || []).length ? (
+              <NodesList
+                nodes={nodes}
+                onDelete={handleOnDeleteNode}
+                onEdit={handleOnEditNode}
+              />
+            ) : (
+              <Typography variant="body1" align="center">
+                Nothing to display
+              </Typography>
             )}
-          </Box>
-        </Box>
-      </form>
-      <Box className={classes.jsonView}>
-        <Typography variant='h4'>Block Producer JSON preview</Typography>
+          </Grid>
+          <Grid container item direction="column" alignItems="center">
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.btn}
+              onClick={() => setOpenModal(true)}
+            >
+              Add Node
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
 
+      <Box className={classes.wrapper}>
+        <Typography variant="h5">Preview</Typography>
+        <Divider className={classes.divider} />
         <ReactJson
           src={{
             producer_account_name: accountName,
-            org: producerData,
-            nodes: nodeData
+            org: org,
+            nodes: nodes
           }}
           enableClipboard={false}
           displayDataTypes={false}
           displayObjectSize={false}
-          name='BPJson'
+          name="BPJson"
           collapsed
         />
-        <Button
-          variant='contained'
-          color='secondary'
-          className={classes.submitButton}
-          onClick={() =>
-            fileDownload(
-              JSON.stringify(
-                {
-                  producer_account_name: accountName,
-                  org: producerData,
-                  nodes: nodeData
-                },
-                null,
-                '\t'
-              ),
-              'bp.json'
-            )
-          }
-        >
-          Download bp.json
-        </Button>
+      </Box>
+
+      <Box className={classes.wrapper}>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  classes={{
+                    root: classes.checkbox
+                  }}
+                  checked={shouldUpdateChain}
+                  onChange={() => setShouldUpdateChain(!shouldUpdateChain)}
+                  disabled={!accountName}
+                  color="primary"
+                />
+              }
+              label="Also send bpjson to the chain"
+            />
+            <Typography variant="caption" className={classes.caption}>
+              {!accountName ? 'Please login to use this option' : ''}
+            </Typography>
+          </Grid>
+          <Grid container item direction="column" alignItems="center">
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.btn}
+              onClick={handleOnSubmit}
+            >
+              Download bp.json
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   )

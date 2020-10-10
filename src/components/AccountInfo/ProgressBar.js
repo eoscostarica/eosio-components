@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import classNames from 'classnames'
+import clsx from 'clsx'
 
 import hex2RGB from '../../utils/convertHex2RGB'
 
@@ -76,7 +76,7 @@ const CircularProgress = ({ name, color, backgroundColor, percent }) => {
   return (
     <div className={classesBase.skillsContainer}>
       <div
-        className={classNames(classesBase.circularProgress, classes.content)}
+        className={clsx(classesBase.circularProgress, classes.content)}
       />
     </div>
   )

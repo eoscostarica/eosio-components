@@ -7,10 +7,11 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import * as CryptoJS from 'crypto-js'
 import { parseFile } from '../../utils/filereader'
-import { Box } from '@material-ui/core'
+import Box from '@material-ui/core/Box'
 import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
+
 const SHA256_REGEX_VALIDATOR = /\b[A-Fa-f0-9]{64}\b/
 
 const DropzoneBox = styled(Box)({
@@ -19,7 +20,6 @@ const DropzoneBox = styled(Box)({
   backgroundColor: '#efefef',
   cursor: 'pointer',
   display: 'flex',
-  maxWidth: 620,
   flexDirection: 'column',
   justifyContent: 'space-evenly',
   border: 'dashed 1px #212121',
@@ -89,14 +89,16 @@ const DropzoneBase = ({
     } else fileChange(null)
   }
 
+  const handleInputClick = (e) => e.preventDefault()
+
   return (
-    <React.Fragment>
+    <Box width="100%" height="100%">
       {!progress ? (
         <DropzoneBox {...getRootProps()}>
           <input
             multiple="false"
             accept=".json,.csv,.xls,.docx"
-            onClick={(e) => e.preventDefault()}
+            onClick={handleInputClick}
             {...getInputProps()}
           />
           <Typography>
@@ -122,7 +124,7 @@ const DropzoneBase = ({
           {message.content}
         </Alert>
       </Snackbar>
-    </React.Fragment>
+    </Box>
   )
 }
 

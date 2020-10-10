@@ -1,100 +1,132 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
+import Chip from '@material-ui/core/Chip'
+import Checkbox from '@material-ui/core/Checkbox'
+import ListItemText from '@material-ui/core/ListItemText'
 
 import Modal from './Modal'
 
-const values = [
+const nodeTypes = [
   {
     label: 'Producer',
-    value: 'producer'
+    value: 'producer',
+    info: ''
   },
   {
-    label: 'Full',
-    value: 'full'
+    label: 'Query',
+    value: 'query',
+    info: ''
   },
   {
     label: 'Seed',
-    value: 'seed'
+    value: 'seed',
+    info: ''
   }
 ]
 
+const features = [
+  {
+    label: 'chain-api',
+    value: 'chain-api',
+    info: 'basic eosio::chain_api_plugin (/v1/chain/*)'
+  },
+  {
+    label: 'account-query',
+    value: 'account-query',
+    info: '(/v1/chain/get_accounts_by_authorizers)'
+  },
+  {
+    label: 'history-v1',
+    value: 'history-v1',
+    info: '(/v1/history/*)'
+  },
+  {
+    label: 'hyperion-v2',
+    value: 'hyperion-v2',
+    info: '(/v2/*)'
+  },
+  {
+    label: 'dfuse',
+    value: 'dfuse',
+    info: ''
+  },
+  {
+    label: 'fio-api',
+    value: 'fio-api',
+    info: ''
+  },
+  {
+    label: 'snapshot-api',
+    value: 'snapshot-api',
+    info: ''
+  },
+  {
+    label: 'dsp-api',
+    value: 'dsp-api',
+    info: ''
+  }
+]
+
+const defaultNode = {
+  location: {
+    name: '',
+    country: '',
+    latitude: null,
+    longitude: null
+  },
+  node_type: '',
+  p2p_endpoint: '',
+  api_endpoint: '',
+  ssl_endpoint: '',
+  features: []
+}
+
 const useStyles = makeStyles((theme) => ({
   nodes: {
-    height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    [theme.breakpoints.up('md')]: {
-      alignItems: 'center'
-    }
+    alignItems: 'center'
   },
-  boxWrapper: {
-    width: '100%',
-    margin: theme.spacing(2, 0),
+  wrapper: {
     display: 'flex',
     flexDirection: 'column',
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    },
-    '& .MuiList-root': {
-      '& p': {
-        textAlign: 'left !important'
-      }
-    }
+    width: '100%'
   },
-  locationNode: {
-    width: '100%',
-    margin: theme.spacing(2, 0),
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    }
-  },
-  leftBoxLocationNode: {
+  locationWrapper: {
     display: 'flex',
     flexDirection: 'column',
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    },
+    flexWrap: 'wrap',
     [theme.breakpoints.up('sm')]: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      '& > .MuiTextField-root': {
-        width: '48%',
-        marginTop: theme.spacing(2)
+      '& .MuiFormControl-root': {
+        width: '48%'
       }
     }
   },
-  rightBoxLocationNode: {
+  sectionTitle: {
+    marginBottom: theme.spacing(2)
+  },
+  formField: {
+    marginBottom: theme.spacing(2)
+  },
+  chips: {
     display: 'flex',
-    flexDirection: 'column',
-    '& > .MuiTextField-root': {
-      width: '100%',
-      marginTop: theme.spacing(2)
-    },
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      '& > .MuiTextField-root': {
-        width: '48%',
-        marginTop: theme.spacing(2)
-      }
-    }
+    flexWrap: 'wrap',
+    marginBottom: theme.spacing(1)
   },
-  hideItem: {
-    display: 'none'
+  chip: {
+    marginBottom: theme.spacing(1),
+    marginRight: theme.spacing(1)
   },
-  showItem: {
-    display: 'flex'
+  selectChips: {
+    paddingBottom: 0
   },
   addButton: {
     height: 40,
@@ -105,201 +137,195 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const NodesForm = ({
-  onChange,
-  nodes,
-  setNode,
-  openModal,
-  setOpenModal,
-  editNode,
-  setEditNode
-}) => {
+const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   const classes = useStyles()
-  const [producerNodeData, setProducerNodeData] = useState({
-    location: {
-      name: '',
-      country: '',
-      latitude: null,
-      longitude: null
-    },
-    node_type: '',
-    p2p_endpoint: '',
-    api_endpoint: '',
-    ssl_endpoint: ''
-  })
+  const [currentNode, setCurrentNode] = useState(defaultNode)
 
   const handleOnChange = (key, value) => {
-    setProducerNodeData({ ...producerNodeData, [key]: value })
+    setCurrentNode({ ...currentNode, [key]: value })
   }
 
-  const handleOnChangeLocation = (key, value, parent) => {
-    setProducerNodeData({
-      ...producerNodeData,
-      [parent]: { ...producerNodeData[parent], [key]: value }
+  const handleOnChangeLocation = (key, value) => {
+    setCurrentNode({
+      ...currentNode,
+      location: { ...currentNode.location, [key]: value }
     })
   }
 
-  const handleOnClick = () => {
-    setNode([...nodes, producerNodeData])
-    setProducerNodeData({
-      location: {
-        name: '',
-        country: '',
-        latitude: null,
-        longitude: null
-      },
-      node_type: '',
-      p2p_endpoint: '',
-      api_endpoint: '',
-      ssl_endpoint: ''
-    })
+  const handleOnChangeFeatures = (event) => {
+    setCurrentNode((prevValue) => ({
+      ...prevValue,
+      features: event.target.value
+    }))
+  }
+
+  const handleOnSubmit = () => {
+    if (nodeIndex !== null) {
+      const newNodes = [...nodes]
+      newNodes[nodeIndex] = currentNode
+      onSubmit(newNodes)
+    } else {
+      onSubmit([...nodes, currentNode])
+    }
+
+    setCurrentNode(defaultNode)
     setOpenModal(false)
   }
 
   useEffect(() => {
-    editNode && setProducerNodeData(editNode)
-  }, [editNode])
+    setCurrentNode(nodes[nodeIndex] || defaultNode)
+  }, [nodes, nodeIndex])
 
   return (
-    <Modal
-      openModal={openModal}
-      setOpenModal={(value) => {
-        setOpenModal(value)
-        setProducerNodeData({
-          location: {
-            name: '',
-            country: '',
-            latitude: null,
-            longitude: null
-          },
-          node_type: '',
-          p2p_endpoint: '',
-          api_endpoint: '',
-          ssl_endpoint: ''
-        })
-      }}
-    >
+    <Modal openModal={openModal} setOpenModal={(value) => setOpenModal(value)}>
       <Box className={classes.nodes}>
-        <Box className={classes.boxWrapper}>
-          <Typography variant='h5'>Nodes</Typography>
+        <Box className={classes.wrapper}>
+          <Typography className={classes.sectionTitle} variant="h5">
+            Nodes
+          </Typography>
+
           <TextField
             onChange={(e) => handleOnChange('node_type', e.target.value)}
-            variant='outlined'
-            id='standard-basic'
-            label='Node Type'
+            variant="outlined"
+            label="Node Type"
             select
-            SelectProps
-            value={producerNodeData.node_type}
+            value={currentNode.node_type}
+            className={classes.formField}
           >
-            {values.map((option) => (
+            {nodeTypes.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
             ))}
           </TextField>
+        </Box>
 
-          <Box className={classes.locationNode}>
-            <Typography variant='h5'>Location</Typography>
-            <Box className={classes.leftBoxLocationNode}>
-              <TextField
-                onChange={(e) =>
-                  handleOnChangeLocation('name', e.target.value, 'location')
-                }
-                variant='outlined'
-                disabled={!producerNodeData.node_type}
-                id='standard-basic'
-                label='Name'
-                value={producerNodeData.location.name}
-              />
-              <TextField
-                onChange={(e) =>
-                  handleOnChangeLocation('country', e.target.value, 'location')
-                }
-                variant='outlined'
-                disabled={!producerNodeData.node_type}
-                id='standard-basic'
-                label='Country'
-                value={producerNodeData.location.country}
-              />
-            </Box>
-            <Box className={classes.rightBoxLocationNode}>
-              <TextField
-                onChange={(e) =>
-                  handleOnChangeLocation('latitude', e.target.value, 'location')
-                }
-                variant='outlined'
-                disabled={!producerNodeData.node_type}
-                id='standard-basic'
-                label='Latitude'
-                type='number'
-                value={producerNodeData.location.latitude}
-              />
-              <TextField
-                onChange={(e) =>
-                  handleOnChangeLocation(
-                    'longitude',
-                    e.target.value,
-                    'location'
-                  )
-                }
-                variant='outlined'
-                disabled={!producerNodeData.node_type}
-                id='standard-basic'
-                label='Longitude'
-                type='number'
-                value={producerNodeData.location.longitude}
-              />
-            </Box>
+        <Box className={classes.wrapper}>
+          <Typography className={classes.sectionTitle} variant="h5">
+            Location
+          </Typography>
+
+          <Box className={classes.locationWrapper}>
+            <TextField
+              onChange={(e) => handleOnChangeLocation('name', e.target.value)}
+              variant="outlined"
+              label="Name"
+              value={currentNode.location.name}
+              className={classes.formField}
+            />
+            <TextField
+              onChange={(e) =>
+                handleOnChangeLocation('country', e.target.value)
+              }
+              variant="outlined"
+              label="Country"
+              value={currentNode.location.country}
+              className={classes.formField}
+            />
+            <TextField
+              onChange={(e) =>
+                handleOnChangeLocation('latitude', e.target.value)
+              }
+              variant="outlined"
+              label="Latitude"
+              type="number"
+              value={currentNode.location.latitude || ''}
+              className={classes.formField}
+            />
+            <TextField
+              onChange={(e) =>
+                handleOnChangeLocation('longitude', e.target.value)
+              }
+              variant="outlined"
+              label="Longitude"
+              type="number"
+              value={currentNode.location.longitude || ''}
+              className={classes.formField}
+            />
           </Box>
+        </Box>
+
+        <Box className={classes.wrapper}>
+          <Typography className={classes.sectionTitle} variant="h5">
+            Endpoints
+          </Typography>
+
           <TextField
             onChange={(e) => handleOnChange('p2p_endpoint', e.target.value)}
-            variant='outlined'
-            className={clsx(classes.hideItem, {
-              [classes.showItem]: producerNodeData.node_type === 'seed'
-            })}
-            id='standard-basic'
-            label='P2P Endpoint'
-            value=''
+            variant="outlined"
+            label="P2P Endpoint"
+            value={currentNode.p2p_endpoint || ''}
+            className={classes.formField}
           />
-          <TextField
-            onChange={(e) => handleOnChange('bnet_endpoint', e.target.value)}
-            variant='outlined'
-            className={clsx(classes.hideItem, {
-              [classes.showItem]: producerNodeData.node_type === 'full'
-            })}
-            id='standard-basic'
-            label='BNET Endpoint'
-            value=''
-          />
+
           <TextField
             onChange={(e) => handleOnChange('api_endpoint', e.target.value)}
-            variant='outlined'
-            className={clsx(classes.hideItem, {
-              [classes.showItem]: producerNodeData.node_type === 'full'
-            })}
-            id='standard-basic'
-            label='API Endpoint'
-            value=''
+            variant="outlined"
+            label="API Endpoint"
+            value={currentNode.api_endpoint || ''}
+            className={classes.formField}
           />
+
           <TextField
             onChange={(e) => handleOnChange('ssl_endpoint', e.target.value)}
-            variant='outlined'
-            className={clsx(classes.hideItem, {
-              [classes.showItem]: producerNodeData.node_type === 'full'
-            })}
-            id='standard-basic'
-            label='SSL Endpoint'
-            value=''
+            variant="outlined"
+            label="SSL Endpoint"
+            value={currentNode.ssl_endpoint || ''}
+            className={classes.formField}
           />
         </Box>
 
+        <Box className={classes.wrapper}>
+          <Typography className={classes.sectionTitle} variant="h5">
+            Features
+          </Typography>
+
+          <TextField
+            onChange={handleOnChangeFeatures}
+            variant="outlined"
+            label="Node Feactures"
+            select
+            SelectProps={{
+              multiple: true,
+              classes: {
+                root: currentNode.features?.length ? classes.selectChips : ''
+              },
+              renderValue: (selected) => (
+                <div className={classes.chips}>
+                  {selected.map((value, index) => (
+                    <Chip
+                      key={`chip-item-${index}`}
+                      label={value}
+                      className={classes.chip}
+                    />
+                  ))}
+                </div>
+              )
+            }}
+            value={currentNode.features || []}
+            className={classes.formField}
+          >
+            {features.map((option, index) => (
+              <MenuItem key={`menu-item-${index}`} value={option.value}>
+                <Checkbox
+                  checked={
+                    (currentNode.features || []).indexOf(option.value) > -1
+                  }
+                />
+                <ListItemText primary={option.label} />
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+
         <Button
-          variant='contained'
-          color='secondary'
+          variant="contained"
+          color="secondary"
           className={classes.addButton}
-          onClick={handleOnClick}
+          onClick={handleOnSubmit}
+          disabled={!currentNode.node_type}
         >
-          Add Node
+          {nodeIndex !== null ? 'Edit node' : 'Add Node'}
         </Button>
       </Box>
     </Modal>
@@ -307,13 +333,11 @@ const NodesForm = ({
 }
 
 NodesForm.propTypes = {
-  onChange: PropTypes.func,
   nodes: PropTypes.array,
-  setNode: PropTypes.func,
+  nodeIndex: PropTypes.number,
+  onSubmit: PropTypes.func,
   openModal: PropTypes.bool,
-  setOpenModal: PropTypes.func,
-  editNode: PropTypes.any,
-  setEditNode: PropTypes.func
+  setOpenModal: PropTypes.func
 }
 
 export default NodesForm

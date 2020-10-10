@@ -1,8 +1,8 @@
 import { addParameters, addDecorator } from '@storybook/react'
 import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks'
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
 
-import StylesDecorator from './styles-decorator';
+import StylesDecorator from './styles-decorator'
 
 addDecorator(StylesDecorator)
 
@@ -12,7 +12,6 @@ addParameters({
     page: DocsPage
   },
   viewport: {
-    viewports: INITIAL_VIEWPORTS,
-    defaultViewport: 'desktop',
-  },
+    viewports: INITIAL_VIEWPORTS
+  }
 })

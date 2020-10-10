@@ -1,4 +1,8 @@
 const urlInputValidation = (value) => {
+  if (!value) {
+    return true
+  }
+
   const urlRegex = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/
 
   return urlRegex.test(value)
@@ -36,16 +40,25 @@ const formInputValidation = (formData) => {
       message: formData.code_of_conduct.length
         ? 'Invalid format to URL for Code of Conduct'
         : 'Code of Conduct is required'
+    },
+    ownership_disclosure: {
+      isError:
+        !formData.code_of_conduct.length ||
+        !urlInputValidation(formData.code_of_conduct),
+      message: formData.code_of_conduct.length
+        ? 'Invalid format to URL for Ownership Disclosure'
+        : 'Ownership Disclosure is required'
     }
   }
 
   return {
     formValidated: result,
     isValidForm:
-      !result.candidate_name.isError ||
-      !result.email.isError ||
-      !result.website.isError ||
-      !result.code_of_conduct.isError
+      !result.candidate_name.isError &&
+      !result.email.isError &&
+      !result.website.isError &&
+      !result.code_of_conduct.isError &&
+      !result.ownership_disclosure.isError
   }
 }
 

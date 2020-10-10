@@ -259,16 +259,16 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
   return (
     <div>
       <Button
-        size='large'
-        color='secondary'
+        size="large"
+        color="secondary"
         onClick={handleOpen}
         className={customBtnStyle}
       >
         Create Account
       </Button>
       <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
         onClose={handleOpen}
@@ -279,20 +279,20 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
         }}
       >
         <div className={classes.paper}>
-          <form noValidate autoComplete='off'>
+          <form noValidate autoComplete="off">
             <Grid
               container
-              direction='column'
-              justify='space-between'
+              direction="column"
+              justify="space-between"
               className={classes.root}
             >
               <div className={classes.deleteBtn}>
-                <Typography variant='h6' gutterBottom color='primary'>
+                <Typography variant="h6" gutterBottom color="primary">
                   Create Account
                 </Typography>
                 <IconButton
                   classes={{ root: classes.iconBtnPadding }}
-                  aria-label='delete'
+                  aria-label="delete"
                   onClick={() => setOpen(false)}
                 >
                   X
@@ -301,64 +301,61 @@ const AccountInfo = ({ onHandleSubmit, customBtnStyle }) => {
               <div className={classes.inputBox}>
                 <Grid item>
                   <TextField
-                    variant='filled'
+                    variant="filled"
                     fullWidth
                     error={Boolean(values.accountName.error)}
                     helperText={
                       values.accountName.error ? values.accountName.error : ''
                     }
-                    label='Account Name'
-                    placeholder='eoscrtest123'
+                    label="Account Name"
+                    placeholder="eoscrtest123"
                     required
-                    autoComplete='off'
-                    name='accountName'
+                    autoComplete="off"
+                    name="accountName"
                     onChange={handleChange}
                   />
                 </Grid>
                 <Grid item>
                   <TextField
-                    variant='filled'
+                    variant="filled"
                     fullWidth
                     error={Boolean(values.ownerPK.error)}
                     helperText={
                       values.ownerPK.error ? values.ownerPK.error : ''
                     }
-                    label='Owner Public Key'
-                    placeholder='EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'
+                    label="Owner Public Key"
+                    placeholder="EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"
                     required
-                    autoComplete='off'
-                    name='ownerPK'
+                    autoComplete="off"
+                    name="ownerPK"
                     onChange={handleChange}
                   />
                 </Grid>
                 <Grid item>
                   <TextField
-                    variant='filled'
+                    variant="filled"
                     fullWidth
                     error={Boolean(values.activePK.error)}
                     helperText={
                       values.activePK.error ? values.activePK.error : ''
                     }
-                    label='Active Public Key'
-                    placeholder='EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'
+                    label="Active Public Key"
+                    placeholder="EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"
                     required
-                    autoComplete='off'
-                    name='activePK'
+                    autoComplete="off"
+                    name="activePK"
                     onChange={handleChange}
                   />
                 </Grid>
                 <div className={classes.captcha}>
-                  <ReCAPTCHA
-                    sitekey={config.sitekey}
-                    onChange={(value) => console.log({ value })}
-                  />
+                  <ReCAPTCHA sitekey={config.sitekey} />
                 </div>
               </div>
               <div className={classes.btn}>
                 <Button
-                  size='large'
-                  variant='contained'
-                  color='secondary'
+                  size="large"
+                  variant="contained"
+                  color="secondary"
                   onClick={handleOnSubmit}
                 >
                   Create account

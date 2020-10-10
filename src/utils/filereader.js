@@ -1,6 +1,7 @@
 export const parseFile = (file, callback, progress) => {
   const fileSize = file.size
   const chunkSize = 64 * 1024
+  const success = true
   let offset = 0
   let chunkReaderBlock = null
 
@@ -11,7 +12,7 @@ export const parseFile = (file, callback, progress) => {
       callback(evt.target.result)
     } else return callback(new Error('Ha ocurrido un error leyendo el archivo'))
 
-    if (offset >= fileSize) return callback(true)
+    if (offset >= fileSize) return callback(success)
 
     chunkReaderBlock(offset, chunkSize, file)
   }

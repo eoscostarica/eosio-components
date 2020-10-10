@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   listPreview: {
-    marginBottom: theme.spacing(3)
+    marginBottom: 0
   },
   center: {
     textAlign: 'center'
@@ -58,11 +58,11 @@ const ImagePreview = ({ url, label, isInvalidURL }) => {
       </ListItem>
       <Collapse
         in={open}
-        timeout='auto'
+        timeout="auto"
         unmountOnExit
         classes={{ wrapperInner: classes.center }}
       >
-        <img className={classes.media} src={url} alt='node entity logo' />
+        <img className={classes.media} src={url} alt="node entity logo" />
       </Collapse>
     </List>
   )
