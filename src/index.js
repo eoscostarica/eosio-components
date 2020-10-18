@@ -8,6 +8,7 @@ import InputHash from './components/InputHash/InputHash'
 import IssuanceVerifier from './components/IssuanceVerifier'
 import RicardianContract from './components/RicardianContract'
 import VisualCertificate from './components/VisualCertificate'
+import ArrayTextField from './components/ArrayTextField'
 
 export {
   AccountInfo,
@@ -19,5 +20,6 @@ export {
   InputHash,
   IssuanceVerifier,
   RicardianContract,
-  VisualCertificate
+  VisualCertificate,
+  ArrayTextField
 }
