@@ -176,6 +176,8 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
     setCurrentNode(nodes[nodeIndex] || defaultNode)
   }, [nodes, nodeIndex])
 
+  console.log(nodes)
+
   return (
     <Modal openModal={openModal} setOpenModal={(value) => setOpenModal(value)}>
       <Box className={classes.nodes}>
@@ -224,7 +226,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             />
             <TextField
               onChange={(e) =>
-                handleOnChangeLocation('latitude', e.target.value)
+                handleOnChangeLocation('latitude', Number(e.target.value))
               }
               variant="outlined"
               label="Latitude"
@@ -234,12 +236,12 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             />
             <TextField
               onChange={(e) =>
-                handleOnChangeLocation('longitude', e.target.value)
+                handleOnChangeLocation('longitude', Number(e.target.value))
               }
               variant="outlined"
               label="Longitude"
               type="number"
-              value={currentNode.location.longitude || ''}
+              value={currentNode.location.longitude}
               className={classes.formField}
             />
           </Box>
