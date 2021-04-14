@@ -424,24 +424,28 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
-                  handleOnChange('latitude', e.target.value, 'location')
+                  handleOnChange('latitude', Number(e.target.value), 'location')
                 }
                 variant="outlined"
                 type="number"
                 label="Latitude"
-                value={org.location.latitude || ''}
+                value={org.location.latitude}
                 className={classes.formField}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
-                  handleOnChange('longitude', e.target.value, 'location')
+                  handleOnChange(
+                    'longitude',
+                    Number(e.target.value),
+                    'location'
+                  )
                 }
                 variant="outlined"
                 type="number"
                 label="Longitude"
-                value={org.location.longitude || ''}
+                value={org.location.longitude}
                 className={classes.formField}
               />
             </Grid>
