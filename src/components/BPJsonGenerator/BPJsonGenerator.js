@@ -424,7 +424,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
-                  handleOnChange('latitude', e.target.value, 'location')
+                  handleOnChange('latitude', Number(e.target.value), 'location')
                 }
                 variant="outlined"
                 type="number"

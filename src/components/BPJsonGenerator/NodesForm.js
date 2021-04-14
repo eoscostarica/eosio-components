@@ -176,8 +176,6 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
     setCurrentNode(nodes[nodeIndex] || defaultNode)
   }, [nodes, nodeIndex])
 
-  console.log(nodes)
-
   return (
     <Modal openModal={openModal} setOpenModal={(value) => setOpenModal(value)}>
       <Box className={classes.nodes}>
