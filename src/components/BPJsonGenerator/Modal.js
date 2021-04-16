@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/styles'
 import PropTypes from 'prop-types'
 import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
@@ -37,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   bodyWrapper: {
-    padding: theme.spacing(0, 2, 2, 2)
+    padding: theme.spacing(0, 2, 2, 2),
+    height: '100%'
   }
 }))
 
@@ -73,7 +75,15 @@ const MapModal = ({ openModal, setOpenModal, children }) => {
               <CloseIcon fontSize="inherit" />
             </IconButton>
           </Box>
-          <Box className={classes.bodyWrapper}>{children}</Box>
+          <Grid
+            container
+            justify="center"
+            alignContent="center"
+            alignItems="center"
+            className={classes.bodyWrapper}
+          >
+            {children}
+          </Grid>
         </Paper>
       </Fade>
     </Modal>

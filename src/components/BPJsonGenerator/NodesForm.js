@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
 import Chip from '@material-ui/core/Chip'
@@ -89,9 +90,7 @@ const defaultNode = {
 
 const useStyles = makeStyles((theme) => ({
   nodes: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
+    height: '100%'
   },
   wrapper: {
     display: 'flex',
@@ -159,13 +158,23 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
     }))
   }
 
+  const deleteEmptyKeyValues = () => {
+    const aux = currentNode
+    if (aux.features.length === 0) delete aux.features
+    Object.keys(aux).forEach((k) => {
+      if (aux[k] === '') delete aux[k]
+    })
+
+    return aux
+  }
+
   const handleOnSubmit = () => {
     if (nodeIndex !== null) {
       const newNodes = [...nodes]
-      newNodes[nodeIndex] = currentNode
+      newNodes[nodeIndex] = deleteEmptyKeyValues()
       onSubmit(newNodes)
     } else {
-      onSubmit([...nodes, currentNode])
+      onSubmit([...nodes, deleteEmptyKeyValues()])
     }
 
     setCurrentNode(defaultNode)
@@ -178,7 +187,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
   return (
     <Modal openModal={openModal} setOpenModal={(value) => setOpenModal(value)}>
-      <Box className={classes.nodes}>
+      <Grid container justify="center" className={classes.nodes}>
         <Box className={classes.wrapper}>
           <Typography className={classes.sectionTitle} variant="h5">
             Nodes
@@ -246,11 +255,24 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
         </Box>
 
         <Box className={classes.wrapper}>
-          <Typography className={classes.sectionTitle} variant="h5">
+          <Typography
+            style={{
+              display:
+                currentNode.node_type === 'producer' ||
+                currentNode.node_type === ''
+                  ? 'none'
+                  : undefined
+            }}
+            className={classes.sectionTitle}
+            variant="h5"
+          >
             Endpoints
           </Typography>
 
           <TextField
+            style={{
+              display: currentNode.node_type !== 'seed' ? 'none' : undefined
+            }}
             onChange={(e) => handleOnChange('p2p_endpoint', e.target.value)}
             variant="outlined"
             label="P2P Endpoint"
@@ -260,6 +282,9 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
           <TextField
             onChange={(e) => handleOnChange('api_endpoint', e.target.value)}
+            style={{
+              display: currentNode.node_type !== 'query' ? 'none' : undefined
+            }}
             variant="outlined"
             label="API Endpoint"
             value={currentNode.api_endpoint || ''}
@@ -267,6 +292,9 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
           />
 
           <TextField
+            style={{
+              display: currentNode.node_type !== 'query' ? 'none' : undefined
+            }}
             onChange={(e) => handleOnChange('ssl_endpoint', e.target.value)}
             variant="outlined"
             label="SSL Endpoint"
@@ -276,11 +304,20 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
         </Box>
 
         <Box className={classes.wrapper}>
-          <Typography className={classes.sectionTitle} variant="h5">
+          <Typography
+            style={{
+              display: currentNode.node_type !== 'query' ? 'none' : undefined
+            }}
+            className={classes.sectionTitle}
+            variant="h5"
+          >
             Features
           </Typography>
 
           <TextField
+            style={{
+              display: currentNode.node_type !== 'query' ? 'none' : undefined
+            }}
             onChange={handleOnChangeFeatures}
             variant="outlined"
             label="Node Feactures"
@@ -327,7 +364,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
         >
           {nodeIndex !== null ? 'Edit node' : 'Add Node'}
         </Button>
-      </Box>
+      </Grid>
     </Modal>
   )
 }
