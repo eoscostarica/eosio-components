@@ -62,7 +62,8 @@ const RicardianContract = ({
   loadingMessage,
   LinearProgressColor,
   errorMessage,
-  LinearProgressOverrideClasses
+  LinearProgressOverrideClasses,
+  title
 }) => {
   const classes = useStyles()
   const [hash, setHash] = useState('')
@@ -200,7 +201,7 @@ const RicardianContract = ({
 
   return (
     <Box className={classes.ricardianContractContainer}>
-      <Typography variant="h3">Ricardian contract</Typography>
+      <Typography variant="h3">{title}</Typography>
       <Typography variant="body1">
         {'Name: '}
         <Link
@@ -245,7 +246,8 @@ RicardianContract.propTypes = {
   loadingMessage: PropTypes.string,
   LinearProgressColor: PropTypes.string,
   errorMessage: PropTypes.string,
-  LinearProgressOverrideClasses: PropTypes.object
+  LinearProgressOverrideClasses: PropTypes.object,
+  title: PropTypes.string
 }
 
 RicardianContract.defaultProps = {
@@ -255,7 +257,8 @@ RicardianContract.defaultProps = {
   loadingMessage: 'Fetching ricardian clauses from blockchain',
   LinearProgressColor: 'secondary',
   errorMessage: 'Error getting Ricardian Contract Data',
-  LinearProgressOverrideClasses: {}
+  LinearProgressOverrideClasses: {},
+  title: 'Ricardian contract'
 }
 
 export default RicardianContract

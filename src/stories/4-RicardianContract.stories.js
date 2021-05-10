@@ -15,6 +15,7 @@ export const ricardianContract = () => {
   const contractName = text('contractName', 'notarioeoscr')
   const actionName = text('actionName', undefined)
   const showClauses = boolean('showClauses', true)
+  const title = text('title', undefined)
 
   return (
     <RicardianContract
@@ -23,6 +24,7 @@ export const ricardianContract = () => {
       actionName={actionName}
       showClauses={showClauses}
       url={config.eosApiHost}
+      title={title}
     />
   )
 }
