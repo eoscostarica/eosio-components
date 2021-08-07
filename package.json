@@ -1,6 +1,6 @@
 {
   "name": "@eoscostarica/eoscr-components",
-  "version": "3.1.4",
+  "version": "3.1.5",
   "description": "A collection of React Components for EOSIO",
   "author": "EOS Costa Rica",
   "license": "MIT",
@@ -75,7 +75,6 @@
     "@storybook/theming": "^6.1.20",
     "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.1.0",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
