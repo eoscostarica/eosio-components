@@ -1,6 +1,11 @@
 # eoscr-components
 
-[![N|Solid](https://eoscostarica.io/wp-content/uploads/2019/06/EOSCr-logo.png)](https://eoscostarica.io/)
+<p align="center">
+	<a href="https://eoscostarica.io">
+		<img src="https://github.com/eoscostarica/eos-rate/raw/master/docs/eoscostarica-logo-black.png" width="300">
+	</a>
+</p>
+<br/>
 
 A collection of React Components for EOSIO.
 
@@ -15,15 +20,13 @@ A collection of React Components for EOSIO.
 
 ## Version
 
-- 3.1.4
+- 3.1.5
 
 ### Installation
 
-Install the dependencies and devDependencies and start the server.
+To add the package to your react app install the dependencies using yarn.
 
-```
-$ npm install eoscr-components --save
-```
+`$ yarn add @eoscostarica/eoscr-components`
 
 ## Components
 
@@ -51,7 +54,10 @@ We are using Storybook
 > It makes building stunning UIs organized and efficient.
 
 ```bash
-npm run storybook
+# Install dependencies and devDependencies
+yarn
+# Starts Storybook in development mode
+yarn storybook
 ```
 
 _you can see more information about [STORYBOOK](https://storybook.js.org/)_
