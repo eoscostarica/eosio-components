@@ -87,19 +87,16 @@ const RicardianContract = ({
 
   const formatRicardianClause = useCallback(
     (text = '') => {
-      const [_version, content1] = text.split('\ntitle: ')
+      const [_version, content1] = text.replace(/---/g, '').split('\ntitle: ')
       const version = _version.replace(/---\n/g, '')
       const [_title, content2] = (content1 || '').split('\nsummary: ')
       const [summary, _icon] = (content2 || '').split('\nicon: ')
+      const icon = _icon ? _icon.trim() : defaultIcon
 
       return (
         <Box>
           <Box className={classes.boxTitle}>
-            <img
-              alt="icon"
-              src={_icon || defaultIcon}
-              onError={useDefaultLogo}
-            />
+            <img alt="icon" src={icon} onError={useDefaultLogo} />
             <Box className={classes.boxText}>
               <Typography color="primary" variant="h4">
                 {_title}
