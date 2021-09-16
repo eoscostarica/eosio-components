@@ -1,205 +1,160 @@
-import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid'
-import MenuItem from '@material-ui/core/MenuItem'
-import Button from '@material-ui/core/Button'
-import Chip from '@material-ui/core/Chip'
-import Checkbox from '@material-ui/core/Checkbox'
-import ListItemText from '@material-ui/core/ListItemText'
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@material-ui/core/Button";
+import Chip from "@material-ui/core/Chip";
+import Checkbox from "@material-ui/core/Checkbox";
+import ListItemText from "@material-ui/core/ListItemText";
 
-import Modal from './Modal'
+import Styles from "./styles";
+import Modal from "./Modal";
 
 const nodeTypes = [
   {
-    label: 'Producer',
-    value: 'producer',
-    info: ''
+    label: "Producer",
+    value: "producer",
+    info: "",
   },
   {
-    label: 'Query',
-    value: 'query',
-    info: ''
+    label: "Query",
+    value: "query",
+    info: "",
   },
   {
-    label: 'Seed',
-    value: 'seed',
-    info: ''
-  }
-]
+    label: "Seed",
+    value: "seed",
+    info: "",
+  },
+];
 
 const features = [
   {
-    label: 'chain-api',
-    value: 'chain-api',
-    info: 'basic eosio::chain_api_plugin (/v1/chain/*)'
+    label: "chain-api",
+    value: "chain-api",
+    info: "basic eosio::chain_api_plugin (/v1/chain/*)",
   },
   {
-    label: 'account-query',
-    value: 'account-query',
-    info: '(/v1/chain/get_accounts_by_authorizers)'
+    label: "account-query",
+    value: "account-query",
+    info: "(/v1/chain/get_accounts_by_authorizers)",
   },
   {
-    label: 'history-v1',
-    value: 'history-v1',
-    info: '(/v1/history/*)'
+    label: "history-v1",
+    value: "history-v1",
+    info: "(/v1/history/*)",
   },
   {
-    label: 'hyperion-v2',
-    value: 'hyperion-v2',
-    info: '(/v2/*)'
+    label: "hyperion-v2",
+    value: "hyperion-v2",
+    info: "(/v2/*)",
   },
   {
-    label: 'dfuse',
-    value: 'dfuse',
-    info: ''
+    label: "dfuse",
+    value: "dfuse",
+    info: "",
   },
   {
-    label: 'fio-api',
-    value: 'fio-api',
-    info: ''
+    label: "fio-api",
+    value: "fio-api",
+    info: "",
   },
   {
-    label: 'snapshot-api',
-    value: 'snapshot-api',
-    info: ''
+    label: "snapshot-api",
+    value: "snapshot-api",
+    info: "",
   },
   {
-    label: 'dsp-api',
-    value: 'dsp-api',
-    info: ''
-  }
-]
+    label: "dsp-api",
+    value: "dsp-api",
+    info: "",
+  },
+];
 
 const defaultNode = {
   location: {
-    name: '',
-    country: '',
+    name: "",
+    country: "",
     latitude: null,
-    longitude: null
+    longitude: null,
   },
-  node_type: '',
-  p2p_endpoint: '',
-  api_endpoint: '',
-  ssl_endpoint: '',
-  features: []
-}
+  node_type: "",
+  p2p_endpoint: "",
+  api_endpoint: "",
+  ssl_endpoint: "",
+  features: [],
+};
 
-const useStyles = makeStyles((theme) => ({
-  nodes: {
-    height: '100%'
-  },
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%'
-  },
-  locationWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      '& .MuiFormControl-root': {
-        width: '48%'
-      }
-    }
-  },
-  sectionTitle: {
-    marginBottom: theme.spacing(2)
-  },
-  formField: {
-    marginBottom: theme.spacing(2)
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    marginBottom: theme.spacing(1)
-  },
-  chip: {
-    marginBottom: theme.spacing(1),
-    marginRight: theme.spacing(1)
-  },
-  selectChips: {
-    paddingBottom: 0
-  },
-  addButton: {
-    height: 40,
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: 300
-    }
-  }
-}))
+const useStyles = makeStyles(Styles);
 
 const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
-  const classes = useStyles()
-  const [currentNode, setCurrentNode] = useState(defaultNode)
+  const classes = useStyles();
+  const [currentNode, setCurrentNode] = useState(defaultNode);
 
   const handleOnChange = (key, value) => {
-    setCurrentNode({ ...currentNode, [key]: value })
-  }
+    setCurrentNode({ ...currentNode, [key]: value });
+  };
 
   const handleOnChangeLocation = (key, value) => {
     setCurrentNode({
       ...currentNode,
-      location: { ...currentNode.location, [key]: value }
-    })
-  }
+      location: { ...currentNode.location, [key]: value },
+    });
+  };
 
   const handleOnChangeFeatures = (event) => {
     setCurrentNode((prevValue) => ({
       ...prevValue,
-      features: event.target.value
-    }))
-  }
+      features: event.target.value,
+    }));
+  };
 
   const deleteEmptyKeyValues = () => {
-    const aux = currentNode
-    if (aux.features.length === 0) delete aux.features
+    const aux = currentNode;
+    if (aux.features.length === 0) delete aux.features;
     Object.keys(aux).forEach((k) => {
-      if (aux[k] === '') delete aux[k]
-    })
+      if (aux[k] === "") delete aux[k];
+    });
 
-    return aux
-  }
+    return aux;
+  };
 
   const handleOnSubmit = () => {
     if (nodeIndex !== null) {
-      const newNodes = [...nodes]
-      newNodes[nodeIndex] = deleteEmptyKeyValues()
-      onSubmit(newNodes)
+      const newNodes = [...nodes];
+      newNodes[nodeIndex] = deleteEmptyKeyValues();
+      onSubmit(newNodes);
     } else {
-      onSubmit([...nodes, deleteEmptyKeyValues()])
+      onSubmit([...nodes, deleteEmptyKeyValues()]);
     }
 
-    setCurrentNode(defaultNode)
-    setOpenModal(false)
-  }
+    setCurrentNode(defaultNode);
+    setOpenModal(false);
+  };
 
   useEffect(() => {
-    setCurrentNode(nodes[nodeIndex] || defaultNode)
-  }, [nodes, nodeIndex])
+    setCurrentNode(nodes[nodeIndex] || defaultNode);
+  }, [nodes, nodeIndex]);
 
   return (
     <Modal openModal={openModal} setOpenModal={(value) => setOpenModal(value)}>
       <Grid container justify="center" className={classes.nodes}>
-        <Box className={classes.wrapper}>
+        <Box className={classes.wrapperForm}>
           <Typography className={classes.sectionTitle} variant="h5">
             Nodes
           </Typography>
 
           <TextField
-            onChange={(e) => handleOnChange('node_type', e.target.value)}
+            onChange={(e) => handleOnChange("node_type", e.target.value)}
             variant="outlined"
             label="Node Type"
             select
             value={currentNode.node_type}
-            className={classes.formField}
+            className={classes.formFieldForm}
           >
             {nodeTypes.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -209,59 +164,59 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
           </TextField>
         </Box>
 
-        <Box className={classes.wrapper}>
+        <Box className={classes.wrapperForm}>
           <Typography className={classes.sectionTitle} variant="h5">
             Location
           </Typography>
 
           <Box className={classes.locationWrapper}>
             <TextField
-              onChange={(e) => handleOnChangeLocation('name', e.target.value)}
+              onChange={(e) => handleOnChangeLocation("name", e.target.value)}
               variant="outlined"
               label="Name"
               value={currentNode.location.name}
-              className={classes.formField}
+              className={classes.formFieldForm}
             />
             <TextField
               onChange={(e) =>
-                handleOnChangeLocation('country', e.target.value)
+                handleOnChangeLocation("country", e.target.value)
               }
               variant="outlined"
               label="Country"
               value={currentNode.location.country}
-              className={classes.formField}
+              className={classes.formFieldForm}
             />
             <TextField
               onChange={(e) =>
-                handleOnChangeLocation('latitude', Number(e.target.value))
+                handleOnChangeLocation("latitude", Number(e.target.value))
               }
               variant="outlined"
               label="Latitude"
               type="number"
-              value={currentNode.location.latitude || ''}
-              className={classes.formField}
+              value={currentNode.location.latitude || ""}
+              className={classes.formFieldForm}
             />
             <TextField
               onChange={(e) =>
-                handleOnChangeLocation('longitude', Number(e.target.value))
+                handleOnChangeLocation("longitude", Number(e.target.value))
               }
               variant="outlined"
               label="Longitude"
               type="number"
               value={currentNode.location.longitude}
-              className={classes.formField}
+              className={classes.formFieldForm}
             />
           </Box>
         </Box>
 
-        <Box className={classes.wrapper}>
+        <Box className={classes.wrapperForm}>
           <Typography
             style={{
               display:
-                currentNode.node_type === 'producer' ||
-                currentNode.node_type === ''
-                  ? 'none'
-                  : undefined
+                currentNode.node_type === "producer" ||
+                currentNode.node_type === ""
+                  ? "none"
+                  : undefined,
             }}
             className={classes.sectionTitle}
             variant="h5"
@@ -271,42 +226,42 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
           <TextField
             style={{
-              display: currentNode.node_type !== 'seed' ? 'none' : undefined
+              display: currentNode.node_type !== "seed" ? "none" : undefined,
             }}
-            onChange={(e) => handleOnChange('p2p_endpoint', e.target.value)}
+            onChange={(e) => handleOnChange("p2p_endpoint", e.target.value)}
             variant="outlined"
             label="P2P Endpoint"
-            value={currentNode.p2p_endpoint || ''}
-            className={classes.formField}
+            value={currentNode.p2p_endpoint || ""}
+            className={classes.formFieldForm}
           />
 
           <TextField
-            onChange={(e) => handleOnChange('api_endpoint', e.target.value)}
+            onChange={(e) => handleOnChange("api_endpoint", e.target.value)}
             style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
+              display: currentNode.node_type !== "query" ? "none" : undefined,
             }}
             variant="outlined"
             label="API Endpoint"
-            value={currentNode.api_endpoint || ''}
-            className={classes.formField}
+            value={currentNode.api_endpoint || ""}
+            className={classes.formFieldForm}
           />
 
           <TextField
             style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
+              display: currentNode.node_type !== "query" ? "none" : undefined,
             }}
-            onChange={(e) => handleOnChange('ssl_endpoint', e.target.value)}
+            onChange={(e) => handleOnChange("ssl_endpoint", e.target.value)}
             variant="outlined"
             label="SSL Endpoint"
-            value={currentNode.ssl_endpoint || ''}
-            className={classes.formField}
+            value={currentNode.ssl_endpoint || ""}
+            className={classes.formFieldForm}
           />
         </Box>
 
-        <Box className={classes.wrapper}>
+        <Box className={classes.wrapperForm}>
           <Typography
             style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
+              display: currentNode.node_type !== "query" ? "none" : undefined,
             }}
             className={classes.sectionTitle}
             variant="h5"
@@ -316,7 +271,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
           <TextField
             style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
+              display: currentNode.node_type !== "query" ? "none" : undefined,
             }}
             onChange={handleOnChangeFeatures}
             variant="outlined"
@@ -325,7 +280,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             SelectProps={{
               multiple: true,
               classes: {
-                root: currentNode.features?.length ? classes.selectChips : ''
+                root: currentNode.features?.length ? classes.selectChips : "",
               },
               renderValue: (selected) => (
                 <div className={classes.chips}>
@@ -337,10 +292,10 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
                     />
                   ))}
                 </div>
-              )
+              ),
             }}
             value={currentNode.features || []}
-            className={classes.formField}
+            className={classes.formFieldForm}
           >
             {features.map((option, index) => (
               <MenuItem key={`menu-item-${index}`} value={option.value}>
@@ -362,19 +317,19 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
           onClick={handleOnSubmit}
           disabled={!currentNode.node_type}
         >
-          {nodeIndex !== null ? 'Edit node' : 'Add Node'}
+          {nodeIndex !== null ? "Edit node" : "Add Node"}
         </Button>
       </Grid>
     </Modal>
-  )
-}
+  );
+};
 
 NodesForm.propTypes = {
   nodes: PropTypes.array,
   nodeIndex: PropTypes.number,
   onSubmit: PropTypes.func,
   openModal: PropTypes.bool,
-  setOpenModal: PropTypes.func
-}
+  setOpenModal: PropTypes.func,
+};
 
-export default NodesForm
+export default NodesForm;

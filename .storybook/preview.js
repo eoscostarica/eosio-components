@@ -1,17 +1,14 @@
-import { addParameters, addDecorator } from '@storybook/react'
-import { DocsPage, DocsContainer } from '@storybook/addon-docs/blocks'
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
+import { ThemeProvider } from "@material-ui/core";
+import { createTheme } from "@material-ui/core/styles";
+import { addDecorator } from "@storybook/react";
+import { withThemes } from "@react-theming/storybook-addon";
+import { EOSCR_THEME } from "@eoscostarica/eoscr-theme";
 
-import StylesDecorator from './styles-decorator'
+const providerFn = ({ theme, children }) => {
+  const muTheme = createTheme(theme);
 
-addDecorator(StylesDecorator)
+  return <ThemeProvider theme={muTheme}>{children}</ThemeProvider>;
+};
 
-addParameters({
-  docs: {
-    container: DocsContainer,
-    page: DocsPage
-  },
-  viewport: {
-    viewports: INITIAL_VIEWPORTS
-  }
-})
+// pass ThemeProvider and array of your themes to decorator
+addDecorator(withThemes(null, [EOSCR_THEME], { providerFn }));
