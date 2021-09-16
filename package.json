@@ -1,6 +1,6 @@
 {
   "name": "@eoscostarica/eoscr-components",
-  "version": "3.1.6",
+  "version": "4.0.0",
   "description": "A collection of React Components for EOSIO",
   "author": "EOS Costa Rica",
   "license": "MIT",
@@ -9,92 +9,92 @@
     "url": "git+https://github.com/eoscostarica/eoscr-components.git"
   },
   "main": "dist/index.js",
-  "module": "dist/index.modern.js",
+  "module": "dist/index.js",
   "source": "src/index.js",
   "engines": {
     "node": ">=10"
   },
-  "scripts": {
-    "build": "microbundle-crl --no-compress --format modern,cjs",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs",
-    "prepare": "run-s build",
-    "format": "precise-commits --check-only",
-    "lint": "eslint --ext .jsx,.js src",
-    "test": "run-s test:unit test:lint test:build",
-    "test:build": "run-s build",
-    "test:lint": "eslint .",
-    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom --passWithNoTests",
-    "test:watch": "react-scripts test --env=jsdom",
-    "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build",
-    "storybook": "start-storybook -p 9009",
-    "build-storybook": "build-storybook"
-  },
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.56",
-    "@material-ui/styles": "^4.10.0",
-    "chart.js": "^3.5.0",
+    "@babel/polyfill": "^7.12.1",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@material-ui/styles": "^4.11.4",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
     "clsx": "^1.1.1",
-    "crypto-js": "^4.0.0",
+    "crypto-js": "^4.1.1",
     "eosjs": "^22.1.0",
     "eosjs-api": "^7.0.4",
-    "node-fetch": "^2.6.0",
     "prop-types": "^15.7.2",
-    "react": "^17.0.2",
-    "react-chartjs-2": "^3.0.4",
-    "react-dom": "^17.0.2",
-    "react-dropzone": "^11.0.1",
+    "react-dropzone": "^11.4.0",
     "react-file-download": "^0.3.5",
-    "react-google-recaptcha": "^2.0.1",
-    "react-identicons": "^1.2.4",
-    "react-json-view": "^1.19.1",
-    "react-markdown": "^6.0.3",
-    "react-virtualized": "^9.21.2",
+    "react-google-recaptcha": "^2.1.0",
+    "react-identicons": "^1.2.5",
+    "react-json-view": "^1.21.3",
+    "react-virtualized": "^9.22.3",
     "sha256": "^0.2.0",
-    "text-encoding": "^0.7.0"
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "rm -rf dist && NODE_ENV=production babel src/index.js --out-dir dist --copy-files",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public",
+    "predeploy": "cd example && yarn install && yarn run build",
+    "deploy": "gh-pages -d example/build"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.12.1",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/preset-react": "^7.9.4",
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.14.5",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/preset-react": "^7.14.5",
     "@eoscostarica/eoscr-theme": "^1.0.3",
-    "@storybook/addon-actions": "^6.1.20",
-    "@storybook/addon-docs": "^6.1.20",
-    "@storybook/addon-knobs": "^6.1.20",
-    "@storybook/addon-links": "^6.1.20",
-    "@storybook/addon-viewport": "^6.1.20",
-    "@storybook/addons": "^6.1.20",
-    "@storybook/node-logger": "^6.1.20",
-    "@storybook/preset-create-react-app": "^3.1.6",
-    "@storybook/react": "^6.1.20",
-    "@storybook/storybook-deployer": "^2.8.7",
-    "@storybook/theming": "^6.1.20",
-    "axios": "^0.21.1",
-    "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.1.0",
-    "cross-env": "^7.0.2",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-config-standard-react": "^11.0.1",
-    "eslint-plugin-import": "^2.24.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-standard": "^5.0.0",
-    "husky": "^7.0.1",
-    "microbundle-crl": "^0.13.10",
-    "npm-run-all": "^4.1.5",
-    "precise-commits": "^1.0.2",
-    "prettier": "^2.0.4",
-    "react-is": "^17.0.2",
-    "react-scripts": "^4.0.3",
-    "styled-components": "^5.2.0"
+    "@react-theming/storybook-addon": "^1.1.1",
+    "@storybook/addon-actions": "^6.3.8",
+    "@storybook/addon-essentials": "^6.3.8",
+    "@storybook/addon-links": "^6.3.8",
+    "@storybook/node-logger": "^6.3.8",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.3.8",
+    "cross-env": "^7.0.3",
+    "husky": "^7.0.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "babel-loader": "^8.1.0"
   },
   "optionalDependencies": {
     "@types/node": "*",

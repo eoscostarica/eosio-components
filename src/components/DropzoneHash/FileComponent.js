@@ -1,78 +1,59 @@
-import React from 'react'
-import { styled, withTheme } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import PropTypes from 'prop-types'
-import DeleteIcon from '@material-ui/icons/Delete'
-import DescriptionIcon from '@material-ui/icons/Description'
+import React from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/styles";
+import Container from "@material-ui/core/Container";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import DeleteIcon from "@material-ui/icons/Delete";
+import DescriptionIcon from "@material-ui/icons/Description";
 
-const DetailsContainer = styled(withTheme(Container))((props) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-evenly',
-  padding: '3%',
-  minHeight: '150px',
-  width: '100%',
-  background: props.theme.palette.background.lightgray
-}))
+import Styles from "./styles";
 
-const FileDetails = styled(withTheme(Typography))((props) => ({
-  color: props.theme.typography.caption.color,
-  fontSize: props.theme.typography.caption.fontSize
-}))
-
-const FileDetailsHeader = styled(Typography)({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  width: '100%'
-})
-
-const StyledButton = styled(withTheme(Button))((props) => ({
-  backgroundColor: props.theme.palette.secondary.main,
-  color: props.theme.palette.primary.dark
-}))
-
-const FileBox = styled(withTheme(Box))({
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'start'
-})
+const useStyles = makeStyles(Styles);
 
 const FileComponent = ({
   filename,
   filesize,
   filehash,
   lastModifiedDate,
-  onClick
+  onClick,
 }) => {
+  const classes = useStyles();
+
   return (
-    <DetailsContainer>
-      <FileBox>
+    <Container className={classes.detailsContainer}>
+      <Box className={classes.fileBox}>
         <DescriptionIcon />
-        <FileDetailsHeader>
-          {filename}{' '}
-          <StyledButton onClick={onClick} variant="contained">
+        <Typography className={classes.fileDetailsHeader}>
+          {filename}
+          <Button
+            className={classes.styledButton}
+            onClick={onClick}
+            variant="contained"
+          >
             <DeleteIcon />
-          </StyledButton>
-        </FileDetailsHeader>
+          </Button>
+        </Typography>
         <br />
-      </FileBox>
-      <FileDetails>Tamaño: {filesize}</FileDetails>
-      <FileDetails>Última modificación: {lastModifiedDate}</FileDetails>
-      <FileDetails>Hash: {filehash}</FileDetails>
-    </DetailsContainer>
-  )
-}
+      </Box>
+      <Typography className={classes.fileDetails}>
+        Tamaño: {filesize}
+      </Typography>
+      <Typography className={classes.fileDetails}>
+        Última modificación: {lastModifiedDate}
+      </Typography>
+      <Typography className={classes.fileDetails}>Hash: {filehash}</Typography>
+    </Container>
+  );
+};
 
 FileComponent.propTypes = {
   filename: PropTypes.string,
   filesize: PropTypes.string,
   filehash: PropTypes.string,
   lastModifiedDate: PropTypes.string,
-  onClick: PropTypes.func
-}
+  onClick: PropTypes.func,
+};
 
-export default FileComponent
+export default FileComponent;
