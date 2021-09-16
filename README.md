@@ -20,7 +20,7 @@ A collection of React Components for EOSIO.
 
 ## Version
 
-- 3.1.6
+- 3.1.7
 
 ### Installation
 
