@@ -1,14 +1,14 @@
-import React from "react";
-import InfiniteLoader from "react-virtualized/dist/commonjs/InfiniteLoader";
-import { Table, Column } from "react-virtualized/dist/commonjs/Table";
-import { makeStyles } from "@material-ui/styles";
-import PropTypes from "prop-types";
-import TableCell from "@material-ui/core/TableCell";
-import clsx from "clsx";
+import React from 'react'
+import InfiniteLoader from 'react-virtualized/dist/commonjs/InfiniteLoader'
+import { Table, Column } from 'react-virtualized/dist/commonjs/Table'
+import { makeStyles } from '@material-ui/styles'
+import PropTypes from 'prop-types'
+import TableCell from '@material-ui/core/TableCell'
+import clsx from 'clsx'
 
-import Styles from "./styles";
+import Styles from './styles'
 
-const useStyles = makeStyles(Styles);
+const useStyles = makeStyles(Styles)
 
 const InfiniteRegistryTableLoader = ({
   /** Are there more items to load?
@@ -28,9 +28,9 @@ const InfiniteRegistryTableLoader = ({
   width,
   height,
   rowHeight,
-  headerHeight,
+  headerHeight
 }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const cellRenderer = ({ cellData, columnIndex }) => {
     return (
@@ -40,7 +40,7 @@ const InfiniteRegistryTableLoader = ({
           classes.tableCell,
           classes.flexContainer,
           {
-            [classes.noClick]: onRowClick == null,
+            [classes.noClick]: onRowClick == null
           },
           columnIndex === 4 ? classes.click : undefined
         )}
@@ -48,14 +48,14 @@ const InfiniteRegistryTableLoader = ({
         style={{ height: 48 }}
         align={
           (columnIndex != null && columns[columnIndex].numeric) || false
-            ? "right"
-            : "left"
+            ? 'right'
+            : 'left'
         }
       >
         {cellData}
       </TableCell>
-    );
-  };
+    )
+  }
 
   const headerRenderer = ({ label, columnIndex }) => {
     return (
@@ -68,21 +68,21 @@ const InfiniteRegistryTableLoader = ({
         )}
         variant="head"
         style={{ height: 48 }}
-        align={columns[columnIndex].numeric || false ? "right" : "left"}
+        align={columns[columnIndex].numeric || false ? 'right' : 'left'}
       >
         <span>{label}</span>
       </TableCell>
-    );
-  };
+    )
+  }
 
   const loadMoreRows = isNextPageLoading
     ? (e) => {
-        console.log(e);
+        console.log(e)
       }
-    : loadNextPage;
+    : loadNextPage
 
   // Every row is loaded except for our loading indicator row.
-  const isRowLoaded = ({ index }) => !hasNextPage || index < rows.size;
+  const isRowLoaded = ({ index }) => !hasNextPage || index < rows.size
 
   return (
     <InfiniteLoader
@@ -98,7 +98,7 @@ const InfiniteRegistryTableLoader = ({
           width={width}
           rowHeight={rowHeight || 48}
           gridStyle={{
-            direction: "inherit",
+            direction: 'inherit'
           }}
           rowCount={rows.length}
           rowGetter={({ index }) => rows[index]}
@@ -113,7 +113,7 @@ const InfiniteRegistryTableLoader = ({
                 headerRenderer={(headerProps) =>
                   headerRenderer({
                     ...headerProps,
-                    columnIndex: index,
+                    columnIndex: index
                   })
                 }
                 className={classes.flex}
@@ -121,13 +121,13 @@ const InfiniteRegistryTableLoader = ({
                 dataKey={dataKey}
                 {...other}
               />
-            );
+            )
           })}
         </Table>
       )}
     </InfiniteLoader>
-  );
-};
+  )
+}
 
 InfiniteRegistryTableLoader.propTypes = {
   hasNextPage: PropTypes.bool,
@@ -139,13 +139,13 @@ InfiniteRegistryTableLoader.propTypes = {
       dataKey: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       numeric: PropTypes.bool,
-      width: PropTypes.number.isRequired,
+      width: PropTypes.number.isRequired
     })
   ).isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
   rowHeight: PropTypes.number,
   headerHeight: PropTypes.number,
-  onRowClick: PropTypes.func,
-};
-export default InfiniteRegistryTableLoader;
+  onRowClick: PropTypes.func
+}
+export default InfiniteRegistryTableLoader

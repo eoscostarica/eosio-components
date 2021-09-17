@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react'
 
-import AccountInfo from "../components/AccountInfo";
+import AccountInfo from '../components/AccountInfo'
 
 export default {
-  title: "Example/Account Information",
-  component: AccountInfo,
-};
+  title: 'Example/Account Information',
+  component: AccountInfo
+}
 
-const Template = (args) => <AccountInfo {...args} />;
+const Template = (args) => <AccountInfo {...args} />
 
-export const Example = Template.bind({});
+export const Example = Template.bind({})

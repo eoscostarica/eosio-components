@@ -1,25 +1,25 @@
-import React from "react";
-import { makeStyles } from "@material-ui/styles";
-import PropTypes from "prop-types";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
+import React from 'react'
+import { makeStyles } from '@material-ui/styles'
+import PropTypes from 'prop-types'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import IconButton from '@material-ui/core/IconButton'
+import CloseIcon from '@material-ui/icons/Close'
+import Modal from '@material-ui/core/Modal'
+import Backdrop from '@material-ui/core/Backdrop'
+import Fade from '@material-ui/core/Fade'
 
-import Styles from "./styles";
+import Styles from './styles'
 
-const useStyles = makeStyles(Styles);
+const useStyles = makeStyles(Styles)
 
 const MapModal = ({ openModal, setOpenModal, children }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const handleOpen = () => {
-    setOpenModal(!openModal);
-  };
+    setOpenModal(!openModal)
+  }
 
   return (
     <Modal
@@ -31,7 +31,7 @@ const MapModal = ({ openModal, setOpenModal, children }) => {
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
-        timeout: 500,
+        timeout: 500
       }}
     >
       <Fade in={openModal}>
@@ -58,17 +58,17 @@ const MapModal = ({ openModal, setOpenModal, children }) => {
         </Paper>
       </Fade>
     </Modal>
-  );
-};
+  )
+}
 
 MapModal.propTypes = {
   openModal: PropTypes.bool,
   children: PropTypes.any,
-  setOpenModal: PropTypes.func,
-};
+  setOpenModal: PropTypes.func
+}
 
 MapModal.defaultProps = {
-  openModal: false,
-};
+  openModal: false
+}
 
-export default MapModal;
+export default MapModal

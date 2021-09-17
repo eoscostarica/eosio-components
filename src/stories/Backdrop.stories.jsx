@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react'
 
-import Backdrop from "../components/Backdrop";
+import Backdrop from '../components/Backdrop'
 
 export default {
-  title: "Example/Backdrop",
-  component: Backdrop,
-};
+  title: 'Example/Backdrop',
+  component: Backdrop
+}
 
-const Template = (args) => <Backdrop {...args} />;
+const Template = (args) => <Backdrop {...args} />
 
-export const Example = Template.bind({});
+export const Example = Template.bind({})
 Example.args = {
   layerHeightUp: 200,
   layerHeightDown: 51,
@@ -18,6 +18,6 @@ Example.args = {
   className: null,
   classes: {},
   headerText: <span>Settings</span>,
-  backgroundColor: "#00bace",
-  isStaticPage: false,
-};
+  backgroundColor: '#00bace',
+  isStaticPage: false
+}

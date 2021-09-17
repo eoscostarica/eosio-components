@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import { makeStyles } from '@material-ui/core/styles'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Collapse from '@material-ui/core/Collapse'
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
-import Styles from "./styles";
+import Styles from './styles'
 
-const useStyles = makeStyles(Styles);
+const useStyles = makeStyles(Styles)
 
 const ImagePreview = ({ url, label, isInvalidURL }) => {
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const classes = useStyles()
+  const [open, setOpen] = useState(false)
 
   const handleClick = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
-  if (isInvalidURL || !url.length) return null;
+  if (isInvalidURL || !url.length) return null
 
   return (
     <List className={classes.listPreview}>
@@ -37,13 +37,13 @@ const ImagePreview = ({ url, label, isInvalidURL }) => {
         <img className={classes.media} src={url} alt="node entity logo" />
       </Collapse>
     </List>
-  );
-};
+  )
+}
 
 ImagePreview.propTypes = {
   url: PropTypes.string,
   label: PropTypes.string,
-  isInvalidURL: PropTypes.bool,
-};
+  isInvalidURL: PropTypes.bool
+}
 
-export default ImagePreview;
+export default ImagePreview

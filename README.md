@@ -20,7 +20,7 @@ A collection of React Components for EOSIO.
 
 ## Version
 
-- 3.1.7
+- 3.5.0
 
 ### Installation
 
@@ -71,75 +71,72 @@ eoscr-components/
 ├── .storybook
 │   ├── main.js
 │   ├── preview.js
-│   ├── preview-head.html
-│   └── styles-decorator.js
 │
 ├──  src
 │   ├── api
-│   │   └── eosjs-api.js
+│   │   └── eos-api.js
 │   │
 │   ├── config
 │   │   └── index.js
 │   │
 │   ├── stories
-│   │   ├── 0-AccountInfo.stories.js
-│   │   ├── 1-CreateAccount.stories.js
-│   │   ├── 2-InputHash.stories.js
-│   │   ├── 3-Backdrop.stories.js
-│   │   ├── 4-RicardianContract.stories.js
-│   │   ├── 5-DropzoneHash.stories.js
-│   │   ├── 6-InfiniteRegistryTableLoader.stories.js
-│   │   ├── 7-BPJsonGenerator.stories.js
-│   │   ├── 8-VisualCertificate.stories.js
-│   │   └── 9-IssuanceVerifier.stories.js
-│   │
-│   ├── themes
-│   │   └── index.js
+│   │   ├── AccountInfo.stories.js
+│   │   ├── CreateAccount.stories.js
+│   │   ├── InputHash.stories.js
+│   │   ├── Backdrop.stories.js
+│   │   ├── RicardianContract.stories.js
+│   │   ├── DropzoneHash.stories.js
+│   │   ├── InfiniteRegistryTableLoader.stories.js
+│   │   ├── BPJsonGenerator.stories.js
+│   │   ├── VisualCertificate.stories.js
+│   │   └── IssuanceVerifier.stories.js
 │   │
 │   ├── utils
-│   │   ├── convertHex2RGB.js
-│   │   ├── convertVotesToEosVotes.js
-│   │   ├── filereader.js
-│   │   └── getRgbColorsFromHex.js
+│   │   ├── convert-hex-to-rgb.js
+│   │   ├── get-eos-api.js
+│   │   ├── file-reader.js
+│   │   ├── validation.js
+│   │   ├── index.js
+│   │   └── get-rgb-colors-from-hex.js
 │   │
 │   ├── AccountInfo
-│   │   ├── AccountInfo.js
+│   │   ├── styles.js
 │   │   ├── BPAvatar.js
 │   │   ├── ProgressBar.js
 │   │   └── index.js
 │   ├── Backdrop
-│   │   ├── Backdrop.js
+│   │   ├── styles.js
 │   │   └── index.js
 │   ├── BPJsonGenerator
-│   │   ├── BPJsonGenerator.js
+│   │   ├── styles.js
 │   │   ├── ImagePreview.js
 │   │   ├── Modal.js
 │   │   ├── NodesForm.js
 │   │   └── index.js
 │   ├── common
-│   │   ├── DropzoneBase.js
+│   │   ├── styles.js
 │   │   └── index.js
 │   ├── CreateAccount
-│   │   ├── CreateAccount.js
+│   │   ├── styles.js
 │   │   └── index.js
 │   ├── DropzoneHash
-│   │   ├── DropzoneHash.js
+│   │   ├── styles.js
 │   │   ├── FileComponent.js
 │   │   └── index.js
 │   ├── InfiniteRegistryTableLoader
-│   │   ├── InfiniteRegistryTableLoader.js
+│   │   ├── styles.js
 │   │   └── index.js
 │   ├── InputHash
-│   │   ├── InputHash.js
+│   │   ├── styles.js
 │   │   └── index.js
 │   ├── IssuanceVerifier
-│   │   ├── IssuanceVerifier.js
+│   │   ├── styles.js
 │   │   └── index.js
 │   ├── RicardianContract
-│   │   ├── RicardianContract.js
+│   │   ├── styles.js
 │   │   └── index.js
 │   ├── VisualCertificate
-│   │   ├── VisualCertificate.js
+│   │   ├── styles.js
 │   │   └── index.js
 │   └── index.js
 │

@@ -1,28 +1,28 @@
-import React, { useState } from "react";
-import Card from "@material-ui/core/Card";
-import PropTypes from "prop-types";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/styles";
+import React, { useState } from 'react'
+import Card from '@material-ui/core/Card'
+import PropTypes from 'prop-types'
+import CardContent from '@material-ui/core/CardContent'
+import Grid from '@material-ui/core/Grid'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
+import { makeStyles } from '@material-ui/styles'
 
-import DropzoneBase from "../common";
+import DropzoneBase from '../common'
 
-import Styles from "./styles";
-import FileComponent from "./FileComponent";
+import Styles from './styles'
+import FileComponent from './FileComponent'
 
-const useStyles = makeStyles(Styles);
+const useStyles = makeStyles(Styles)
 
 const DropzoneHash = ({ file, handleOnDropFile, deleteFile }) => {
-  const [progress, setProgress] = useState(0);
-  const classes = useStyles();
+  const [progress, setProgress] = useState(0)
+  const classes = useStyles()
 
   const handleFileDeletion = () => {
-    deleteFile();
-    handleOnDropFile(null);
-  };
+    deleteFile()
+    handleOnDropFile(null)
+  }
   return (
     <Grid item xs={12}>
       <Card>
@@ -77,17 +77,17 @@ const DropzoneHash = ({ file, handleOnDropFile, deleteFile }) => {
         </CardContent>
       </Card>
     </Grid>
-  );
-};
+  )
+}
 
 DropzoneHash.propTypes = {
   handleOnDropFile: PropTypes.func,
   file: PropTypes.object,
-  deleteFile: PropTypes.func,
-};
+  deleteFile: PropTypes.func
+}
 
 DropzoneHash.defaultProps = {
-  handleOnDropFile: () => {},
-};
+  handleOnDropFile: () => {}
+}
 
-export default DropzoneHash;
+export default DropzoneHash

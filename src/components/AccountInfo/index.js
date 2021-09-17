@@ -1,90 +1,87 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import IconButton from "@material-ui/core/IconButton";
-import Identicon from "react-identicons";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import VpnKey from "@material-ui/icons/VpnKey";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import Modal from '@material-ui/core/Modal'
+import Backdrop from '@material-ui/core/Backdrop'
+import IconButton from '@material-ui/core/IconButton'
+import Identicon from 'react-identicons'
+import Accordion from '@material-ui/core/Accordion'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
+import AccordionDetails from '@material-ui/core/AccordionDetails'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import VpnKey from '@material-ui/icons/VpnKey'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
-import { eosApi } from "../../api/eos-api";
+import { eosApi } from '../../api/eos-api'
 
-import Styles from "./styles";
-import ProgressBar from "./ProgressBar";
-import BPAvatar from "./BPAvatar";
+import Styles from './styles'
+import ProgressBar from './ProgressBar'
+import BPAvatar from './BPAvatar'
 
-const useStyles = makeStyles(Styles);
+const useStyles = makeStyles(Styles)
 
 const AccountInfo = ({ customBtnStyle }) => {
-  const classes = useStyles();
-  const [value, setValue] = useState();
-  const [account, setAccount] = useState(null);
-  const [isError, setIsError] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const classes = useStyles()
+  const [value, setValue] = useState()
+  const [account, setAccount] = useState(null)
+  const [isError, setIsError] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleOpen = async () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   const handleOnSubmit = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
 
-      const account = await eosApi.getAccount(
-        (value || "").toLocaleLowerCase()
-      );
+      const account = await eosApi.getAccount((value || '').toLocaleLowerCase())
 
-      if (Object.keys(account).length === 0)
-        throw new Error("No Account data!");
+      if (Object.keys(account).length === 0) throw new Error('No Account data!')
 
       const {
         ram_usage: ramUsage,
         ram_quota: ramQuota,
         cpu_limit: cpuLimit,
         net_limit: netLimit,
-        permissions,
-      } = account;
+        permissions
+      } = account
 
-      const ram = ((ramUsage * 100) / ramQuota || 0).toFixed();
-      const cpu = ((cpuLimit.used * 100) / cpuLimit.max || 0).toFixed();
-      const net = ((netLimit.used * 100) / netLimit.max || 0).toFixed();
+      const ram = ((ramUsage * 100) / ramQuota || 0).toFixed()
+      const cpu = ((cpuLimit.used * 100) / cpuLimit.max || 0).toFixed()
+      const net = ((netLimit.used * 100) / netLimit.max || 0).toFixed()
       const keys = {
         active: {
           label: permissions[0].perm_name,
-          value: permissions[0].required_auth.keys[0].key,
+          value: permissions[0].required_auth.keys[0].key
         },
         owner: {
           label: permissions[1].perm_name,
-          value: permissions[1].required_auth.keys[0].key,
-        },
-      };
+          value: permissions[1].required_auth.keys[0].key
+        }
+      }
 
-      setAccount({ ...account, ram, cpu, net, keys });
-      setIsError(false);
-      setLoading(false);
+      setAccount({ ...account, ram, cpu, net, keys })
+      setIsError(false)
+      setLoading(false)
     } catch (error) {
-      console.log("Get account info", error);
-      setIsError(true);
-      setLoading(false);
+      console.log('Get account info', error)
+      setIsError(true)
+      setLoading(false)
     }
-  };
+  }
 
   const handleChange = (event) => {
-    event.preventDefault();
-    const { value } = event.target;
+    event.preventDefault()
+    const { value } = event.target
 
-    setValue(value);
-  };
+    setValue(value)
+  }
 
   return (
     <div>
@@ -105,7 +102,7 @@ const AccountInfo = ({ customBtnStyle }) => {
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
-          timeout: 500,
+          timeout: 500
         }}
       >
         <div className={classes.paper}>
@@ -173,7 +170,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                   <div>
                     <Grid container direction="row" alignItems="center">
                       <Identicon
-                        string={account.account_name || "default"}
+                        string={account.account_name || 'default'}
                         size={60}
                         fg="#757575"
                       />
@@ -188,11 +185,11 @@ const AccountInfo = ({ customBtnStyle }) => {
                           color="primary"
                           className={classes.accountName}
                         >
-                          {account.account_name || "defaulteos12"}
+                          {account.account_name || 'defaulteos12'}
                         </Typography>
                         <Typography variant="h6" color="textSecondary">
                           {`EOS  balance: ${
-                            (account && account.core_liquid_balance) || "0 EOS"
+                            (account && account.core_liquid_balance) || '0 EOS'
                           }`}
                         </Typography>
                       </Grid>
@@ -227,7 +224,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                         <AccordionSummary
                           classes={{
                             expanded: classes.expanded,
-                            root: classes.expanded,
+                            root: classes.expanded
                           }}
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls="panel1a-content"
@@ -268,7 +265,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                         <AccordionSummary
                           classes={{
                             expanded: classes.expanded,
-                            root: classes.expanded,
+                            root: classes.expanded
                           }}
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls="panel3a-content"
@@ -316,7 +313,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                               Is Proxy:
                             </Typography>
                             <Typography>
-                              {account.voter_info.is_proxy ? "True" : "False"}
+                              {account.voter_info.is_proxy ? 'True' : 'False'}
                             </Typography>
                           </div>
                         </AccordionDetails>
@@ -325,7 +322,7 @@ const AccountInfo = ({ customBtnStyle }) => {
                         <AccordionSummary
                           classes={{
                             expanded: classes.expanded,
-                            root: classes.expanded,
+                            root: classes.expanded
                           }}
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls="panel2a-content"
@@ -369,15 +366,15 @@ const AccountInfo = ({ customBtnStyle }) => {
         </div>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
 AccountInfo.propTypes = {
-  customBtnStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-};
+  customBtnStyle: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+}
 
 AccountInfo.defaultProps = {
-  customBtnStyle: "",
-};
+  customBtnStyle: ''
+}
 
-export default AccountInfo;
+export default AccountInfo
