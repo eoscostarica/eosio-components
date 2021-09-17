@@ -5,7 +5,7 @@ import Avatar from '@material-ui/core/Avatar'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
-import { getColorHashByString } from '../../utils/get-rgb-colors-from-hex'
+import { getColorHashByString } from '../utils/get-rgb-colors-from-hex'
 
 const useStyles = makeStyles({
   avatar: {

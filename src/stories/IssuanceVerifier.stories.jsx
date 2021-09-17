@@ -1,6 +1,6 @@
 import React from 'react'
 
-import IssuanceVerifier from '../components/IssuanceVerifier'
+import IssuanceVerifier from '../lib/IssuanceVerifier'
 
 export default {
   title: 'Example/Issuance Verifier',

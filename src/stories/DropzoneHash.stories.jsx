@@ -1,6 +1,6 @@
 import React from 'react'
 
-import DropzoneHash from '../components/DropzoneHash'
+import DropzoneHash from '../lib/DropzoneHash'
 
 export default {
   title: 'Example/Dropzone Hash',

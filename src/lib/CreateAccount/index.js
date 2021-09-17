@@ -10,8 +10,8 @@ import Backdrop from '@material-ui/core/Backdrop'
 import IconButton from '@material-ui/core/IconButton'
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import { eosApi } from '../../api/eos-api'
-import config from '../../config'
+import { eosApi } from '../api/eos-api'
+import config from '../config'
 
 import Styles from './styles'
 

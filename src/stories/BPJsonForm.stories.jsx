@@ -1,6 +1,6 @@
 import React from 'react'
 
-import BPJsonForm from '../components/BPJsonGenerator'
+import BPJsonForm from '../lib/BPJsonGenerator'
 
 export default {
   title: 'Example/Block Producer JSON Generator',

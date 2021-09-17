@@ -6,7 +6,7 @@ import Alert from '@material-ui/lab/Alert'
 import PropTypes from 'prop-types'
 import Link from '@material-ui/core/Link'
 
-import { rpc } from '../../api/eos-api'
+import { rpc } from '../api/eos-api'
 import DropzoneHash from '../DropzoneHash'
 
 const IssuanceVerifier = ({

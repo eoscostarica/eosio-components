@@ -1,7 +1,7 @@
 import React from 'react'
 
-import RicardianContract from '../components/RicardianContract'
-import config from '../config'
+import RicardianContract from '../lib/RicardianContract'
+import config from '../lib/config'
 
 export default {
   title: 'Example/Ricardian Contract',

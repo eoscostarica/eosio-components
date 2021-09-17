@@ -16,7 +16,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import VpnKey from '@material-ui/icons/VpnKey'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-import { eosApi } from '../../api/eos-api'
+import { eosApi } from '../api/eos-api'
 
 import Styles from './styles'
 import ProgressBar from './ProgressBar'

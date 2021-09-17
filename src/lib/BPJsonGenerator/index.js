@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 
-import { urlInputValidation, formInputValidation } from '../../utils'
+import { urlInputValidation, formInputValidation } from '../utils'
 import ArrayTextField from '../ArrayTextField'
 
 import ImagePreview from './ImagePreview'

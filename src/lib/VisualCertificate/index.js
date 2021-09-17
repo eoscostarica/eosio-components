@@ -15,7 +15,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import styled from '@material-ui/core/styles/styled'
 import Paper from '@material-ui/core/Paper'
 
-import { rpc } from '../../api/eos-api'
+import { rpc } from '../api/eos-api'
 
 const StyledDialogContent = styled(DialogContent)({
   display: 'flex',
