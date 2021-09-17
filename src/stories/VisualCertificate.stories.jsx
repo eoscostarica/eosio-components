@@ -3,9 +3,9 @@ import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import { rpc } from '../api/eos-api'
 
-import VisualCertificate from '../components/VisualCertificate'
+import { rpc } from '../lib/api/eos-api'
+import VisualCertificate from '../lib/VisualCertificate'
 
 export default {
   title: 'Example/Visual Certificate',
@@ -30,7 +30,8 @@ const Template = (args) => {
             account: r.traces[0].act.data.usuario,
             company: r.traces[0].act.data.comentario,
             hash: r.traces[0].act.data.hash,
-            tx: 'fd60fe3eaddbbcc2a37f7b110c8a62554d981043ebec684fd6c66223adf70520',
+            tx:
+              'fd60fe3eaddbbcc2a37f7b110c8a62554d981043ebec684fd6c66223adf70520',
             lastModified: r.block_time
           })
           setLoading(false)

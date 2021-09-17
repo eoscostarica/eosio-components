@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 
-import { convertHexToRgb } from '../../utils/convert-hex-to-rgb'
+import { convertHexToRgb } from '../utils/convert-hex-to-rgb'
 
 const useStylesBase = makeStyles((theme) => ({
   skillsContainer: {

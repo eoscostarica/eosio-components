@@ -1,6 +1,6 @@
 import React from 'react'
 
-import InputHash from '../components/InputHash'
+import InputHash from '../lib/InputHash'
 
 export default {
   title: 'Example/Input Hash',

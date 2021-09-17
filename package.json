@@ -1,6 +1,6 @@
 {
   "name": "@eoscostarica/eoscr-components",
-  "version": "3.5.0",
+  "version": "3.5.4",
   "description": "A collection of React Components for EOSIO",
   "author": "EOS Costa Rica",
   "license": "MIT",
@@ -39,13 +39,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "rm -rf dist && NODE_ENV=production babel src/index.js --out-dir dist --copy-files",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
+    "deploy": "gh-pages -d example/build",
+    "clean": "rimraf dist",
+    "build": "npm run clean && cross-env NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,stories.js,__snapshots__"
   },
   "eslintConfig": {
     "extends": [

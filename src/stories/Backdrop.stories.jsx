@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Backdrop from '../components/Backdrop'
+import Backdrop from '../lib/Backdrop'
 
 export default {
   title: 'Example/Backdrop',

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import AccountInfo from '../components/AccountInfo'
+import AccountInfo from '../lib/AccountInfo'
 
 export default {
   title: 'Example/Account Information',

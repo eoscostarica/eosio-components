@@ -3,7 +3,7 @@ import LockIcon from '@material-ui/icons/Lock'
 import IconButton from '@material-ui/core/IconButton'
 import { AutoSizer } from 'react-virtualized'
 
-import InfiniteRegistryTableLoader from '../components/InfiniteRegistryTableLoader'
+import InfiniteRegistryTableLoader from '../lib/InfiniteRegistryTableLoader'
 
 export default {
   title: 'Example/Infinite Registry Table Loader',

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ArrayTextField from '../components/ArrayTextField'
+import ArrayTextField from '../lib/ArrayTextField'
 
 export default {
   title: 'Example/Array Text Field',

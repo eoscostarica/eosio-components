@@ -7,8 +7,8 @@ import Divider from '@material-ui/core/Divider'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { makeStyles } from '@material-ui/core/styles'
 
-import config from '../../config'
-import { getEosApi } from '../../utils'
+import config from '../config'
+import { getEosApi } from '../utils'
 
 import Styles from './styles'
 
