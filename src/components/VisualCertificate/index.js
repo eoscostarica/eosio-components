@@ -1,36 +1,36 @@
-import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Alert from "@material-ui/lab/Alert";
-import PropTypes from "prop-types";
-import Slide from "@material-ui/core/Slide";
-import FindInPageIcon from "@material-ui/icons/FindInPage";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import styled from "@material-ui/core/styles/styled";
-import Paper from "@material-ui/core/Paper";
+import React, { useState } from 'react'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import Link from '@material-ui/core/Link'
+import Box from '@material-ui/core/Box'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import Alert from '@material-ui/lab/Alert'
+import PropTypes from 'prop-types'
+import Slide from '@material-ui/core/Slide'
+import FindInPageIcon from '@material-ui/icons/FindInPage'
+import Typography from '@material-ui/core/Typography'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import styled from '@material-ui/core/styles/styled'
+import Paper from '@material-ui/core/Paper'
 
-import { rpc } from "../../api/eos-api";
+import { rpc } from '../../api/eos-api'
 
 const StyledDialogContent = styled(DialogContent)({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-});
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center'
+})
 const MessagesBox = styled(Paper)({
-  borderRadius: "2px",
-  border: "0.5px dashed gray",
-  padding: "3%",
-});
+  borderRadius: '2px',
+  border: '0.5px dashed gray',
+  padding: '3%'
+})
 
 const Transition = React.forwardRef((props, ref) => {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+  return <Slide direction="up" ref={ref} {...props} />
+})
 
 const VisualCertificate = ({
   open,
@@ -49,39 +49,39 @@ const VisualCertificate = ({
   contractAccountText,
   seeInExplorerText,
   closeText,
-  chainUrl,
+  chainUrl
 }) => {
-  const [verifying, setVerifying] = useState(false);
-  const [verificationDetails, setVerificationDetails] = useState();
+  const [verifying, setVerifying] = useState(false)
+  const [verificationDetails, setVerificationDetails] = useState()
 
   const verifyTransaction = (tx) => {
-    setVerifying(true);
+    setVerifying(true)
     rpc
       .history_get_transaction(tx)
       .then((x) => {
         setVerificationDetails({
           content: messages.success,
-          severity: "success",
+          severity: 'success',
           block_num: x.block_num,
           id: x.id,
           query_time: x.query_time_ms,
-          contract_account: x.traces[0].act.account,
-        });
+          contract_account: x.traces[0].act.account
+        })
       })
       .catch(() => {
         setVerificationDetails({
           content: messages.error,
-          severity: "error",
-        });
+          severity: 'error'
+        })
       })
-      .finally(() => setVerifying(false));
-  };
+      .finally(() => setVerifying(false))
+  }
 
   return (
     <Dialog
       fullWidth
       maxWidth="md"
-      style={{ overflowY: "auto" }}
+      style={{ overflowY: 'auto' }}
       open={open}
       TransitionComponent={Transition}
       keepMounted
@@ -103,7 +103,7 @@ const VisualCertificate = ({
           </Typography>
           <Typography>
             <strong>Hash: </strong>
-            <span style={{ fontSize: ".8em", maxWidth: "100%" }}>
+            <span style={{ fontSize: '.8em', maxWidth: '100%' }}>
               {txData.hash}
             </span>
           </Typography>
@@ -119,7 +119,7 @@ const VisualCertificate = ({
             {verifying ? verifyingText : verifyText}
             <>
               {verifying && (
-                <CircularProgress style={{ color: "white" }} size={24} />
+                <CircularProgress style={{ color: 'white' }} size={24} />
               )}
             </>
           </Button>
@@ -127,14 +127,14 @@ const VisualCertificate = ({
         <br />
         {verificationDetails && (
           <Alert
-            style={{ backgroundColor: "green", color: "white" }}
+            style={{ backgroundColor: 'green', color: 'white' }}
             severity="success"
           >
             {verificationDetails.content}
           </Alert>
         )}
         <br />
-        {verificationDetails && verificationDetails.severity === "success" && (
+        {verificationDetails && verificationDetails.severity === 'success' && (
           <MessagesBox elevation={3}>
             <Typography>
               <strong>{blockNumText}: </strong> {verificationDetails.block_num}
@@ -161,14 +161,14 @@ const VisualCertificate = ({
                   href={`${chainUrl}${verificationDetails.id}`}
                   target="_blank"
                 >
-                  {" "}
+                  {' '}
                   {seeInExplorerText}
                 </Link>
               </Button>
             </Box>
           </MessagesBox>
         )}
-        {verificationDetails && verificationDetails.severity === "error" && (
+        {verificationDetails && verificationDetails.severity === 'error' && (
           <Alert severity="error">{verificationDetails.content}</Alert>
         )}
       </StyledDialogContent>
@@ -178,8 +178,8 @@ const VisualCertificate = ({
         </Button>
       </DialogActions>
     </Dialog>
-  );
-};
+  )
+}
 
 VisualCertificate.propTypes = {
   open: PropTypes.bool,
@@ -198,7 +198,7 @@ VisualCertificate.propTypes = {
   contractAccountText: PropTypes.string,
   seeInExplorerText: PropTypes.string,
   closeText: PropTypes.string,
-  chainUrl: PropTypes.string,
-};
+  chainUrl: PropTypes.string
+}
 
-export default VisualCertificate;
+export default VisualCertificate

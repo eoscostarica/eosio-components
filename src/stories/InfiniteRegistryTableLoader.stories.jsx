@@ -1,97 +1,97 @@
-import React, { useState } from "react";
-import LockIcon from "@material-ui/icons/Lock";
-import IconButton from "@material-ui/core/IconButton";
-import { AutoSizer } from "react-virtualized";
+import React, { useState } from 'react'
+import LockIcon from '@material-ui/icons/Lock'
+import IconButton from '@material-ui/core/IconButton'
+import { AutoSizer } from 'react-virtualized'
 
-import InfiniteRegistryTableLoader from "../components/InfiniteRegistryTableLoader";
+import InfiniteRegistryTableLoader from '../components/InfiniteRegistryTableLoader'
 
 export default {
-  title: "Example/Infinite Registry Table Loader",
-  component: InfiniteRegistryTableLoader,
-};
+  title: 'Example/Infinite Registry Table Loader',
+  component: InfiniteRegistryTableLoader
+}
 
 const Template = (args) => {
-  const [, setWidth] = useState(400);
-  const [columnWidth, setColumnWidth] = useState(200);
+  const [, setWidth] = useState(400)
+  const [columnWidth, setColumnWidth] = useState(200)
   const sample = [
     {
-      title: "title name",
-      account: "account",
-      date: "June 1st",
-      hash: "ca13sdfad232334",
+      title: 'title name',
+      account: 'account',
+      date: 'June 1st',
+      hash: 'ca13sdfad232334',
       certificate: (
         <IconButton aria-label="delete" size="medium">
           <LockIcon fontSize="inherit" />
         </IconButton>
-      ),
+      )
     },
     {
-      title: "title name",
-      account: "account",
-      date: "June 1st",
-      hash: "ca13sdfad232334",
+      title: 'title name',
+      account: 'account',
+      date: 'June 1st',
+      hash: 'ca13sdfad232334',
       certificate: (
         <IconButton aria-label="delete" size="medium">
           <LockIcon fontSize="inherit" />
         </IconButton>
-      ),
+      )
     },
     {
-      title: "title name",
-      account: "account",
-      date: "June 1st",
-      hash: "ca13sdfad232334",
+      title: 'title name',
+      account: 'account',
+      date: 'June 1st',
+      hash: 'ca13sdfad232334',
       certificate: (
         <IconButton aria-label="delete" size="medium">
           <LockIcon fontSize="inherit" />
         </IconButton>
-      ),
-    },
-  ];
-  const rows = [];
+      )
+    }
+  ]
+  const rows = []
 
   for (let i = 0; i < 100; i += 1) {
-    const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-    rows.push(randomSelection);
+    const randomSelection = sample[Math.floor(Math.random() * sample.length)]
+    rows.push(randomSelection)
   }
   const columns = [
     {
       width: columnWidth,
-      label: "Titulo",
-      dataKey: "title",
+      label: 'Titulo',
+      dataKey: 'title'
     },
     {
       width: columnWidth,
-      label: "Cuenta",
-      dataKey: "account",
-      numeric: true,
+      label: 'Cuenta',
+      dataKey: 'account',
+      numeric: true
     },
     {
       width: columnWidth,
-      label: "Fecha",
-      dataKey: "date",
+      label: 'Fecha',
+      dataKey: 'date'
     },
     {
       width: columnWidth,
-      label: "Hash",
-      dataKey: "hash",
+      label: 'Hash',
+      dataKey: 'hash'
     },
     {
       width: columnWidth,
-      label: "Certificado",
-      dataKey: "certificate",
-    },
-  ];
+      label: 'Certificado',
+      dataKey: 'certificate'
+    }
+  ]
 
   const onResize = ({ width }) => {
-    setWidth(width);
-    let newColumnWidth = width / columns.length;
-    newColumnWidth = Math.max(100, 150);
-    newColumnWidth = Math.min(200, 150);
-    newColumnWidth = Math.floor(newColumnWidth);
-    setColumnWidth(newColumnWidth);
-    setWidth(Math.min(width, columnWidth * columns.length));
-  };
+    setWidth(width)
+    let newColumnWidth = width / columns.length
+    newColumnWidth = Math.max(100, 150)
+    newColumnWidth = Math.min(200, 150)
+    newColumnWidth = Math.floor(newColumnWidth)
+    setColumnWidth(newColumnWidth)
+    setWidth(Math.min(width, columnWidth * columns.length))
+  }
 
   return (
     <AutoSizer onResize={onResize}>
@@ -109,7 +109,7 @@ const Template = (args) => {
         />
       )}
     </AutoSizer>
-  );
-};
+  )
+}
 
-export const Example = Template.bind({});
+export const Example = Template.bind({})

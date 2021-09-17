@@ -1,15 +1,15 @@
 const Styles = (theme) => ({
   root: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column'
   },
   chip: {
     marginTop: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginRight: theme.spacing(1)
   },
   btn: {
-    cursor: "pointer",
-  },
-});
+    cursor: 'pointer'
+  }
+})
 
-export default Styles;
+export default Styles

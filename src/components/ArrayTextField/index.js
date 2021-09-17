@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import TextField from "@material-ui/core/TextField";
-import AddIcon from "@material-ui/icons/Add";
-import Chip from "@material-ui/core/Chip";
+import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import clsx from 'clsx'
+import { makeStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import TextField from '@material-ui/core/TextField'
+import AddIcon from '@material-ui/icons/Add'
+import Chip from '@material-ui/core/Chip'
 
-import Styles from "./styles";
+import Styles from './styles'
 
-const useStyles = makeStyles(Styles);
+const useStyles = makeStyles(Styles)
 
 const ArrayTextField = ({
   value,
@@ -19,54 +19,54 @@ const ArrayTextField = ({
   ChipProps = {},
   ...props
 }) => {
-  const classes = useStyles();
-  const [items, setItems] = useState(value);
-  const [item, setItem] = useState("");
+  const classes = useStyles()
+  const [items, setItems] = useState(value)
+  const [item, setItem] = useState('')
 
   const handleOnAddItem = () => {
     if (!item) {
-      return;
+      return
     }
 
-    const newValue = [...items, item];
-    setItems(newValue);
-    setItem("");
-    onChange && onChange(newValue);
-  };
+    const newValue = [...items, item]
+    setItems(newValue)
+    setItem('')
+    onChange && onChange(newValue)
+  }
 
   const handleDeleteItem = (index) => {
-    items.splice(index, 1);
-    setItems([...items]);
-  };
+    items.splice(index, 1)
+    setItems([...items])
+  }
 
   const handleOnKeyPress = (event) => {
-    if (event.key !== "Enter") {
-      return;
+    if (event.key !== 'Enter') {
+      return
     }
 
-    event.preventDefault();
-    handleOnAddItem();
-  };
+    event.preventDefault()
+    handleOnAddItem()
+  }
 
   useEffect(() => {
-    let newItems = [];
+    let newItems = []
 
     if (Array.isArray(value)) {
-      newItems = value;
+      newItems = value
     }
 
-    if (typeof value === "string") {
-      newItems = [value];
+    if (typeof value === 'string') {
+      newItems = [value]
     }
 
-    if (typeof value === "object") {
+    if (typeof value === 'object') {
       try {
-        newItems = Object.values(value);
+        newItems = Object.values(value)
       } catch (error) {}
     }
 
-    setItems(newItems);
-  }, [value]);
+    setItems(newItems)
+  }, [value])
 
   return (
     <Box className={clsx(classes.root, className)}>
@@ -83,7 +83,7 @@ const ArrayTextField = ({
             >
               <AddIcon />
             </InputAdornment>
-          ),
+          )
         }}
         onKeyPress={handleOnKeyPress}
       />
@@ -99,18 +99,18 @@ const ArrayTextField = ({
         ))}
       </Box>
     </Box>
-  );
-};
+  )
+}
 
 ArrayTextField.propTypes = {
   value: PropTypes.array,
   onChange: PropTypes.func,
   className: PropTypes.string,
-  ChipProps: PropTypes.object,
-};
+  ChipProps: PropTypes.object
+}
 
 ArrayTextField.defaultProps = {
-  value: [],
-};
+  value: []
+}
 
-export default ArrayTextField;
+export default ArrayTextField

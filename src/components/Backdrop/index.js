@@ -3,39 +3,39 @@ import React, {
   useCallback,
   useEffect,
   forwardRef,
-  useImperativeHandle,
-} from "react";
-import { makeStyles } from "@material-ui/styles";
-import { useTheme } from "@material-ui/core/styles";
-import clsx from "clsx";
-import PropTypes from "prop-types";
-import Paper from "@material-ui/core/Paper";
-import DropUp from "@material-ui/icons/ArrowDropUp";
-import DropDown from "@material-ui/icons/ArrowDropDown";
-import IconButton from "@material-ui/core/IconButton";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+  useImperativeHandle
+} from 'react'
+import { makeStyles } from '@material-ui/styles'
+import { useTheme } from '@material-ui/core/styles'
+import clsx from 'clsx'
+import PropTypes from 'prop-types'
+import Paper from '@material-ui/core/Paper'
+import DropUp from '@material-ui/icons/ArrowDropUp'
+import DropDown from '@material-ui/icons/ArrowDropDown'
+import IconButton from '@material-ui/core/IconButton'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
-import Styles from "./styles";
+import Styles from './styles'
 
-const TRANSITION_DURATION = 250;
-const MIN_HEIGHT_TO_COLLAPSE = 450;
+const TRANSITION_DURATION = 250
+const MIN_HEIGHT_TO_COLLAPSE = 450
 
 const useRootStyles = makeStyles({
   root: {
-    position: "fixed",
-    display: "flex",
-    flexDirection: "column",
+    position: 'fixed',
+    display: 'flex',
+    flexDirection: 'column',
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: (props) => props.color,
     borderRight: (props) => `2px solid ${props.color}`,
-    borderLeft: (props) => `2px solid ${props.color}`,
-  },
-});
+    borderLeft: (props) => `2px solid ${props.color}`
+  }
+})
 
-const useStyles = makeStyles((theme) => Styles(theme, TRANSITION_DURATION));
+const useStyles = makeStyles((theme) => Styles(theme, TRANSITION_DURATION))
 
 const Backdrop = forwardRef(
   (
@@ -48,64 +48,64 @@ const Backdrop = forwardRef(
       headerText,
       backgroundColor,
       isStaticPage,
-      layerHeightDown,
+      layerHeightDown
     },
     ref
   ) => {
-    const theme = useTheme();
-    const classes = useStyles();
-    const rootClasses = useRootStyles({ color: backgroundColor });
-    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
-    const isLandscape = useMediaQuery("(orientation: landscape)");
-    const [frontLayerHeight, setFrontLayerHeight] = useState(layerHeightUp);
-    const [transaction, setTransaction] = useState(false);
-    const [isArrowUp, setIsArrowUp] = useState(false);
-    const [showHeader, setShowHeader] = useState(false);
+    const theme = useTheme()
+    const classes = useStyles()
+    const rootClasses = useRootStyles({ color: backgroundColor })
+    const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
+    const isLandscape = useMediaQuery('(orientation: landscape)')
+    const [frontLayerHeight, setFrontLayerHeight] = useState(layerHeightUp)
+    const [transaction, setTransaction] = useState(false)
+    const [isArrowUp, setIsArrowUp] = useState(false)
+    const [showHeader, setShowHeader] = useState(false)
 
     const handleOnClick = () => {
-      const height = window.innerHeight;
+      const height = window.innerHeight
       const contentHeight = isArrowUp
         ? height - layerHeightDown
-        : height - (height - layerHeightUp);
+        : height - (height - layerHeightUp)
 
-      setIsArrowUp(!isArrowUp);
-      setNewHeight(contentHeight);
-    };
+      setIsArrowUp(!isArrowUp)
+      setNewHeight(contentHeight)
+    }
 
     useImperativeHandle(ref, () => ({
       toggleOnClickMobile: () => {
         if (isMobile) {
-          handleOnClick();
+          handleOnClick()
         }
-      },
-    }));
+      }
+    }))
 
     const setNewHeight = useCallback(async (value) => {
-      setTransaction(true);
-      setFrontLayerHeight(value);
+      setTransaction(true)
+      setFrontLayerHeight(value)
       setTimeout(() => {
-        setTransaction(false);
-      }, TRANSITION_DURATION);
-    }, []);
+        setTransaction(false)
+      }, TRANSITION_DURATION)
+    }, [])
 
     useEffect(() => {
-      const height = window.innerHeight;
+      const height = window.innerHeight
 
       setShowHeader(
         (height < MIN_HEIGHT_TO_COLLAPSE && isLandscape) ||
           (isMobile && !isStaticPage)
-      );
+      )
 
       if (isStaticPage) {
-        setNewHeight(height - (height - layerHeightUp));
+        setNewHeight(height - (height - layerHeightUp))
 
-        return;
+        return
       }
 
       if (isMobile) {
-        setNewHeight(height - layerHeightDown);
+        setNewHeight(height - layerHeightDown)
 
-        return;
+        return
       }
 
       if (!isMobile) {
@@ -113,7 +113,7 @@ const Backdrop = forwardRef(
           isLandscape && height < MIN_HEIGHT_TO_COLLAPSE
             ? height - layerHeightDown
             : height - (height - layerHeightUp)
-        );
+        )
       }
     }, [
       isMobile,
@@ -121,8 +121,8 @@ const Backdrop = forwardRef(
       layerHeightUp,
       setNewHeight,
       isStaticPage,
-      isLandscape,
-    ]);
+      isLandscape
+    ])
 
     return (
       <div className={clsx(className, rootClasses.root, extraClasses.root)}>
@@ -133,7 +133,7 @@ const Backdrop = forwardRef(
             extraClasses.backLayer
           )}
           style={{
-            height: frontLayerHeight,
+            height: frontLayerHeight
           }}
         >
           {backLayer}
@@ -156,9 +156,9 @@ const Backdrop = forwardRef(
           </div>
         </Paper>
       </div>
-    );
+    )
   }
-);
+)
 
 Backdrop.defaultProps = {
   layerHeightUp: 200,
@@ -168,9 +168,9 @@ Backdrop.defaultProps = {
   className: null,
   classes: {},
   headerText: <span>Settings</span>,
-  backgroundColor: "#00bace",
-  isStaticPage: false,
-};
+  backgroundColor: '#00bace',
+  isStaticPage: false
+}
 
 Backdrop.propTypes = {
   layerHeightUp: PropTypes.number,
@@ -181,7 +181,7 @@ Backdrop.propTypes = {
   classes: PropTypes.objectOf(PropTypes.any),
   headerText: PropTypes.node,
   backgroundColor: PropTypes.string,
-  isStaticPage: PropTypes.bool,
-};
+  isStaticPage: PropTypes.bool
+}
 
-export default Backdrop;
+export default Backdrop

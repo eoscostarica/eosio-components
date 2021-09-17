@@ -1,11 +1,11 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
-import Avatar from "@material-ui/core/Avatar";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+import Avatar from '@material-ui/core/Avatar'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
 
-import { getColorHashByString } from "../../utils/get-rgb-colors-from-hex";
+import { getColorHashByString } from '../../utils/get-rgb-colors-from-hex'
 
 const useStyles = makeStyles({
   avatar: {
@@ -13,41 +13,41 @@ const useStyles = makeStyles({
     width: 10,
     height: 10,
     fontSize: 1,
-    color: "#111",
-    backgroundColor: ({ backgroundColor }) => backgroundColor.hex,
-  },
-});
+    color: '#111',
+    backgroundColor: ({ backgroundColor }) => backgroundColor.hex
+  }
+})
 
 const useStylesBase = makeStyles((theme) => ({
   bpAvatar: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     padding: theme.spacing(1),
-    alignItems: "center",
-  },
-}));
+    alignItems: 'center'
+  }
+}))
 
 const BPAvatar = ({ name }) => {
-  const classesBase = useStylesBase();
+  const classesBase = useStylesBase()
   const classes = useStyles({
-    backgroundColor: getColorHashByString(name),
-  });
+    backgroundColor: getColorHashByString(name)
+  })
 
   return (
     <Grid className={classesBase.bpAvatar}>
       <Avatar className={classes.avatar}>.</Avatar>
       <Typography>{name}</Typography>
     </Grid>
-  );
-};
+  )
+}
 
 BPAvatar.propTypes = {
-  name: PropTypes.string,
-};
+  name: PropTypes.string
+}
 
 BPAvatar.defaultProps = {
-  name: "userdefault1",
-};
+  name: 'userdefault1'
+}
 
-export default BPAvatar;
+export default BPAvatar

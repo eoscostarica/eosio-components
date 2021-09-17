@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Alert from "@material-ui/lab/Alert";
-import PropTypes from "prop-types";
-import Link from "@material-ui/core/Link";
+import React, { useState, useEffect } from 'react'
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import Alert from '@material-ui/lab/Alert'
+import PropTypes from 'prop-types'
+import Link from '@material-ui/core/Link'
 
-import { rpc } from "../../api/eos-api";
-import DropzoneHash from "../DropzoneHash";
+import { rpc } from '../../api/eos-api'
+import DropzoneHash from '../DropzoneHash'
 
 const IssuanceVerifier = ({
   code,
@@ -18,17 +18,17 @@ const IssuanceVerifier = ({
   successMsg,
   verificationState,
   analyzeAnotherDoc,
-  showInExplorer,
+  showInExplorer
 }) => {
-  const [verified, setVerified] = useState(undefined);
-  const [showDropzone, setShowDropzone] = useState(true);
-  const [transaction, setTransaction] = useState();
-  const [file, setFile] = useState(null);
+  const [verified, setVerified] = useState(undefined)
+  const [showDropzone, setShowDropzone] = useState(true)
+  const [transaction, setTransaction] = useState()
+  const [file, setFile] = useState(null)
 
   useEffect(() => {
     if (file && file.filehash) {
       const verifyTrxExistence = async () => {
-        setShowDropzone(false);
+        setShowDropzone(false)
         const { rows } = await rpc.get_table_rows({
           json: true,
           code: code,
@@ -38,31 +38,31 @@ const IssuanceVerifier = ({
           reverse: false,
           lower_bound: file.filehash,
           index_position: 2,
-          key_type: "sha256",
-        });
+          key_type: 'sha256'
+        })
 
-        const txId = rows.length ? rows[0].tx : null;
-        const { traces } = await rpc.history_get_transaction(txId, null);
+        const txId = rows.length ? rows[0].tx : null
+        const { traces } = await rpc.history_get_transaction(txId, null)
 
         if (traces[0].act.data.hash !== file.filehash.toUpperCase())
           setVerified({
             state: false,
-            severity: "error",
-            message: errorMsg,
-          });
+            severity: 'error',
+            message: errorMsg
+          })
         else {
-          setTransaction(txId);
+          setTransaction(txId)
           setVerified({
             state: true,
-            severity: "success",
-            message: successMsg,
-          });
+            severity: 'success',
+            message: successMsg
+          })
         }
-      };
-      verifyTrxExistence();
+      }
+      verifyTrxExistence()
     }
     // eslint-disable-next-line
-  }, [file]);
+  }, [file])
 
   return (
     <>
@@ -70,12 +70,12 @@ const IssuanceVerifier = ({
         <DropzoneHash
           file={file}
           deleteFile={() => {
-            setFile(null);
-            setShowDropzone(true);
+            setFile(null)
+            setShowDropzone(true)
           }}
           handleOnDropFile={(resultFile) => {
-            setFile(resultFile);
-            setShowDropzone(false);
+            setFile(resultFile)
+            setShowDropzone(false)
           }}
         />
       )}
@@ -87,17 +87,17 @@ const IssuanceVerifier = ({
           <Box display="flex" flexDirection="row" justifyContent="space-evenly">
             <Button
               onClick={(e) => {
-                e.preventDefault();
-                setFile(null);
-                setVerified(undefined);
-                setShowDropzone(true);
+                e.preventDefault()
+                setFile(null)
+                setVerified(undefined)
+                setShowDropzone(true)
               }}
               variant="contained"
               color="primary"
             >
               {analyzeAnotherDoc}
             </Button>
-            {verified.severity === "success" && (
+            {verified.severity === 'success' && (
               <Button color="secondary">
                 <Link
                   href={`${nodeLink}/${transaction}`}
@@ -112,8 +112,8 @@ const IssuanceVerifier = ({
         </Box>
       )}
     </>
-  );
-};
+  )
+}
 
 IssuanceVerifier.propTypes = {
   code: PropTypes.string.isRequired,
@@ -124,19 +124,19 @@ IssuanceVerifier.propTypes = {
   successMsg: PropTypes.string,
   verificationState: PropTypes.string,
   analyzeAnotherDoc: PropTypes.string,
-  showInExplorer: PropTypes.string,
-};
+  showInExplorer: PropTypes.string
+}
 
 IssuanceVerifier.defaultProps = {
-  code: "notarioeoscr",
-  scope: "notarioeoscr",
-  table: "libro",
-  nodeLink: "https://jungle3.bloks.io/transaction",
-  errorMsg: "No se ha podido verificar la emisión de este documento",
-  successMsg: "Emisión de documento verificada",
-  verificationState: "Estado de verificación",
-  analyzeAnotherDoc: "Analizar otro documento",
-  showInExplorer: "Ver en explorador",
-};
+  code: 'notarioeoscr',
+  scope: 'notarioeoscr',
+  table: 'libro',
+  nodeLink: 'https://jungle3.bloks.io/transaction',
+  errorMsg: 'No se ha podido verificar la emisión de este documento',
+  successMsg: 'Emisión de documento verificada',
+  verificationState: 'Estado de verificación',
+  analyzeAnotherDoc: 'Analizar otro documento',
+  showInExplorer: 'Ver en explorador'
+}
 
-export default IssuanceVerifier;
+export default IssuanceVerifier
