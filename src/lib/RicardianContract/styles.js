@@ -1,6 +1,7 @@
 const Styles = (theme) => ({
   ricardianContractContainer: {
     width: '100%',
+    display: 'block !important',
     '& h3': {
       fontSize: 38
     },
@@ -20,15 +21,17 @@ const Styles = (theme) => ({
   boxTitle: {
     display: 'flex',
     alignItems: 'flex-start',
-    marginTop: theme.spacing(4),
+    margin: `${theme.spacing(4, 0, 0, 0)} !important`,
     '& img': {
       width: 24
     }
   },
   boxText: {
     display: 'flex',
+    height: 'auto !important',
     flexDirection: 'column',
-    marginLeft: theme.spacing(1),
+    margin: `${theme.spacing(0, 0, 0, 1)} !important`,
+    backgroundColor: 'transparent',
     '& h6': {
       fontWeight: '500',
       fontSize: 16,
@@ -53,7 +56,10 @@ const Styles = (theme) => ({
   boxTitleClauses: {
     display: 'flex',
     alignItems: 'center',
-    marginTop: theme.spacing(4),
+    margin: `${theme.spacing(4, 0, 0, 0)} !important`,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    height: 'auto !important',
     '& img': {
       width: 24
     }
