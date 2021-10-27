@@ -142,6 +142,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
 
   const handleOnDownload = () => {
     const bp = getValidBpForm()
+
     if (!!bp) fileDownload(bp, 'bp.json')
   }
 
