@@ -85,7 +85,6 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   const [org, setOrg] = useState(initData)
   const [nodes, setNodes] = useState([])
   const [currentNodeIndex, setCurrentNodeIndex] = useState(null)
-  const [shouldUpdateChain, setShouldUpdateChain] = useState(false)
   const [requiredFieldsValidation, setRequiredFieldsValidation] = useState(
     defaultValidationState
   )
@@ -153,7 +152,6 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
 
     !!bp
       ? onSubmit({
-          shouldUpdateChain,
           bpJson: bp
         })
       : onSubmit(null)
