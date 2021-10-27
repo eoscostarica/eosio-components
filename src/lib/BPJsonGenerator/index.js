@@ -18,6 +18,7 @@ import ArrayTextField from '../ArrayTextField'
 import ImagePreview from './ImagePreview'
 import NodesForm from './NodesForm'
 import NodesList from './NodesList'
+import Dropzone from './Dropzone'
 import Styles from './styles'
 
 const initData = {
@@ -123,7 +124,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
     setOpenModal(true)
   }
 
-  const handleOnSubmit = () => {
+  const getValidBpForm = () => {
     const { formValidated, isValidForm } = formInputValidation(org)
     setRequiredFieldsValidation(formValidated)
 
@@ -138,11 +139,29 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
       null,
       '\t'
     )
-    fileDownload(producerJson, 'bp.json')
-    onSubmit({
-      shouldUpdateChain,
-      bpJson: producerJson
-    })
+
+    return producerJson
+  }
+
+  const handleOnDownload = () => {
+    const bp = getValidBpForm()
+    if (!!bp) fileDownload(bp, 'bp.json')
+  }
+
+  const handleOnSubmit = () => {
+    const bp = getValidBpForm()
+
+    !!bp
+      ? onSubmit({
+          shouldUpdateChain,
+          bpJson: bp
+        })
+      : onSubmit(null)
+  }
+
+  const preLoadBP = (bp) => {
+    setOrg(bp ? bp.org : initData)
+    setNodes(bp ? bp.nodes : [])
   }
 
   useEffect(() => {
@@ -152,11 +171,16 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
 
   return (
     <Box>
-      <Box className={classes.wrapper}>
-        <Typography variant="h4">BP JSON Generator</Typography>
-        <Typography variant="body1">
-          A simple way to create and update your node information on chain.
-        </Typography>
+      <Box className={classes.wrapperRow}>
+        <Box className={classes.wrapper}>
+          <Typography variant="h4">BP JSON Generator</Typography>
+          <Typography variant="body1">
+            A simple way to create and update your node information on chain.
+          </Typography>
+        </Box>
+        <Box className={classes.wrapper}>
+          <Dropzone onSubmit={preLoadBP} />
+        </Box>
       </Box>
 
       <Box className={classes.wrapper}>
@@ -500,34 +524,39 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
       </Box>
 
       <Box className={classes.wrapper}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  classes={{
-                    root: classes.checkbox
-                  }}
-                  checked={shouldUpdateChain}
-                  onChange={() => setShouldUpdateChain(!shouldUpdateChain)}
-                  disabled={!accountName}
-                  color="primary"
-                />
-              }
-              label="Also send bpjson to the chain"
-            />
-            <Typography variant="caption" className={classes.caption}>
-              {!accountName ? 'Please login to use this option' : ''}
-            </Typography>
+        <Grid container direction="row" spacing={1}>
+          <Grid
+            container
+            justifyContent="space-evenly"
+            item
+            xs={6}
+            sm={6}
+            md={6}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.btn}
+              onClick={handleOnDownload}
+            >
+              Download bp.json
+            </Button>
           </Grid>
-          <Grid container item direction="column" alignItems="center">
+          <Grid
+            container
+            justifyContent="space-evenly"
+            item
+            xs={6}
+            sm={6}
+            md={6}
+          >
             <Button
               variant="contained"
               color="primary"
               className={classes.btn}
               onClick={handleOnSubmit}
             >
-              Download bp.json
+              Save on chain
             </Button>
           </Grid>
         </Grid>

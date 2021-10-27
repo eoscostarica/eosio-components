@@ -1,8 +1,29 @@
 const Styles = (theme) => ({
+  wrapperRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: theme.spacing(2)
+  },
   wrapper: {
     display: 'flex',
     flexDirection: 'column',
     marginBottom: theme.spacing(2)
+  },
+  dropzoneArea: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '20px',
+    borderWidth: 2,
+    borderRadius: 2,
+    borderColor: '#eeeeee',
+    borderStyle: 'dashed',
+    backgroundColor: '#fafafa',
+    color: '#bdbdbd',
+    outline: 'none',
+    transition: 'border .24s ease-in-out'
   },
   divider: {
     marginBottom: theme.spacing(2)
