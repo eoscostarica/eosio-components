@@ -23,7 +23,7 @@ const Dropzone = ({ onSubmit }) => {
       onSubmit(JSON.parse(e.target.result))
     }
     reader.readAsText(acceptedFiles[0])
-  }, [acceptedFiles])
+  }, [acceptedFiles, onSubmit])
 
   return (
     <section>

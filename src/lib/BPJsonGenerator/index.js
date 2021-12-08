@@ -16,7 +16,7 @@ import ArrayTextField from '../ArrayTextField'
 import ImagePreview from './ImagePreview'
 import NodesForm from './NodesForm'
 import NodesList from './NodesList'
-import Dropzone from './Dropzone'
+import BoxDropzone from './BoxDropzone'
 import Styles from './styles'
 
 const initData = {
@@ -176,7 +176,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
           </Typography>
         </Box>
         <Box className={classes.wrapper}>
-          <Dropzone onSubmit={preLoadBP} />
+          <BoxDropzone onSubmit={preLoadBP} />
         </Box>
       </Box>
 
