@@ -213,14 +213,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('website', e.target.value, 'org')
                 }
                 variant="outlined"
-                required
-                error={requiredFieldsValidation.website.isError}
                 label="Website"
                 value={org.website || ''}
-                helperText={
-                  requiredFieldsValidation.website.isError &&
-                  requiredFieldsValidation.website.message
-                }
                 className={classes.formField}
               />
             </Grid>
@@ -232,14 +226,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('code_of_conduct', e.target.value, 'org')
                 }
                 variant="outlined"
-                required
-                error={requiredFieldsValidation.code_of_conduct.isError}
                 label="Code of Conduct"
                 value={org.code_of_conduct || ''}
-                helperText={
-                  requiredFieldsValidation.code_of_conduct.isError &&
-                  requiredFieldsValidation.code_of_conduct.message
-                }
                 className={classes.formField}
               />
             </Grid>
@@ -249,14 +237,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('ownership_disclosure', e.target.value, 'org')
                 }
                 variant="outlined"
-                required
-                error={requiredFieldsValidation.ownership_disclosure.isError}
                 label="Ownership disclosure"
                 value={org.ownership_disclosure || ''}
-                helperText={
-                  requiredFieldsValidation.ownership_disclosure.isError &&
-                  requiredFieldsValidation.ownership_disclosure.message
-                }
                 className={classes.formField}
               />
             </Grid>
