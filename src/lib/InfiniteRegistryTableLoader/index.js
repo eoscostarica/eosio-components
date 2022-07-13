@@ -1,9 +1,9 @@
 import React from 'react'
 import InfiniteLoader from 'react-virtualized/dist/commonjs/InfiniteLoader'
 import { Table, Column } from 'react-virtualized/dist/commonjs/Table'
-import { makeStyles } from '@material-ui/styles'
+import { makeStyles } from '@mui/styles'
 import PropTypes from 'prop-types'
-import TableCell from '@material-ui/core/TableCell'
+import TableCell from '@mui/material/TableCell'
 import clsx from 'clsx'
 
 import Styles from './styles'

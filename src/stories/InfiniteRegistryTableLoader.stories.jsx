@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import LockIcon from '@material-ui/icons/Lock'
-import IconButton from '@material-ui/core/IconButton'
+import LockIcon from '@mui/icons-material/Lock'
+import IconButton from '@mui/material/IconButton'
 import { AutoSizer } from 'react-virtualized'
 
 import InfiniteRegistryTableLoader from '../lib/InfiniteRegistryTableLoader'
