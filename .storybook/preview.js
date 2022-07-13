@@ -1,5 +1,4 @@
-import { ThemeProvider } from '@material-ui/core'
-import { createTheme } from '@material-ui/core/styles'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { addDecorator } from '@storybook/react'
 import { withThemes } from '@react-theming/storybook-addon'
 import { EOSCR_THEME } from '@eoscostarica/eoscr-theme'

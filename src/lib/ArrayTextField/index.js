@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import { makeStyles } from '@material-ui/core/styles'
-import Box from '@material-ui/core/Box'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import TextField from '@material-ui/core/TextField'
-import AddIcon from '@material-ui/icons/Add'
-import Chip from '@material-ui/core/Chip'
+import { makeStyles } from '@mui/styles'
+import Box from '@mui/material/Box'
+import InputAdornment from '@mui/material/InputAdornment'
+import TextField from '@mui/material/TextField'
+import AddIcon from '@mui/icons-material/Add'
+import Chip from '@mui/material/Chip'
 
 import Styles from './styles'
 

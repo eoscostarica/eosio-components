@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import sha256 from 'sha256'
 import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import { makeStyles } from '@mui/styles'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 
 const useStyles = makeStyles((theme) => ({
   root: {

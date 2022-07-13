@@ -5,15 +5,14 @@ import React, {
   forwardRef,
   useImperativeHandle
 } from 'react'
-import { makeStyles } from '@material-ui/styles'
-import { useTheme } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@mui/styles'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import Paper from '@material-ui/core/Paper'
-import DropUp from '@material-ui/icons/ArrowDropUp'
-import DropDown from '@material-ui/icons/ArrowDropDown'
-import IconButton from '@material-ui/core/IconButton'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import Paper from '@mui/material/Paper'
+import DropUp from '@mui/icons-material/ArrowDropUp'
+import DropDown from '@mui/icons-material/ArrowDropDown'
+import IconButton from '@mui/material/IconButton'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 import Styles from './styles'
 
