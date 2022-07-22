@@ -48,7 +48,7 @@ const RicardianContract = ({
       const icon = _icon ? _icon.trim() : config.defaultIcon
 
       return (
-        <div>
+        <div key={`action-${Math.random(0, 10000)}`}>
           <Box className={classes.boxTitle}>
             <img alt="icon" src={icon} onError={useDefaultLogo} />
             <Box className={classes.boxText}>
@@ -69,7 +69,7 @@ const RicardianContract = ({
       const bodyList = (body || '').split('- ')
 
       return (
-        <div>
+        <div key={`clauses-${Math.random(0, 10000)}`}>
           <Box className={classes.boxTitleClauses}>
             <img alt="icon" src={config.defaultIcon} onError={useDefaultLogo} />
             <Box className={classes.boxText}>
