@@ -14,7 +14,7 @@ jobs:
 
     - name: Install and Build 🔧
       run: |
-        yuarn install 
+        yarn install 
         yarn build-storybook
     
     - name: Deploy 🚀
