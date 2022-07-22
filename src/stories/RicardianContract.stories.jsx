@@ -13,7 +13,7 @@ const Template = (args) => <RicardianContract {...args} />
 export const Example = Template.bind({})
 Example.args = {
   httpEndpoint: config.eosApiHost,
-  contractName: 'notarioeoscr',
+  contractName: 'eosio',
   actionName: undefined,
   showClauses: true,
   url: config.eosApiHost,
