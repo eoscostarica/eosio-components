@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import ReactJson from 'react-json-view'
 import fileDownload from 'react-file-download'
 import { makeStyles } from '@mui/styles'
-import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -151,8 +150,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
 
     !!bp
       ? onSubmit({
-          bpJson: bp
-        })
+        bpJson: bp
+      })
       : onSubmit(null)
   }
 
@@ -167,25 +166,25 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   }, [bpJson])
 
   return (
-    <Box>
-      <Box className={classes.wrapperRow}>
-        <Box className={classes.wrapper}>
+    <Grid>
+      <Grid className={classes.wrapperRow}>
+        <Grid className={classes.wrapper}>
           <Typography variant="h4">BP JSON Generator</Typography>
           <Typography variant="body1">
             A simple way to create and update your node information on chain.
           </Typography>
-        </Box>
-        <Box className={classes.wrapper}>
+        </Grid>
+        <Grid className={classes.wrapper}>
           <BoxDropzone onSubmit={preLoadBP} />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">{`Account Name: ${accountName}`}</Typography>
         <Divider className={classes.divider} />
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Organization Info</Typography>
         <Divider className={classes.divider} />
         <Grid container spacing={3}>
@@ -213,7 +212,13 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('website', e.target.value, 'org')
                 }
                 variant="outlined"
+                error={requiredFieldsValidation.website.isError}
                 label="Website"
+                required
+                helperText={
+                  requiredFieldsValidation.website.isError &&
+                  requiredFieldsValidation.website.message
+                }
                 value={org.website || ''}
                 className={classes.formField}
               />
@@ -227,7 +232,13 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant="outlined"
                 label="Code of Conduct"
+                required
+                error={requiredFieldsValidation.code_of_conduct.isError}
                 value={org.code_of_conduct || ''}
+                helperText={
+                  requiredFieldsValidation.code_of_conduct.isError &&
+                  requiredFieldsValidation.code_of_conduct.message
+                }
                 className={classes.formField}
               />
             </Grid>
@@ -237,7 +248,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('ownership_disclosure', e.target.value, 'org')
                 }
                 variant="outlined"
+                error={requiredFieldsValidation.ownership_disclosure.isError}
                 label="Ownership disclosure"
+                required
+                helperText={
+                  !urlInputValidation(org.ownership_disclosure) && 'Invalid URL'
+                }
                 value={org.ownership_disclosure || ''}
                 className={classes.formField}
               />
@@ -276,7 +292,11 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('chain_resources', e.target.value, 'org')
                 }
                 variant="outlined"
+                error={!urlInputValidation(org.chain_resources)}
                 label="Chain Resources"
+                helperText={
+                  !urlInputValidation(org.chain_resources) && 'Invalid URL'
+                }
                 value={org.chain_resources || ''}
                 className={classes.formField}
               />
@@ -294,14 +314,14 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             </Grid>
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Branding</Typography>
         <Divider className={classes.divider} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={4}>
-            <Box>
+            <Grid>
               <TextField
                 onChange={(e) =>
                   handleOnChange('logo_256', e.target.value, 'branding')
@@ -320,10 +340,10 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 label="Logo 256px"
                 isInvalidURL={!urlInputValidation(org.branding.logo_256)}
               />
-            </Box>
+            </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Box>
+            <Grid>
               <TextField
                 onChange={(e) =>
                   handleOnChange('logo_1024', e.target.value, 'branding')
@@ -342,10 +362,10 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 label="Logo 1024px"
                 isInvalidURL={!urlInputValidation(org.branding.logo_1024)}
               />
-            </Box>
+            </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Box>
+            <Grid>
               <TextField
                 onChange={(e) =>
                   handleOnChange('logo_svg', e.target.value, 'branding')
@@ -364,12 +384,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 label="Logo SVG"
                 isInvalidURL={!urlInputValidation(org.branding.logo_svg)}
               />
-            </Box>
+            </Grid>
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Location</Typography>
         <Divider className={classes.divider} />
         <Grid container spacing={3}>
@@ -428,9 +448,9 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             </Grid>
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Social</Typography>
         <Divider className={classes.divider} />
         <Grid container spacing={3}>
@@ -446,9 +466,9 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             </Grid>
           ))}
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Node List</Typography>
         <Divider className={classes.divider} />
         <NodesForm
@@ -483,9 +503,9 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             </Button>
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Preview</Typography>
         <Divider className={classes.divider} />
         <ReactJson
@@ -500,9 +520,9 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
           name="BPJson"
           collapsed
         />
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Grid container direction="row" spacing={1}>
           <Grid
             container
@@ -539,8 +559,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             </Button>
           </Grid>
         </Grid>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   )
 }
 
