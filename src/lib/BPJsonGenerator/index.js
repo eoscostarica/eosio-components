@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 
-import { urlInputValidation, formInputValidation } from '../utils'
+import { urlInputValidation, formInputValidation, latitudeValidation, longitudeValidation } from '../utils'
 import ArrayTextField from '../ArrayTextField'
 
 import ImagePreview from './ImagePreview'
@@ -426,6 +426,10 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 variant="outlined"
                 type="number"
                 label="Latitude"
+                error={!latitudeValidation(org.location.latitude)}
+                helperText={
+                  !latitudeValidation(org.location.latitude) && 'The latitude range is between -90 and 90'
+                }
                 value={org.location.latitude || 0}
                 className={classes.formField}
               />
@@ -443,6 +447,10 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 type="number"
                 label="Longitude"
                 value={org.location.longitude || 0}
+                error={!longitudeValidation(org.location.longitude)}
+                helperText={
+                  !longitudeValidation(org.location.longitude) && 'The longitude range is between -180 and 180'
+                }
                 className={classes.formField}
               />
             </Grid>

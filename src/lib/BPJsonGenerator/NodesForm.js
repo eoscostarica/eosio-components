@@ -11,6 +11,8 @@ import Chip from '@mui/material/Chip'
 import Checkbox from '@mui/material/Checkbox'
 import ListItemText from '@mui/material/ListItemText'
 
+import { latitudeValidation, longitudeValidation } from '../utils'
+
 import Styles from './styles'
 import Modal from './Modal'
 
@@ -79,8 +81,8 @@ const defaultNode = {
   location: {
     name: '',
     country: '',
-    latitude: null,
-    longitude: null
+    latitude: 0,
+    longitude: 0
   },
   node_type: '',
   p2p_endpoint: '',
@@ -193,7 +195,11 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               variant="outlined"
               label="Latitude"
               type="number"
-              value={currentNode.location.latitude || ''}
+              error={!latitudeValidation(currentNode.location.latitude)}
+              helperText={
+                !latitudeValidation(currentNode.location.latitude) && 'The latitude range is between -90 and 90'
+              }
+              value={currentNode.location.latitude}
               className={classes.formFieldForm}
             />
             <TextField
@@ -203,6 +209,10 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               variant="outlined"
               label="Longitude"
               type="number"
+              error={!longitudeValidation(currentNode.location.longitude)}
+              helperText={
+                !longitudeValidation(currentNode.location.longitude) && 'The longitude range is between -180 and 180'
+              }
               value={currentNode.location.longitude}
               className={classes.formFieldForm}
             />
@@ -214,7 +224,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             style={{
               display:
                 currentNode.node_type === 'producer' ||
-                currentNode.node_type === ''
+                  currentNode.node_type === ''
                   ? 'none'
                   : undefined
             }}

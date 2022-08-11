@@ -59,4 +59,12 @@ const formInputValidation = (formData) => {
   }
 }
 
-export { urlInputValidation, emailInputValidation, formInputValidation }
+const latitudeValidation = (latitude) => {
+  return latitude <= 90 && latitude >= -90
+}
+
+const longitudeValidation = (latitude) => {
+  return latitude <= 180 && latitude >= -180
+}
+
+export { urlInputValidation, emailInputValidation, formInputValidation, latitudeValidation, longitudeValidation }
