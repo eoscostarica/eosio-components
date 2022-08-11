@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
@@ -11,7 +10,7 @@ import Chip from '@mui/material/Chip'
 import Checkbox from '@mui/material/Checkbox'
 import ListItemText from '@mui/material/ListItemText'
 
-import { latitudeValidation, longitudeValidation } from '../utils'
+import { Validator } from '../utils'
 
 import Styles from './styles'
 import Modal from './Modal'
@@ -74,6 +73,11 @@ const features = [
     label: 'dsp-api',
     value: 'dsp-api',
     info: ''
+  },
+  {
+    label: 'atomic-assets-api',
+    value: 'atomic-assets-api',
+    info: '',
   }
 ]
 
@@ -85,6 +89,7 @@ const defaultNode = {
     longitude: 0
   },
   node_type: '',
+  full: false,
   p2p_endpoint: '',
   api_endpoint: '',
   ssl_endpoint: '',
@@ -94,6 +99,15 @@ const defaultNode = {
 const useStyles = makeStyles(Styles)
 
 const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
+
+  const {
+    urlInputValidation,
+    latitudeValidation,
+    longitudeValidation,
+    countryValidation,
+    hostValidation
+  } = Validator
+
   const classes = useStyles()
   const [currentNode, setCurrentNode] = useState(defaultNode)
 
@@ -117,7 +131,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
   const deleteEmptyKeyValues = () => {
     const aux = currentNode
-    if (aux.features.length === 0) delete aux.features
+    if (aux.features?.length === 0) delete aux.features
     Object.keys(aux).forEach((k) => {
       if (aux[k] === '') delete aux[k]
     })
@@ -145,7 +159,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   return (
     <Modal openModal={openModal} setOpenModal={(value) => setOpenModal(value)}>
       <Grid container justify="center" className={classes.nodes}>
-        <Box className={classes.wrapperForm}>
+        <Grid className={classes.wrapperForm}>
           <Typography className={classes.sectionTitle} variant="h5">
             Nodes
           </Typography>
@@ -164,14 +178,22 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               </MenuItem>
             ))}
           </TextField>
-        </Box>
 
-        <Box className={classes.wrapperForm}>
+          <Typography variant="body1" align="center">
+            Full
+          </Typography>
+          <Checkbox
+            onClick={(e) => handleOnChange('full', e.target.checked)}
+            checked={currentNode.full}
+          />
+        </Grid>
+
+        <Grid className={classes.wrapperForm}>
           <Typography className={classes.sectionTitle} variant="h5">
             Location
           </Typography>
 
-          <Box className={classes.locationWrapper}>
+          <Grid className={classes.locationWrapper}>
             <TextField
               onChange={(e) => handleOnChangeLocation('name', e.target.value)}
               variant="outlined"
@@ -181,10 +203,14 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             />
             <TextField
               onChange={(e) =>
-                handleOnChangeLocation('country', e.target.value)
+                handleOnChangeLocation('country', e.target.value.toUpperCase())
               }
               variant="outlined"
               label="Country"
+              error={!countryValidation(currentNode.location.country)}
+              helperText={
+                !countryValidation(currentNode.location.country) && 'The country code must be two letters'
+              }
               value={currentNode.location.country}
               className={classes.formFieldForm}
             />
@@ -216,10 +242,10 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               value={currentNode.location.longitude}
               className={classes.formFieldForm}
             />
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
 
-        <Box className={classes.wrapperForm}>
+        <Grid className={classes.wrapperForm}>
           <Typography
             style={{
               display:
@@ -241,6 +267,10 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             onChange={(e) => handleOnChange('p2p_endpoint', e.target.value)}
             variant="outlined"
             label="P2P Endpoint"
+            error={!hostValidation(currentNode.p2p_endpoint)}
+            helperText={
+              !hostValidation(currentNode.p2p_endpoint) && 'Invalid URL'
+            }
             value={currentNode.p2p_endpoint || ''}
             className={classes.formFieldForm}
           />
@@ -252,6 +282,10 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             }}
             variant="outlined"
             label="API Endpoint"
+            error={!urlInputValidation(currentNode.api_endpoint)}
+            helperText={
+              !urlInputValidation(currentNode.api_endpoint) && 'Invalid URL'
+            }
             value={currentNode.api_endpoint || ''}
             className={classes.formFieldForm}
           />
@@ -263,12 +297,16 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             onChange={(e) => handleOnChange('ssl_endpoint', e.target.value)}
             variant="outlined"
             label="SSL Endpoint"
+            error={!urlInputValidation(currentNode.ssl_endpoint)}
+            helperText={
+              !urlInputValidation(currentNode.ssl_endpoint) && 'Invalid URL'
+            }
             value={currentNode.ssl_endpoint || ''}
             className={classes.formFieldForm}
           />
-        </Box>
+        </Grid>
 
-        <Box className={classes.wrapperForm}>
+        <Grid className={classes.wrapperForm}>
           <Typography
             style={{
               display: currentNode.node_type !== 'query' ? 'none' : undefined
@@ -318,7 +356,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               </MenuItem>
             ))}
           </TextField>
-        </Box>
+        </Grid>
 
         <Button
           variant="contained"

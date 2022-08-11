@@ -1,11 +1,7 @@
 const urlInputValidation = (value) => {
-  if (!value) {
-    return true
-  }
-
   const urlRegex = /^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/
 
-  return urlRegex.test(value)
+  return !value || urlRegex.test(value)
 }
 
 const emailInputValidation = (email) => {
@@ -67,4 +63,26 @@ const longitudeValidation = (latitude) => {
   return latitude <= 180 && latitude >= -180
 }
 
-export { urlInputValidation, emailInputValidation, formInputValidation, latitudeValidation, longitudeValidation }
+const countryValidation = (code) => {
+  const isoRegex = /^[A-Z]{2}$/
+
+  return isoRegex.test(code)
+}
+
+const hostValidation = (endpoint) => {
+  const hostRegex = /\w:[0-9]/
+
+  return hostRegex.test(endpoint)
+}
+
+const Validator = {
+  latitudeValidation,
+  longitudeValidation,
+  countryValidation,
+  hostValidation,
+  urlInputValidation,
+  emailInputValidation,
+  formInputValidation
+}
+
+export { Validator }

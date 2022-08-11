@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 
-import { urlInputValidation, formInputValidation, latitudeValidation, longitudeValidation } from '../utils'
+import { Validator } from '../utils'
 import ArrayTextField from '../ArrayTextField'
 
 import ImagePreview from './ImagePreview'
@@ -77,6 +77,15 @@ const defaultValidationState = {
 const useStyles = makeStyles(Styles)
 
 const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
+
+  const {
+    latitudeValidation,
+    longitudeValidation,
+    countryValidation,
+    urlInputValidation,
+    formInputValidation
+  } = Validator
+
   const classes = useStyles()
   const [openModal, setOpenModal] = useState(false)
   const [org, setOrg] = useState(initData)
@@ -409,10 +418,14 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
-                  handleOnChange('country', e.target.value, 'location')
+                  handleOnChange('country', e.target.value.toUpperCase(), 'location')
                 }
                 variant="outlined"
                 label="Country"
+                error={!countryValidation(org.location.country)}
+                helperText={
+                  !countryValidation(org.location.country) && 'The country code must be two letters'
+                }
                 value={org.location.country || ''}
                 className={classes.formField}
               />
