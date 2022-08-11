@@ -252,7 +252,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 label="Ownership disclosure"
                 required
                 helperText={
-                  !urlInputValidation(org.ownership_disclosure) && 'Invalid URL'
+                  requiredFieldsValidation.ownership_disclosure.isError &&
+                  requiredFieldsValidation.ownership_disclosure.message
                 }
                 value={org.ownership_disclosure || ''}
                 className={classes.formField}
