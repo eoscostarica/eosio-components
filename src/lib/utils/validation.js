@@ -3,7 +3,7 @@ const urlInputValidation = (value) => {
     return true
   }
 
-  const urlRegex = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/
+  const urlRegex = /^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/
 
   return urlRegex.test(value)
 }
