@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 
-import { Validator } from '../utils'
+import { Validator, toCapitalCase } from '../utils'
 import ArrayTextField from '../ArrayTextField'
 
 import ImagePreview from './ImagePreview'
@@ -94,13 +94,6 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   const [requiredFieldsValidation, setRequiredFieldsValidation] = useState(
     defaultValidationState
   )
-
-  const toCapitalCase = (string = '') => {
-    return string
-      .split('')
-      .map((char, index) => (index === 0 ? char.toUpperCase() : char))
-      .join('')
-  }
 
   const handleOnChange = (key, value, parent) => {
     if (parent === 'org') {

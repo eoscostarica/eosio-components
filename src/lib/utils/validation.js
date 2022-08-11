@@ -66,13 +66,13 @@ const longitudeValidation = (latitude) => {
 const countryValidation = (code) => {
   const isoRegex = /^[A-Z]{2}$/
 
-  return isoRegex.test(code)
+  return !code || isoRegex.test(code)
 }
 
 const hostValidation = (endpoint) => {
   const hostRegex = /\w:[0-9]/
 
-  return hostRegex.test(endpoint)
+  return !endpoint || hostRegex.test(endpoint)
 }
 
 const Validator = {

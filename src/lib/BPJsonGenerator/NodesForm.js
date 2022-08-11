@@ -10,28 +10,12 @@ import Chip from '@mui/material/Chip'
 import Checkbox from '@mui/material/Checkbox'
 import ListItemText from '@mui/material/ListItemText'
 
-import { Validator } from '../utils'
+import { Validator, toCapitalCase } from '../utils'
 
 import Styles from './styles'
 import Modal from './Modal'
 
-const nodeTypes = [
-  {
-    label: 'Producer',
-    value: 'producer',
-    info: ''
-  },
-  {
-    label: 'Query',
-    value: 'query',
-    info: ''
-  },
-  {
-    label: 'Seed',
-    value: 'seed',
-    info: ''
-  }
-]
+const NODE_TYPES = { PRODUCER: 'producer', QUERY: 'query', SEED: 'seed' }
 
 const features = [
   {
@@ -172,9 +156,9 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             value={currentNode.node_type}
             className={classes.formFieldForm}
           >
-            {nodeTypes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+            {Object.values(NODE_TYPES).map((type) => (
+              <MenuItem key={type} value={type}>
+                {toCapitalCase(type)}
               </MenuItem>
             ))}
           </TextField>
@@ -262,7 +246,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
           <TextField
             style={{
-              display: currentNode.node_type !== 'seed' ? 'none' : undefined
+              display: currentNode.node_type !== NODE_TYPES.SEED ? 'none' : undefined
             }}
             onChange={(e) => handleOnChange('p2p_endpoint', e.target.value)}
             variant="outlined"
@@ -278,7 +262,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
           <TextField
             onChange={(e) => handleOnChange('api_endpoint', e.target.value)}
             style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
+              display: currentNode.node_type !== NODE_TYPES.QUERY ? 'none' : undefined
             }}
             variant="outlined"
             label="API Endpoint"
@@ -292,7 +276,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
           <TextField
             style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
+              display: currentNode.node_type !== NODE_TYPES.QUERY ? 'none' : undefined
             }}
             onChange={(e) => handleOnChange('ssl_endpoint', e.target.value)}
             variant="outlined"
@@ -309,7 +293,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
         <Grid className={classes.wrapperForm}>
           <Typography
             style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
+              display: currentNode.node_type !== NODE_TYPES.QUERY ? 'none' : undefined
             }}
             className={classes.sectionTitle}
             variant="h5"
@@ -319,7 +303,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
           <TextField
             style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
+              display: currentNode.node_type !== NODE_TYPES.QUERY ? 'none' : undefined
             }}
             onChange={handleOnChangeFeatures}
             variant="outlined"
