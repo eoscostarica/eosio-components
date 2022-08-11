@@ -317,8 +317,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('other_resources', value, 'org')
                 }
                 variant="outlined"
+                error={!urlInputValidation(org.other_resources)}
                 label="Other Resources"
-                value={org.other_resources || []}
+                helperText={
+                  !urlInputValidation(org.other_resources) && 'Invalid URL'
+                }
+                value={org.other_resources || ''}
                 className={classes.formField}
               />
             </Grid>
@@ -345,11 +349,13 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 className={classes.formField}
               />
-              <ImagePreview
-                url={org.branding.logo_256}
-                label="Logo 256px"
-                isInvalidURL={!urlInputValidation(org.branding.logo_256)}
-              />
+              <Grid maxWidth={256} maxHeight={256}>
+                <ImagePreview
+                  url={org.branding.logo_256}
+                  label="Logo 256px"
+                  isInvalidURL={!urlInputValidation(org.branding.logo_256)}
+                />
+              </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -367,11 +373,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 className={classes.formField}
               />
-              <ImagePreview
-                url={org.branding.logo_1024}
-                label="Logo 1024px"
-                isInvalidURL={!urlInputValidation(org.branding.logo_1024)}
-              />
+              <Grid maxWidth={1024} maxHeight={1024}>
+                <ImagePreview
+                  url={org.branding.logo_1024}
+                  label="Logo 1024px"
+                  isInvalidURL={!urlInputValidation(org.branding.logo_1024)}
+                /></Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>
