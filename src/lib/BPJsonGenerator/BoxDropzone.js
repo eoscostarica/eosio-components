@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
 import { useDropzone } from 'react-dropzone'
 
-import styles from './styles'
+import Styles from './styles'
 
-const useStyles = makeStyles(styles)
+const useStyles = makeStyles(Styles)
 
 const Dropzone = ({ onSubmit }) => {
   const classes = useStyles()
@@ -21,26 +21,30 @@ const Dropzone = ({ onSubmit }) => {
     const reader = new FileReader()
 
     reader.onload = (e) => {
-      try {
-        if (acceptedFiles[0] !== lastFile) {
+
+      if (acceptedFiles[0] !== lastFile) {
+        try {
           onSubmit(JSON.parse(e.target.result))
           setLastFile(acceptedFiles[0])
-        }
-      } catch (error) {
+        } catch (error) {
 
+        }
       }
+
     }
     reader.readAsText(acceptedFiles[0])
 
   }, [acceptedFiles, lastFile, onSubmit])
 
   return (
-    <section>
-      <div {...getRootProps({ className: classes.dropzoneArea })}>
-        <input {...getInputProps()} />
-        <p>Drop your BP json file here</p>
-      </div>
-    </section>
+    <>
+      <section>
+        <div {...getRootProps({ className: classes.dropzoneArea })}>
+          <input {...getInputProps()} />
+          <p>Drop your BP json file here</p>
+        </div>
+      </section>
+    </>
   )
 }
 

@@ -136,6 +136,35 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
     setOpenModal(false)
   }
 
+  const deleteObjectKeys = (obj, keys) => {
+    keys.forEach((key) => {
+      if (obj[key])
+        delete obj[key]
+    })
+  }
+
+  const handleOnChangeNodeType = (key, value) => {
+
+    const newNode = JSON.parse(JSON.stringify(currentNode))
+    let deleteKeys = []
+
+    switch (newNode.node_type) {
+      case NODE_TYPES.QUERY:
+        deleteKeys = ['api_endpoint', 'ssl_endpoint', 'features']
+        break
+      case NODE_TYPES.SEED:
+        deleteKeys = ['p2p_endpoint']
+        break
+      default:
+        break
+    }
+
+    deleteObjectKeys(newNode, deleteKeys)
+
+    setCurrentNode({ ...newNode, [key]: value })
+
+  }
+
   useEffect(() => {
     setCurrentNode(nodes[nodeIndex] || defaultNode)
   }, [nodes, nodeIndex])
@@ -143,33 +172,35 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   return (
     <Modal openModal={openModal} setOpenModal={(value) => setOpenModal(value)}>
       <Grid container justify="center" className={classes.nodes}>
-        <Grid className={classes.wrapperForm}>
+        <Grid>
           <Typography className={classes.sectionTitle} variant="h5">
             Nodes
           </Typography>
 
-          <TextField
-            onChange={(e) => handleOnChange('node_type', e.target.value)}
-            variant="outlined"
-            label="Node Type"
-            select
-            value={currentNode.node_type}
-            className={classes.formFieldForm}
-          >
-            {Object.values(NODE_TYPES).map((type) => (
-              <MenuItem key={type} value={type}>
-                {toCapitalCase(type)}
-              </MenuItem>
-            ))}
-          </TextField>
+          <Grid className={classes.nodeWrapper}>
+            <TextField
+              onChange={(e) => handleOnChangeNodeType('node_type', e.target.value)}
+              variant="outlined"
+              label="Node Type"
+              select
+              value={currentNode.node_type}
+              className={classes.formFieldForm}
+            >
+              {Object.values(NODE_TYPES).map((type) => (
+                <MenuItem key={type} value={type}>
+                  {toCapitalCase(type)}
+                </MenuItem>
+              ))}
+            </TextField>
 
-          <Typography variant="body1" align="center">
-            Full
-          </Typography>
-          <Checkbox
-            onClick={(e) => handleOnChange('full', e.target.checked)}
-            checked={currentNode.full}
-          />
+            <Typography variant="body1" align="center">
+              Full
+            </Typography>
+            <Checkbox
+              onClick={(e) => handleOnChange('full', e.target.checked)}
+              checked={currentNode.full}
+            />
+          </Grid>
         </Grid>
 
         <Grid className={classes.wrapperForm}>
@@ -341,16 +372,17 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             ))}
           </TextField>
         </Grid>
-
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.addButton}
-          onClick={handleOnSubmit}
-          disabled={!currentNode.node_type}
-        >
-          {nodeIndex !== null ? 'Edit node' : 'Add Node'}
-        </Button>
+        <Grid container item direction="column" alignItems="center">
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.addButton}
+            onClick={handleOnSubmit}
+            disabled={!currentNode.node_type}
+          >
+            {nodeIndex !== null ? 'Edit node' : 'Add Node'}
+          </Button>
+        </Grid>
       </Grid>
     </Modal>
   )

@@ -10,6 +10,10 @@ const emailInputValidation = (email) => {
   return emailRegex.test(email)
 }
 
+const isValidForm = (form) => {
+  return !Object.values(form).some((obj) => { return obj.isError })
+}
+
 const formInputValidation = (formData) => {
   const result = {
     candidate_name: {
@@ -46,12 +50,25 @@ const formInputValidation = (formData) => {
 
   return {
     formValidated: result,
-    isValidForm:
-      !result.candidate_name.isError &&
-      !result.email.isError &&
-      !result.website.isError &&
-      !result.code_of_conduct.isError &&
-      !result.ownership_disclosure.isError
+    isValidForm: isValidForm(result)
+  }
+}
+
+const nodeInputValidation = (nodeData) => {
+  const result = {
+    node_type: {
+      isError: !!!nodeData.node_type,
+      message: 'Node type is required'
+    },
+    full: {
+      isError: !!!nodeData.full,
+      message: 'Full is required'
+    },
+  }
+
+  return {
+    formValidated: result,
+    isValidForm: isValidForm(result)
   }
 }
 
@@ -76,13 +93,13 @@ const hostValidation = (endpoint) => {
 }
 
 const Validator = {
+  countryValidation,
+  emailInputValidation,
+  formInputValidation,
+  hostValidation,
   latitudeValidation,
   longitudeValidation,
-  countryValidation,
-  hostValidation,
-  urlInputValidation,
-  emailInputValidation,
-  formInputValidation
+  urlInputValidation
 }
 
 export { Validator }

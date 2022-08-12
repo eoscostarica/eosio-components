@@ -113,6 +113,11 @@ const Styles = (theme) => ({
     flexDirection: 'column',
     width: '100%'
   },
+  nodeWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   locationWrapper: {
     display: 'flex',
     flexDirection: 'column',
