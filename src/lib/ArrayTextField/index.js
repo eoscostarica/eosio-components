@@ -37,6 +37,7 @@ const ArrayTextField = ({
   const handleDeleteItem = (index) => {
     items.splice(index, 1)
     setItems([...items])
+    onChange && onChange(items)
   }
 
   const handleOnKeyPress = (event) => {
@@ -62,7 +63,7 @@ const ArrayTextField = ({
     if (typeof value === 'object') {
       try {
         newItems = Object.values(value)
-      } catch (error) {}
+      } catch (error) { }
     }
 
     setItems(newItems)

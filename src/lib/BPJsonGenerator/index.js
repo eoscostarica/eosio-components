@@ -315,7 +315,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 helperText={
                   !urlInputValidation(org.other_resources) && 'Invalid URL'
                 }
-                value={org.other_resources || ''}
+                value={org.other_resources || []}
                 className={classes.formField}
               />
             </Grid>
