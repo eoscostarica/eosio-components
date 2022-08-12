@@ -6,64 +6,14 @@ import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
-import Chip from '@mui/material/Chip'
 import Checkbox from '@mui/material/Checkbox'
-import ListItemText from '@mui/material/ListItemText'
 
-import { Validator, toCapitalCase } from '../utils'
+import { Validator, toCapitalCase, NODE_TYPES, NODE_EXTRA_KEYS } from '../utils'
 
 import Styles from './styles'
 import Modal from './Modal'
-
-const NODE_TYPES = { PRODUCER: 'producer', QUERY: 'query', SEED: 'seed' }
-
-const features = [
-  {
-    label: 'chain-api',
-    value: 'chain-api',
-    info: 'basic eosio::chain_api_plugin (/v1/chain/*)'
-  },
-  {
-    label: 'account-query',
-    value: 'account-query',
-    info: '(/v1/chain/get_accounts_by_authorizers)'
-  },
-  {
-    label: 'history-v1',
-    value: 'history-v1',
-    info: '(/v1/history/*)'
-  },
-  {
-    label: 'hyperion-v2',
-    value: 'hyperion-v2',
-    info: '(/v2/*)'
-  },
-  {
-    label: 'dfuse',
-    value: 'dfuse',
-    info: ''
-  },
-  {
-    label: 'fio-api',
-    value: 'fio-api',
-    info: ''
-  },
-  {
-    label: 'snapshot-api',
-    value: 'snapshot-api',
-    info: ''
-  },
-  {
-    label: 'dsp-api',
-    value: 'dsp-api',
-    info: ''
-  },
-  {
-    label: 'atomic-assets-api',
-    value: 'atomic-assets-api',
-    info: '',
-  }
-]
+import EndpointsForm from './EndpointsForm'
+import FeaturesForm from './FeaturesForm'
 
 const defaultNode = {
   location: {
@@ -85,11 +35,9 @@ const useStyles = makeStyles(Styles)
 const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
   const {
-    urlInputValidation,
     latitudeValidation,
     longitudeValidation,
     countryValidation,
-    hostValidation
   } = Validator
 
   const classes = useStyles()
@@ -146,20 +94,8 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   const handleOnChangeNodeType = (key, value) => {
 
     const newNode = JSON.parse(JSON.stringify(currentNode))
-    let deleteKeys = []
 
-    switch (newNode.node_type) {
-      case NODE_TYPES.QUERY:
-        deleteKeys = ['api_endpoint', 'ssl_endpoint', 'features']
-        break
-      case NODE_TYPES.SEED:
-        deleteKeys = ['p2p_endpoint']
-        break
-      default:
-        break
-    }
-
-    deleteObjectKeys(newNode, deleteKeys)
+    deleteObjectKeys(newNode, NODE_EXTRA_KEYS[newNode.node_type] ?? [])
 
     setCurrentNode({ ...newNode, [key]: value })
 
@@ -261,117 +197,13 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
         </Grid>
 
         <Grid className={classes.wrapperForm}>
-          <Typography
-            style={{
-              display:
-                currentNode.node_type === 'producer' ||
-                  currentNode.node_type === ''
-                  ? 'none'
-                  : undefined
-            }}
-            className={classes.sectionTitle}
-            variant="h5"
-          >
-            Endpoints
-          </Typography>
-
-          <TextField
-            style={{
-              display: currentNode.node_type !== NODE_TYPES.SEED ? 'none' : undefined
-            }}
-            onChange={(e) => handleOnChange('p2p_endpoint', e.target.value)}
-            variant="outlined"
-            label="P2P Endpoint"
-            error={!hostValidation(currentNode.p2p_endpoint)}
-            helperText={
-              !hostValidation(currentNode.p2p_endpoint) && 'Invalid URL'
-            }
-            value={currentNode.p2p_endpoint || ''}
-            className={classes.formFieldForm}
-          />
-
-          <TextField
-            onChange={(e) => handleOnChange('api_endpoint', e.target.value)}
-            style={{
-              display: currentNode.node_type !== NODE_TYPES.QUERY ? 'none' : undefined
-            }}
-            variant="outlined"
-            label="API Endpoint"
-            error={!urlInputValidation(currentNode.api_endpoint)}
-            helperText={
-              !urlInputValidation(currentNode.api_endpoint) && 'Invalid URL'
-            }
-            value={currentNode.api_endpoint || ''}
-            className={classes.formFieldForm}
-          />
-
-          <TextField
-            style={{
-              display: currentNode.node_type !== NODE_TYPES.QUERY ? 'none' : undefined
-            }}
-            onChange={(e) => handleOnChange('ssl_endpoint', e.target.value)}
-            variant="outlined"
-            label="SSL Endpoint"
-            error={!urlInputValidation(currentNode.ssl_endpoint)}
-            helperText={
-              !urlInputValidation(currentNode.ssl_endpoint) && 'Invalid URL'
-            }
-            value={currentNode.ssl_endpoint || ''}
-            className={classes.formFieldForm}
-          />
+          <EndpointsForm currentNode={currentNode} handleOnChange={handleOnChange} />
         </Grid>
 
         <Grid className={classes.wrapperForm}>
-          <Typography
-            style={{
-              display: currentNode.node_type !== NODE_TYPES.QUERY ? 'none' : undefined
-            }}
-            className={classes.sectionTitle}
-            variant="h5"
-          >
-            Features
-          </Typography>
-
-          <TextField
-            style={{
-              display: currentNode.node_type !== NODE_TYPES.QUERY ? 'none' : undefined
-            }}
-            onChange={handleOnChangeFeatures}
-            variant="outlined"
-            label="Node Feactures"
-            select
-            SelectProps={{
-              multiple: true,
-              classes: {
-                root: currentNode.features?.length ? classes.selectChips : ''
-              },
-              renderValue: (selected) => (
-                <div className={classes.chips}>
-                  {selected.map((value, index) => (
-                    <Chip
-                      key={`chip-item-${index}`}
-                      label={value}
-                      className={classes.chip}
-                    />
-                  ))}
-                </div>
-              )
-            }}
-            value={currentNode.features || []}
-            className={classes.formFieldForm}
-          >
-            {features.map((option, index) => (
-              <MenuItem key={`menu-item-${index}`} value={option.value}>
-                <Checkbox
-                  checked={
-                    (currentNode.features || []).indexOf(option.value) > -1
-                  }
-                />
-                <ListItemText primary={option.label} />
-              </MenuItem>
-            ))}
-          </TextField>
+          <FeaturesForm currentNode={currentNode} handleOnChange={handleOnChangeFeatures} />
         </Grid>
+
         <Grid container item direction="column" alignItems="center">
           <Button
             variant="contained"
