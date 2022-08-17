@@ -1,3 +1,5 @@
+import { NODE_TYPES } from "./constants"
+
 const urlInputValidation = (value) => {
   const urlRegex = /^((ftp|http|https):\/\/)?www\.([A-z]+)\.([A-z]{2,})/
 
@@ -10,66 +12,8 @@ const emailInputValidation = (email) => {
   return emailRegex.test(email)
 }
 
-const isValidForm = (form) => {
-  return !Object.values(form).some((obj) => { return obj.isError })
-}
-
-const formInputValidation = (formData) => {
-  const result = {
-    candidate_name: {
-      isError: !!!formData.candidate_name,
-      message: 'Candidate Name is required'
-    },
-    email: {
-      isError: !!!formData.email || !emailInputValidation(formData.email),
-      message: !!formData.email ? 'Invalid Email format' : 'Email is required'
-    },
-    website: {
-      isError: !!!formData.website || !urlInputValidation(formData.website),
-      message: !!formData.website
-        ? 'Invalid format to URL for Website'
-        : 'Website is required'
-    },
-    code_of_conduct: {
-      isError:
-        !!!formData.code_of_conduct ||
-        !urlInputValidation(formData.code_of_conduct),
-      message: !!formData.code_of_conduct
-        ? 'Invalid format to URL for Code of Conduct'
-        : 'Code of Conduct is required'
-    },
-    ownership_disclosure: {
-      isError:
-        !!!formData.code_of_conduct ||
-        !urlInputValidation(formData.code_of_conduct),
-      message: !!formData.code_of_conduct
-        ? 'Invalid format to URL for Ownership Disclosure'
-        : 'Ownership Disclosure is required'
-    }
-  }
-
-  return {
-    formValidated: result,
-    isValidForm: isValidForm(result)
-  }
-}
-
-const nodeInputValidation = (nodeData) => {
-  const result = {
-    node_type: {
-      isError: !!!nodeData.node_type,
-      message: 'Node type is required'
-    },
-    full: {
-      isError: !!!nodeData.full,
-      message: 'Full is required'
-    },
-  }
-
-  return {
-    formValidated: result,
-    isValidForm: isValidForm(result)
-  }
+const requiredValidation = (value) => {
+  return typeof (value) == "string" && value.trim().length > 0
 }
 
 const latitudeValidation = (latitude) => {
@@ -83,7 +27,7 @@ const longitudeValidation = (latitude) => {
 const countryValidation = (code) => {
   const isoRegex = /^[A-Z]{2}$/
 
-  return !code || isoRegex.test(code)
+  return isoRegex.test(code)
 }
 
 const hostValidation = (endpoint) => {
@@ -92,14 +36,43 @@ const hostValidation = (endpoint) => {
   return !endpoint || hostRegex.test(endpoint)
 }
 
+const nodeTypeValidation = (value) => {
+  return Object.values(NODE_TYPES).indexOf(value) > -1
+}
+
+const isBoolean = (value) => {
+  return typeof (value) === "boolean";
+}
+
+const validate = (obj, schema) => {
+
+  if (obj === undefined) return false
+
+  return Object.keys(schema).every((key) => {
+
+    if (obj[key] === undefined) return !schema[key].isRequired
+
+    if (Array.isArray(obj[key])) {
+      return obj[key].every((sub) => {
+        return schema[key].isValid(sub)
+      })
+    }
+
+    return schema[key].isValid(obj[key])
+  })
+}
+
 const Validator = {
   countryValidation,
   emailInputValidation,
-  formInputValidation,
   hostValidation,
   latitudeValidation,
   longitudeValidation,
-  urlInputValidation
+  urlInputValidation,
+  requiredValidation,
+  nodeTypeValidation,
+  isBoolean,
+  validate
 }
 
 export { Validator }

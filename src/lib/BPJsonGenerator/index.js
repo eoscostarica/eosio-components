@@ -9,8 +9,9 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 
-import { Validator, toCapitalCase } from '../utils'
 import ArrayTextField from '../ArrayTextField'
+import { Validator, toCapitalCase } from '../utils'
+import { bpSchema, orgSchema, locationSchema } from '../utils/schemas'
 
 import ImagePreview from './ImagePreview'
 import NodesForm from './NodesForm'
@@ -47,30 +48,9 @@ const initData = {
     facebook: '',
     hive: '',
     reddit: '',
-    wechat: ''
-  }
-}
-
-const defaultValidationState = {
-  candidate_name: {
-    isError: false,
-    message: 'Candidate Name is required'
-  },
-  email: {
-    isError: false,
-    message: 'Email is required'
-  },
-  website: {
-    isError: false,
-    message: 'Website is required'
-  },
-  code_of_conduct: {
-    isError: false,
-    message: 'Code of Conduct is required'
-  },
-  ownership_disclosure: {
-    isError: false,
-    message: 'Ownership Disclosure is required'
+    wechat: '',
+    medium: '',
+    discord: ''
   }
 }
 
@@ -83,17 +63,18 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
     longitudeValidation,
     countryValidation,
     urlInputValidation,
-    formInputValidation
+    validate
   } = Validator
+
+  const isValidBP = (bp) => {
+    return validate(bp, bpSchema)
+  }
 
   const classes = useStyles()
   const [openModal, setOpenModal] = useState(false)
   const [org, setOrg] = useState(initData)
   const [nodes, setNodes] = useState([])
   const [currentNodeIndex, setCurrentNodeIndex] = useState(null)
-  const [requiredFieldsValidation, setRequiredFieldsValidation] = useState(
-    defaultValidationState
-  )
 
   const handleOnChange = (key, value, parent) => {
     if (parent === 'org') {
@@ -123,28 +104,20 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   }
 
   const getValidBpForm = () => {
-    const { formValidated, isValidForm } = formInputValidation(org)
-    setRequiredFieldsValidation(formValidated)
+    const bp =
+    {
+      org,
+      nodes,
+      producer_account_name: accountName
+    }
 
-    if (!isValidForm) return
-
-    const producerJson = JSON.stringify(
-      {
-        org,
-        nodes,
-        producer_account_name: accountName
-      },
-      null,
-      '\t'
-    )
-
-    return producerJson
+    return (isValidBP(bp) ? JSON.stringify(bp, null, '\t') : null)
   }
 
   const handleOnDownload = () => {
     const bp = getValidBpForm()
 
-    if (!!bp) fileDownload(bp, 'bp.json')
+    if (bp) fileDownload(bp, 'bp.json')
   }
 
   const handleOnSubmit = () => {
@@ -198,12 +171,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant="outlined"
                 required
-                error={requiredFieldsValidation.candidate_name.isError}
+                error={!orgSchema.candidate_name.isValid(org.candidate_name)}
                 label="Candidate Name"
                 value={org.candidate_name || ''}
                 helperText={
-                  requiredFieldsValidation.candidate_name.isError &&
-                  requiredFieldsValidation.candidate_name.message
+                  !orgSchema.candidate_name.isValid(org.candidate_name) &&
+                  orgSchema.candidate_name.message
                 }
                 className={classes.formField}
               />
@@ -214,12 +187,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('website', e.target.value, 'org')
                 }
                 variant="outlined"
-                error={requiredFieldsValidation.website.isError}
+                error={!orgSchema.website.isValid(org.website)}
                 label="Website"
                 required
                 helperText={
-                  requiredFieldsValidation.website.isError &&
-                  requiredFieldsValidation.website.message
+                  !orgSchema.website.isValid(org.website) &&
+                  orgSchema.website.message
                 }
                 value={org.website || ''}
                 className={classes.formField}
@@ -235,11 +208,11 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 variant="outlined"
                 label="Code of Conduct"
                 required
-                error={requiredFieldsValidation.code_of_conduct.isError}
+                error={!orgSchema.code_of_conduct.isValid(org.code_of_conduct)}
                 value={org.code_of_conduct || ''}
                 helperText={
-                  requiredFieldsValidation.code_of_conduct.isError &&
-                  requiredFieldsValidation.code_of_conduct.message
+                  !orgSchema.code_of_conduct.isValid(org.code_of_conduct) &&
+                  orgSchema.code_of_conduct.message
                 }
                 className={classes.formField}
               />
@@ -250,12 +223,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('ownership_disclosure', e.target.value, 'org')
                 }
                 variant="outlined"
-                error={requiredFieldsValidation.ownership_disclosure.isError}
+                error={!orgSchema.ownership_disclosure.isValid(org.ownership_disclosure)}
                 label="Ownership disclosure"
                 required
                 helperText={
-                  requiredFieldsValidation.ownership_disclosure.isError &&
-                  requiredFieldsValidation.ownership_disclosure.message
+                  !orgSchema.ownership_disclosure.isValid(org.ownership_disclosure) &&
+                  orgSchema.ownership_disclosure.message
                 }
                 value={org.ownership_disclosure || ''}
                 className={classes.formField}
@@ -266,12 +239,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 onChange={(e) => handleOnChange('email', e.target.value, 'org')}
                 variant="outlined"
                 required
-                error={requiredFieldsValidation.email.isError}
+                error={!orgSchema.email.isValid(org.email)}
                 label="Email"
                 value={org.email || ''}
                 helperText={
-                  requiredFieldsValidation.email.isError &&
-                  requiredFieldsValidation.email.message
+                  !orgSchema.email.isValid(org.email) &&
+                  orgSchema.email.message
                 }
                 className={classes.formField}
               />
@@ -411,6 +384,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant="outlined"
                 label="Name"
+                required
+                error={!locationSchema.name.isValid(org.location.name)}
+                helperText={
+                  !locationSchema.name.isValid(org.location.name) &&
+                  locationSchema.name.message
+                }
                 value={org.location.name || ''}
                 className={classes.formField}
               />
@@ -422,9 +401,11 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant="outlined"
                 label="Country"
+                required
                 error={!countryValidation(org.location.country)}
                 helperText={
-                  !countryValidation(org.location.country) && 'The country code must be two letters'
+                  !countryValidation(org.location.country) &&
+                  locationSchema.country.message
                 }
                 value={org.location.country || ''}
                 className={classes.formField}
@@ -442,7 +423,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 label="Latitude"
                 error={!latitudeValidation(org.location.latitude)}
                 helperText={
-                  !latitudeValidation(org.location.latitude) && 'The latitude range is between -90 and 90'
+                  !latitudeValidation(org.location.latitude) &&
+                  locationSchema.latitude.message
                 }
                 value={org.location.latitude || 0}
                 className={classes.formField}
@@ -463,7 +445,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 value={org.location.longitude || 0}
                 error={!longitudeValidation(org.location.longitude)}
                 helperText={
-                  !longitudeValidation(org.location.longitude) && 'The longitude range is between -180 and 180'
+                  !longitudeValidation(org.location.longitude) &&
+                  locationSchema.longitude.message
                 }
                 className={classes.formField}
               />

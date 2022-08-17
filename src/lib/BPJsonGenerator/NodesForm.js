@@ -9,6 +9,7 @@ import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
 
 import { Validator, toCapitalCase, NODE_TYPES, NODE_EXTRA_KEYS } from '../utils'
+import { nodeSchema, locationSchema } from '../utils/schemas'
 
 import Styles from './styles'
 import Modal from './Modal'
@@ -38,7 +39,12 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
     latitudeValidation,
     longitudeValidation,
     countryValidation,
+    validate,
   } = Validator
+
+  const isValidNode = (node) => {
+    return validate(node, nodeSchema)
+  }
 
   const classes = useStyles()
   const [currentNode, setCurrentNode] = useState(defaultNode)
@@ -72,6 +78,9 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   }
 
   const handleOnSubmit = () => {
+
+    if (!isValidNode(currentNode)) return
+
     if (nodeIndex !== null) {
       const newNodes = [...nodes]
       newNodes[nodeIndex] = deleteEmptyKeyValues()
@@ -149,6 +158,12 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               onChange={(e) => handleOnChangeLocation('name', e.target.value)}
               variant="outlined"
               label="Name"
+              required
+              error={!locationSchema.name.isValid(currentNode.location.name)}
+              helperText={
+                !locationSchema.name.isValid(currentNode.location.name) &&
+                locationSchema.name.message
+              }
               value={currentNode.location.name}
               className={classes.formFieldForm}
             />
@@ -158,9 +173,11 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               }
               variant="outlined"
               label="Country"
+              required
               error={!countryValidation(currentNode.location.country)}
               helperText={
-                !countryValidation(currentNode.location.country) && 'The country code must be two letters'
+                !countryValidation(currentNode.location.country) &&
+                locationSchema.country.message
               }
               value={currentNode.location.country}
               className={classes.formFieldForm}
@@ -174,7 +191,8 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               type="number"
               error={!latitudeValidation(currentNode.location.latitude)}
               helperText={
-                !latitudeValidation(currentNode.location.latitude) && 'The latitude range is between -90 and 90'
+                !latitudeValidation(currentNode.location.latitude) &&
+                locationSchema.latitude.message
               }
               value={currentNode.location.latitude}
               className={classes.formFieldForm}
@@ -188,7 +206,8 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               type="number"
               error={!longitudeValidation(currentNode.location.longitude)}
               helperText={
-                !longitudeValidation(currentNode.location.longitude) && 'The longitude range is between -180 and 180'
+                !longitudeValidation(currentNode.location.longitude) &&
+                locationSchema.longitude.message
               }
               value={currentNode.location.longitude}
               className={classes.formFieldForm}
