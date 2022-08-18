@@ -289,11 +289,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('other_resources', value, 'org')
                 }
                 variant="outlined"
-                error={!urlInputValidation(org.other_resources)}
+                ArrayValidator={urlInputValidation}
                 label="Other Resources"
-                helperText={
-                  !urlInputValidation(org.other_resources) && 'Invalid URL'
-                }
                 value={org.other_resources || []}
                 className={classes.formField}
               />

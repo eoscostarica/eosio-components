@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField'
 import AddIcon from '@mui/icons-material/Add'
 import Chip from '@mui/material/Chip'
 
+
 import Styles from './styles'
 
 const useStyles = makeStyles(Styles)
@@ -17,6 +18,7 @@ const ArrayTextField = ({
   onChange,
   className,
   ChipProps = {},
+  ArrayValidator,
   ...props
 }) => {
   const classes = useStyles()
@@ -24,7 +26,8 @@ const ArrayTextField = ({
   const [item, setItem] = useState('')
 
   const handleOnAddItem = () => {
-    if (!item) {
+    console.log("test")
+    if (!item || !ArrayValidator(item)) {
       return
     }
 
@@ -68,12 +71,15 @@ const ArrayTextField = ({
 
     setItems(newItems)
   }, [value])
-
   return (
     <Box className={clsx(classes.root, className)}>
       <TextField
         {...props}
         value={item}
+        error={!ArrayValidator(item)}
+        helperText={
+          !ArrayValidator(item) && 'Invalid URL'
+        }
         onChange={(event) => setItem(event.target.value)}
         InputProps={{
           endAdornment: (
@@ -106,12 +112,14 @@ const ArrayTextField = ({
 ArrayTextField.propTypes = {
   value: PropTypes.array,
   onChange: PropTypes.func,
+  ArrayValidator: PropTypes.func,
   className: PropTypes.string,
   ChipProps: PropTypes.object
 }
 
 ArrayTextField.defaultProps = {
-  value: []
+  value: [],
+  ArrayValidator: (item) => { return false }
 }
 
 export default ArrayTextField
