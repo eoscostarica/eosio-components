@@ -62,16 +62,16 @@ const features = [
   }
 ]
 
-const FEATURES_KEY = 'features'
-
 const FeaturesForm = ({ currentNode, handleOnChange }) => {
   const classes = useStyles()
+
+  if (!(NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('features') > -1)) {
+    return <></>
+  }
+
   return (
     <>
       <Typography
-        style={{
-          display: !(NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf(FEATURES_KEY) > -1) ? 'none' : undefined
-        }}
         className={classes.sectionTitle}
         variant="h5"
       >
@@ -79,9 +79,6 @@ const FeaturesForm = ({ currentNode, handleOnChange }) => {
       </Typography>
 
       <TextField
-        style={{
-          display: !(NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf(FEATURES_KEY) > -1) ? 'none' : undefined
-        }}
         onChange={handleOnChange}
         variant="outlined"
         label="Node Features"
