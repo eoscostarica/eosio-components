@@ -33,19 +33,18 @@ const defaultNode = {
 
 const useStyles = makeStyles(Styles)
 
+const {
+  latitudeValidation,
+  longitudeValidation,
+  countryValidation,
+  validate,
+} = Validator
+
+const isValidNode = (node) => {
+  return validate(node, nodeSchema)
+}
+
 const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
-
-  const {
-    latitudeValidation,
-    longitudeValidation,
-    countryValidation,
-    validate,
-  } = Validator
-
-  const isValidNode = (node) => {
-    return validate(node, nodeSchema)
-  }
-
   const classes = useStyles()
   const [currentNode, setCurrentNode] = useState(defaultNode)
 

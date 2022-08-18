@@ -36,8 +36,8 @@ const initData = {
   location: {
     name: '',
     country: '',
-    latitude: null,
-    longitude: null
+    latitude: 0,
+    longitude: 0
   },
   social: {
     keybase: '',
@@ -56,20 +56,19 @@ const initData = {
 
 const useStyles = makeStyles(Styles)
 
+const {
+  latitudeValidation,
+  longitudeValidation,
+  countryValidation,
+  urlInputValidation,
+  validate
+} = Validator
+
+const isValidBP = (bp) => {
+  return validate(bp, bpSchema)
+}
+
 const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
-
-  const {
-    latitudeValidation,
-    longitudeValidation,
-    countryValidation,
-    urlInputValidation,
-    validate
-  } = Validator
-
-  const isValidBP = (bp) => {
-    return validate(bp, bpSchema)
-  }
-
   const classes = useStyles()
   const [openModal, setOpenModal] = useState(false)
   const [org, setOrg] = useState(initData)
@@ -131,6 +130,9 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   }
 
   const preLoadBP = (bp) => {
+    if (bp.org === undefined) throw "The BPJSON does not have the information of the organization"
+    if (bp.nodes === undefined) throw "The BPJSON does not have the list of nodes"
+
     setOrg(bp ? bp.org : initData)
     setNodes(bp ? bp.nodes : [])
   }
