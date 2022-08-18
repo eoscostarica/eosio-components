@@ -131,16 +131,10 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
 
   const preLoadBP = (bp) => {
     if (bp.org === undefined) {
-      throw {
-        name: "FormatError",
-        message: "The BPJSON does not have the information of the organization"
-      }
+      throw Error("The BPJSON does not have the information of the organization")
     }
     if (bp.nodes === undefined) {
-      throw {
-        name: "FormatError",
-        message: "The BPJSON does not have the list of nodes"
-      }
+      throw Error("The BPJSON does not have the list of nodes")
     }
 
     setOrg(bp ? bp.org : initData)
