@@ -3,12 +3,15 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
 import { useDropzone } from 'react-dropzone'
 
+import ErrorModal from './ErrorModal'
 import Styles from './styles'
 
 const useStyles = makeStyles(Styles)
 
 const Dropzone = ({ onSubmit }) => {
   const classes = useStyles()
+  const [openModal, setOpenModal] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [lastFile, setLastFile] = useState([])
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
@@ -27,7 +30,12 @@ const Dropzone = ({ onSubmit }) => {
           onSubmit(JSON.parse(e.target.result))
           setLastFile(acceptedFiles[0])
         } catch (error) {
-
+          if (typeof (error) === 'string') {
+            setErrorMessage(error)
+          } else {
+            setErrorMessage("The file does not have the correct JSON format")
+          }
+          setOpenModal(true)
         }
       }
 
@@ -44,6 +52,10 @@ const Dropzone = ({ onSubmit }) => {
           <p>Drop your BP json file here</p>
         </div>
       </section>
+      <ErrorModal
+        openModal={openModal}
+        setOpenModal={(value) => setOpenModal(value)}
+        message={errorMessage} />
     </>
   )
 }
