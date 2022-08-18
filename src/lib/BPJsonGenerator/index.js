@@ -181,6 +181,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 label="Candidate Name"
                 value={org.candidate_name || ''}
                 helperText={
+                  org.candidate_name === '' && 'The field is required' ||
                   !orgSchema.candidate_name.isValid(org.candidate_name) &&
                   orgSchema.candidate_name.message
                 }
@@ -197,6 +198,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 label="Website"
                 required
                 helperText={
+                  org.website === '' && 'The field is required' ||
                   !orgSchema.website.isValid(org.website) &&
                   orgSchema.website.message
                 }
@@ -217,6 +219,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 error={!orgSchema.code_of_conduct.isValid(org.code_of_conduct)}
                 value={org.code_of_conduct || ''}
                 helperText={
+                  org.code_of_conduct === '' && 'The field is required' ||
                   !orgSchema.code_of_conduct.isValid(org.code_of_conduct) &&
                   orgSchema.code_of_conduct.message
                 }
@@ -233,6 +236,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 label="Ownership disclosure"
                 required
                 helperText={
+                  org.ownership_disclosure === '' && 'The field is required' ||
                   !orgSchema.ownership_disclosure.isValid(org.ownership_disclosure) &&
                   orgSchema.ownership_disclosure.message
                 }
@@ -249,6 +253,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 label="Email"
                 value={org.email || ''}
                 helperText={
+                  org.email === '' && 'The field is required' ||
                   !orgSchema.email.isValid(org.email) &&
                   orgSchema.email.message
                 }

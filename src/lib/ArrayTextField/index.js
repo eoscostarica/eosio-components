@@ -26,7 +26,7 @@ const ArrayTextField = ({
   const [item, setItem] = useState('')
 
   const handleOnAddItem = () => {
-    console.log("test")
+
     if (!item || !ArrayValidator(item)) {
       return
     }
@@ -119,7 +119,7 @@ ArrayTextField.propTypes = {
 
 ArrayTextField.defaultProps = {
   value: [],
-  ArrayValidator: (item) => { return false }
+  ArrayValidator: (item) => true
 }
 
 export default ArrayTextField
