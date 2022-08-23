@@ -12,7 +12,7 @@ const isBoolean = (value) => {
 }
 
 const urlInputValidation = (value) => {
-  const urlRegex = /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/
+  const urlRegex = /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/
 
   return !value || (isString(value) && urlRegex.test(value))
 }
