@@ -23,7 +23,6 @@ const locationSchema = {
   latitude: { isValid: latitudeValidation, isRequired: false, message: 'The latitude range is between -90 and 90' },
   longitude: { isValid: longitudeValidation, isRequired: false, message: 'The longitude range is between -180 and 180' }
 }
-
 const nodeSchema = {
   node_type: { isValid: nodeTypeValidation, isRequired: true },
   full: { isValid: isBoolean, isRequired: true },
@@ -32,7 +31,6 @@ const nodeSchema = {
   ssl_endpoint: { isValid: urlInputValidation, isRequired: false },
   p2p_endpoint: { isValid: hostValidation, isRequired: false }
 }
-
 const orgSchema = {
   candidate_name: { isValid: requiredValidation, isRequired: true, message: 'Candidate Name is required' },
   website: { isValid: requiredUrlValidation, isRequired: true, message: 'Invalid URL' },
@@ -43,12 +41,10 @@ const orgSchema = {
   other_resources: { isValid: urlInputValidation, isRequired: false },
   location: { isValid: (obj) => validate(obj, locationSchema), isRequired: true },
 }
-
 const bpSchema = {
   org: { isValid: (obj) => validate(obj, orgSchema), isRequired: true },
   nodes: { isValid: (obj) => validate(obj, nodeSchema), isRequired: false }
 }
-
 export {
   locationSchema,
   nodeSchema,
