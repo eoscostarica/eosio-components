@@ -13,7 +13,6 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
   if (currentNode.node_type === NODE_TYPES.PRODUCER || currentNode.node_type === '') {
     return <></>
   }
-
   return (
     <>
       <Typography
@@ -22,7 +21,6 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
       >
         Endpoints
       </Typography>
-
       {(NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('p2p_endpoint') > -1) && (
         <TextField
           onChange={(e) => handleOnChange('p2p_endpoint', e.target.value)}
@@ -36,7 +34,6 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
           className={classes.formFieldForm}
         />
       )}
-
       {(NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('api_endpoint') > -1) && (
         <TextField
           onChange={(e) => handleOnChange('api_endpoint', e.target.value)}
@@ -50,7 +47,6 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
           className={classes.formFieldForm}
         />
       )}
-
       {((NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('ssl_endpoint') > -1) &&
         <TextField
           onChange={(e) => handleOnChange('ssl_endpoint', e.target.value)}

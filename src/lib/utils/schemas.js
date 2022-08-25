@@ -16,7 +16,6 @@ const {
 const requiredUrlValidation = (value) => {
   return requiredValidation(value) && urlInputValidation(value)
 }
-
 const locationSchema = {
   name: { isValid: requiredValidation, isRequired: true, message: 'The name is required' },
   country: { isValid: countryValidation, isRequired: true, message: 'The country code must be two letters' },
