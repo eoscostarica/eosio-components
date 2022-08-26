@@ -30,15 +30,10 @@ const Dropzone = ({ onSubmit }) => {
           onSubmit(JSON.parse(e.target.result))
           setLastFile(acceptedFiles[0])
         } catch (error) {
-          if (error instanceof SyntaxError) {
-            setErrorMessage("The file does not have the correct JSON format")
-          } else {
-            setErrorMessage(error.message)
-          }
+          setErrorMessage(error instanceof SyntaxError ? "The file does not have the correct JSON format" : error.message)
           setOpenModal(true)
         }
       }
-
     }
     reader.readAsText(acceptedFiles[0])
 
