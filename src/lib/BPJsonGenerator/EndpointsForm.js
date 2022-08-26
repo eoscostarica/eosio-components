@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+
 import { Validator, NODE_TYPES, NODE_EXTRA_KEYS } from '../utils'
+
 import Styles from './styles'
 
 const useStyles = makeStyles(Styles)
@@ -13,6 +15,7 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
   if (currentNode.node_type === NODE_TYPES.PRODUCER || currentNode.node_type === '') {
     return <></>
   }
+
   return (
     <>
       <Typography

@@ -7,6 +7,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import AddIcon from '@mui/icons-material/Add'
 import Chip from '@mui/material/Chip'
+
 import Styles from './styles'
 
 const useStyles = makeStyles(Styles)
@@ -24,7 +25,6 @@ const ArrayTextField = ({
   const [item, setItem] = useState('')
 
   const handleOnAddItem = () => {
-
     if (!item || !ArrayValidator(item)) {
       return
     }
