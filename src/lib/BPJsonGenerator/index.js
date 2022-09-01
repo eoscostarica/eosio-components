@@ -3,15 +3,15 @@ import PropTypes from 'prop-types'
 import ReactJson from 'react-json-view'
 import fileDownload from 'react-file-download'
 import { makeStyles } from '@mui/styles'
-import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 
-import { urlInputValidation, formInputValidation } from '../utils'
 import ArrayTextField from '../ArrayTextField'
+import { Validator, toCapitalCase } from '../utils'
+import { bpSchema, orgSchema, locationSchema } from '../utils/schemas'
 
 import ImagePreview from './ImagePreview'
 import NodesForm from './NodesForm'
@@ -36,8 +36,8 @@ const initData = {
   location: {
     name: '',
     country: '',
-    latitude: null,
-    longitude: null
+    latitude: 0,
+    longitude: 0
   },
   social: {
     keybase: '',
@@ -48,34 +48,25 @@ const initData = {
     facebook: '',
     hive: '',
     reddit: '',
-    wechat: ''
-  }
-}
-
-const defaultValidationState = {
-  candidate_name: {
-    isError: false,
-    message: 'Candidate Name is required'
-  },
-  email: {
-    isError: false,
-    message: 'Email is required'
-  },
-  website: {
-    isError: false,
-    message: 'Website is required'
-  },
-  code_of_conduct: {
-    isError: false,
-    message: 'Code of Conduct is required'
-  },
-  ownership_disclosure: {
-    isError: false,
-    message: 'Ownership Disclosure is required'
+    wechat: '',
+    medium: '',
+    discord: ''
   }
 }
 
 const useStyles = makeStyles(Styles)
+
+const {
+  latitudeValidation,
+  longitudeValidation,
+  countryValidation,
+  urlInputValidation,
+  validate
+} = Validator
+
+const isValidBP = (bp) => {
+  return validate(bp, bpSchema)
+}
 
 const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   const classes = useStyles()
@@ -83,16 +74,6 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   const [org, setOrg] = useState(initData)
   const [nodes, setNodes] = useState([])
   const [currentNodeIndex, setCurrentNodeIndex] = useState(null)
-  const [requiredFieldsValidation, setRequiredFieldsValidation] = useState(
-    defaultValidationState
-  )
-
-  const toCapitalCase = (string = '') => {
-    return string
-      .split('')
-      .map((char, index) => (index === 0 ? char.toUpperCase() : char))
-      .join('')
-  }
 
   const handleOnChange = (key, value, parent) => {
     if (parent === 'org') {
@@ -122,28 +103,20 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   }
 
   const getValidBpForm = () => {
-    const { formValidated, isValidForm } = formInputValidation(org)
-    setRequiredFieldsValidation(formValidated)
+    const bp =
+    {
+      org,
+      nodes,
+      producer_account_name: accountName
+    }
 
-    if (!isValidForm) return
-
-    const producerJson = JSON.stringify(
-      {
-        org,
-        nodes,
-        producer_account_name: accountName
-      },
-      null,
-      '\t'
-    )
-
-    return producerJson
+    return (isValidBP(bp) ? JSON.stringify(bp, null, '\t') : null)
   }
 
   const handleOnDownload = () => {
     const bp = getValidBpForm()
 
-    if (!!bp) fileDownload(bp, 'bp.json')
+    if (bp) fileDownload(bp, 'bp.json')
   }
 
   const handleOnSubmit = () => {
@@ -151,12 +124,19 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
 
     !!bp
       ? onSubmit({
-          bpJson: bp
-        })
+        bpJson: bp
+      })
       : onSubmit(null)
   }
 
   const preLoadBP = (bp) => {
+    if (bp.org === undefined) {
+      throw Error("The BPJSON does not have the information of the organization")
+    }
+    if (bp.nodes === undefined) {
+      throw Error("The BPJSON does not have the list of nodes")
+    }
+
     setOrg(bp ? bp.org : initData)
     setNodes(bp ? bp.nodes : [])
   }
@@ -167,25 +147,25 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   }, [bpJson])
 
   return (
-    <Box>
-      <Box className={classes.wrapperRow}>
-        <Box className={classes.wrapper}>
+    <Grid>
+      <Grid className={classes.wrapperRow}>
+        <Grid className={classes.wrapper}>
           <Typography variant="h4">BP JSON Generator</Typography>
           <Typography variant="body1">
             A simple way to create and update your node information on chain.
           </Typography>
-        </Box>
-        <Box className={classes.wrapper}>
+        </Grid>
+        <Grid className={classes.wrapper}>
           <BoxDropzone onSubmit={preLoadBP} />
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">{`Account Name: ${accountName}`}</Typography>
         <Divider className={classes.divider} />
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Organization Info</Typography>
         <Divider className={classes.divider} />
         <Grid container spacing={3}>
@@ -197,12 +177,13 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant="outlined"
                 required
-                error={requiredFieldsValidation.candidate_name.isError}
+                error={!orgSchema.candidate_name.isValid(org.candidate_name)}
                 label="Candidate Name"
                 value={org.candidate_name || ''}
                 helperText={
-                  requiredFieldsValidation.candidate_name.isError &&
-                  requiredFieldsValidation.candidate_name.message
+                  (org.candidate_name === '' && 'The field is required') ||
+                  (!orgSchema.candidate_name.isValid(org.candidate_name) &&
+                    orgSchema.candidate_name.message)
                 }
                 className={classes.formField}
               />
@@ -213,7 +194,14 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('website', e.target.value, 'org')
                 }
                 variant="outlined"
+                error={!orgSchema.website.isValid(org.website)}
                 label="Website"
+                required
+                helperText={
+                  (org.website === '' && 'The field is required') ||
+                  (!orgSchema.website.isValid(org.website) &&
+                    orgSchema.website.message)
+                }
                 value={org.website || ''}
                 className={classes.formField}
               />
@@ -227,7 +215,14 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant="outlined"
                 label="Code of Conduct"
+                required
+                error={!orgSchema.code_of_conduct.isValid(org.code_of_conduct)}
                 value={org.code_of_conduct || ''}
+                helperText={
+                  (org.code_of_conduct === '' && 'The field is required') ||
+                  (!orgSchema.code_of_conduct.isValid(org.code_of_conduct) &&
+                    orgSchema.code_of_conduct.message)
+                }
                 className={classes.formField}
               />
             </Grid>
@@ -237,7 +232,14 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('ownership_disclosure', e.target.value, 'org')
                 }
                 variant="outlined"
+                error={!orgSchema.ownership_disclosure.isValid(org.ownership_disclosure)}
                 label="Ownership disclosure"
+                required
+                helperText={
+                  (org.ownership_disclosure === '' && 'The field is required') ||
+                  (!orgSchema.ownership_disclosure.isValid(org.ownership_disclosure) &&
+                    orgSchema.ownership_disclosure.message)
+                }
                 value={org.ownership_disclosure || ''}
                 className={classes.formField}
               />
@@ -247,12 +249,13 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 onChange={(e) => handleOnChange('email', e.target.value, 'org')}
                 variant="outlined"
                 required
-                error={requiredFieldsValidation.email.isError}
+                error={!orgSchema.email.isValid(org.email)}
                 label="Email"
                 value={org.email || ''}
                 helperText={
-                  requiredFieldsValidation.email.isError &&
-                  requiredFieldsValidation.email.message
+                  (org.email === '' && 'The field is required') ||
+                  (!orgSchema.email.isValid(org.email) &&
+                    orgSchema.email.message)
                 }
                 className={classes.formField}
               />
@@ -276,7 +279,11 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('chain_resources', e.target.value, 'org')
                 }
                 variant="outlined"
+                error={!urlInputValidation(org.chain_resources)}
                 label="Chain Resources"
+                helperText={
+                  !urlInputValidation(org.chain_resources) && 'Invalid URL'
+                }
                 value={org.chain_resources || ''}
                 className={classes.formField}
               />
@@ -287,6 +294,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('other_resources', value, 'org')
                 }
                 variant="outlined"
+                ArrayValidator={urlInputValidation}
                 label="Other Resources"
                 value={org.other_resources || []}
                 className={classes.formField}
@@ -294,14 +302,14 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             </Grid>
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Branding</Typography>
         <Divider className={classes.divider} />
         <Grid container spacing={3}>
           <Grid item xs={12} sm={4}>
-            <Box>
+            <Grid>
               <TextField
                 onChange={(e) =>
                   handleOnChange('logo_256', e.target.value, 'branding')
@@ -315,15 +323,17 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 className={classes.formField}
               />
-              <ImagePreview
-                url={org.branding.logo_256}
-                label="Logo 256px"
-                isInvalidURL={!urlInputValidation(org.branding.logo_256)}
-              />
-            </Box>
+              <Grid maxWidth={256} maxHeight={256}>
+                <ImagePreview
+                  url={org.branding.logo_256}
+                  label="Logo 256px"
+                  isInvalidURL={!urlInputValidation(org.branding.logo_256)}
+                />
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Box>
+            <Grid>
               <TextField
                 onChange={(e) =>
                   handleOnChange('logo_1024', e.target.value, 'branding')
@@ -337,15 +347,16 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 className={classes.formField}
               />
-              <ImagePreview
-                url={org.branding.logo_1024}
-                label="Logo 1024px"
-                isInvalidURL={!urlInputValidation(org.branding.logo_1024)}
-              />
-            </Box>
+              <Grid maxWidth={1024} maxHeight={1024}>
+                <ImagePreview
+                  url={org.branding.logo_1024}
+                  label="Logo 1024px"
+                  isInvalidURL={!urlInputValidation(org.branding.logo_1024)}
+                /></Grid>
+            </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Box>
+            <Grid>
               <TextField
                 onChange={(e) =>
                   handleOnChange('logo_svg', e.target.value, 'branding')
@@ -364,12 +375,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 label="Logo SVG"
                 isInvalidURL={!urlInputValidation(org.branding.logo_svg)}
               />
-            </Box>
+            </Grid>
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Location</Typography>
         <Divider className={classes.divider} />
         <Grid container spacing={3}>
@@ -381,6 +392,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 }
                 variant="outlined"
                 label="Name"
+                required
+                error={!locationSchema.name.isValid(org.location.name)}
+                helperText={
+                  !locationSchema.name.isValid(org.location.name) &&
+                  locationSchema.name.message
+                }
                 value={org.location.name || ''}
                 className={classes.formField}
               />
@@ -388,10 +405,16 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
-                  handleOnChange('country', e.target.value, 'location')
+                  handleOnChange('country', e.target.value.toUpperCase(), 'location')
                 }
                 variant="outlined"
                 label="Country"
+                required
+                error={!countryValidation(org.location.country)}
+                helperText={
+                  !countryValidation(org.location.country) &&
+                  locationSchema.country.message
+                }
                 value={org.location.country || ''}
                 className={classes.formField}
               />
@@ -406,6 +429,11 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 variant="outlined"
                 type="number"
                 label="Latitude"
+                error={!latitudeValidation(org.location.latitude)}
+                helperText={
+                  !latitudeValidation(org.location.latitude) &&
+                  locationSchema.latitude.message
+                }
                 value={org.location.latitude || 0}
                 className={classes.formField}
               />
@@ -423,14 +451,19 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                 type="number"
                 label="Longitude"
                 value={org.location.longitude || 0}
+                error={!longitudeValidation(org.location.longitude)}
+                helperText={
+                  !longitudeValidation(org.location.longitude) &&
+                  locationSchema.longitude.message
+                }
                 className={classes.formField}
               />
             </Grid>
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Social</Typography>
         <Divider className={classes.divider} />
         <Grid container spacing={3}>
@@ -446,9 +479,9 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             </Grid>
           ))}
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Node List</Typography>
         <Divider className={classes.divider} />
         <NodesForm
@@ -483,9 +516,9 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             </Button>
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Typography variant="h5">Preview</Typography>
         <Divider className={classes.divider} />
         <ReactJson
@@ -500,9 +533,9 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
           name="BPJson"
           collapsed
         />
-      </Box>
+      </Grid>
 
-      <Box className={classes.wrapper}>
+      <Grid className={classes.wrapper}>
         <Grid container direction="row" spacing={1}>
           <Grid
             container
@@ -539,8 +572,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             </Button>
           </Grid>
         </Grid>
-      </Box>
-    </Box>
+      </Grid>
+    </Grid>
   )
 }
 

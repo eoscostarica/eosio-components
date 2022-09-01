@@ -17,6 +17,7 @@ const ArrayTextField = ({
   onChange,
   className,
   ChipProps = {},
+  ArrayValidator,
   ...props
 }) => {
   const classes = useStyles()
@@ -24,7 +25,7 @@ const ArrayTextField = ({
   const [item, setItem] = useState('')
 
   const handleOnAddItem = () => {
-    if (!item) {
+    if (!item || !ArrayValidator(item)) {
       return
     }
 
@@ -37,6 +38,7 @@ const ArrayTextField = ({
   const handleDeleteItem = (index) => {
     items.splice(index, 1)
     setItems([...items])
+    onChange && onChange(items)
   }
 
   const handleOnKeyPress = (event) => {
@@ -62,17 +64,20 @@ const ArrayTextField = ({
     if (typeof value === 'object') {
       try {
         newItems = Object.values(value)
-      } catch (error) {}
+      } catch (error) { }
     }
 
     setItems(newItems)
   }, [value])
-
   return (
     <Box className={clsx(classes.root, className)}>
       <TextField
         {...props}
         value={item}
+        error={!ArrayValidator(item)}
+        helperText={
+          !ArrayValidator(item) && 'Invalid URL'
+        }
         onChange={(event) => setItem(event.target.value)}
         InputProps={{
           endAdornment: (
@@ -105,12 +110,14 @@ const ArrayTextField = ({
 ArrayTextField.propTypes = {
   value: PropTypes.array,
   onChange: PropTypes.func,
+  ArrayValidator: PropTypes.func,
   className: PropTypes.string,
   ChipProps: PropTypes.object
 }
 
 ArrayTextField.defaultProps = {
-  value: []
+  value: [],
+  ArrayValidator: (item) => true
 }
 
 export default ArrayTextField

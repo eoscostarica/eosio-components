@@ -7,7 +7,6 @@ import Paper from '@mui/material/Paper'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import Modal from '@mui/material/Modal'
-import Backdrop from '@mui/material/Backdrop'
 import Fade from '@mui/material/Fade'
 
 import Styles from './styles'
@@ -29,10 +28,6 @@ const MapModal = ({ openModal, setOpenModal, children }) => {
       open={openModal}
       onClose={handleOpen}
       closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500
-      }}
     >
       <Fade in={openModal}>
         <Paper className={classes.paper}>

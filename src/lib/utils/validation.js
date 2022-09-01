@@ -1,62 +1,85 @@
+import { NODE_TYPES } from "./constants"
+
+const isString = (value) => {
+  return typeof (value) == "string"
+}
+
+const isNumber = (value) => {
+  return typeof (value) == "number"
+}
+const isBoolean = (value) => {
+  return typeof (value) === "boolean";
+}
+
 const urlInputValidation = (value) => {
-  if (!value) {
-    return true
-  }
+  const urlRegex = /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/
 
-  const urlRegex = /^(https?|chrome):\/\/[^\s$.?#].[^\s]*$/
-
-  return urlRegex.test(value)
+  return !value || (isString(value) && urlRegex.test(value))
 }
 
 const emailInputValidation = (email) => {
-  const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
-  return emailRegex.test(email)
+  return isString(email) && emailRegex.test(email)
 }
 
-const formInputValidation = (formData) => {
-  const result = {
-    candidate_name: {
-      isError: !!!formData.candidate_name,
-      message: 'Candidate Name is required'
-    },
-    email: {
-      isError: !!!formData.email || !emailInputValidation(formData.email),
-      message: !!formData.email ? 'Invalid Email format' : 'Email is required'
-    },
-    website: {
-      isError: !!!formData.website || !urlInputValidation(formData.website),
-      message: !!formData.website
-        ? 'Invalid format to URL for Website'
-        : 'Website is required'
-    },
-    code_of_conduct: {
-      isError:
-        !!!formData.code_of_conduct ||
-        !urlInputValidation(formData.code_of_conduct),
-      message: !!formData.code_of_conduct
-        ? 'Invalid format to URL for Code of Conduct'
-        : 'Code of Conduct is required'
-    },
-    ownership_disclosure: {
-      isError:
-        !!!formData.code_of_conduct ||
-        !urlInputValidation(formData.code_of_conduct),
-      message: !!formData.code_of_conduct
-        ? 'Invalid format to URL for Ownership Disclosure'
-        : 'Ownership Disclosure is required'
+const requiredValidation = (value) => {
+  return isString(value) && value.trim().length > 0
+}
+
+const latitudeValidation = (latitude) => {
+  return isNumber(latitude) && latitude <= 90 && latitude >= -90
+}
+
+const longitudeValidation = (longitude) => {
+  return isNumber(longitude) && longitude <= 180 && longitude >= -180
+}
+
+const countryValidation = (code) => {
+  const isoRegex = /^[A-Z]{2}$/
+
+  return isString(code) && isoRegex.test(code)
+}
+
+const hostValidation = (endpoint) => {
+  const hostRegex = /\w:[0-9]/
+
+  return !endpoint || (isString(endpoint) && hostRegex.test(endpoint))
+}
+
+const nodeTypeValidation = (type) => {
+  return Object.values(NODE_TYPES).indexOf(type) > -1
+}
+
+const validate = (obj, schema) => {
+
+  if (obj === undefined) return false
+
+  return Object.keys(schema).every((key) => {
+
+    if (obj[key] === undefined) return !schema[key].isRequired
+
+    if (Array.isArray(obj[key])) {
+      return obj[key].every((sub) => {
+        return schema[key].isValid(sub)
+      })
     }
-  }
 
-  return {
-    formValidated: result,
-    isValidForm:
-      !result.candidate_name.isError &&
-      !result.email.isError &&
-      !result.website.isError &&
-      !result.code_of_conduct.isError &&
-      !result.ownership_disclosure.isError
-  }
+    return schema[key].isValid(obj[key])
+  })
 }
 
-export { urlInputValidation, emailInputValidation, formInputValidation }
+const Validator = {
+  countryValidation,
+  emailInputValidation,
+  hostValidation,
+  latitudeValidation,
+  longitudeValidation,
+  urlInputValidation,
+  requiredValidation,
+  nodeTypeValidation,
+  isBoolean,
+  validate
+}
+
+export { Validator }

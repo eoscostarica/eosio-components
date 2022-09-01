@@ -3,86 +3,28 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
-import Chip from '@mui/material/Chip'
 import Checkbox from '@mui/material/Checkbox'
-import ListItemText from '@mui/material/ListItemText'
+
+import { Validator, toCapitalCase, NODE_TYPES, NODE_EXTRA_KEYS } from '../utils'
+import { nodeSchema, locationSchema } from '../utils/schemas'
 
 import Styles from './styles'
 import Modal from './Modal'
-
-const nodeTypes = [
-  {
-    label: 'Producer',
-    value: 'producer',
-    info: ''
-  },
-  {
-    label: 'Query',
-    value: 'query',
-    info: ''
-  },
-  {
-    label: 'Seed',
-    value: 'seed',
-    info: ''
-  }
-]
-
-const features = [
-  {
-    label: 'chain-api',
-    value: 'chain-api',
-    info: 'basic eosio::chain_api_plugin (/v1/chain/*)'
-  },
-  {
-    label: 'account-query',
-    value: 'account-query',
-    info: '(/v1/chain/get_accounts_by_authorizers)'
-  },
-  {
-    label: 'history-v1',
-    value: 'history-v1',
-    info: '(/v1/history/*)'
-  },
-  {
-    label: 'hyperion-v2',
-    value: 'hyperion-v2',
-    info: '(/v2/*)'
-  },
-  {
-    label: 'dfuse',
-    value: 'dfuse',
-    info: ''
-  },
-  {
-    label: 'fio-api',
-    value: 'fio-api',
-    info: ''
-  },
-  {
-    label: 'snapshot-api',
-    value: 'snapshot-api',
-    info: ''
-  },
-  {
-    label: 'dsp-api',
-    value: 'dsp-api',
-    info: ''
-  }
-]
+import EndpointsForm from './EndpointsForm'
+import FeaturesForm from './FeaturesForm'
 
 const defaultNode = {
   location: {
     name: '',
     country: '',
-    latitude: null,
-    longitude: null
+    latitude: 0,
+    longitude: 0
   },
   node_type: '',
+  full: false,
   p2p_endpoint: '',
   api_endpoint: '',
   ssl_endpoint: '',
@@ -90,6 +32,17 @@ const defaultNode = {
 }
 
 const useStyles = makeStyles(Styles)
+
+const {
+  latitudeValidation,
+  longitudeValidation,
+  countryValidation,
+  validate,
+} = Validator
+
+const isValidNode = (node) => {
+  return validate(node, nodeSchema)
+}
 
 const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   const classes = useStyles()
@@ -115,7 +68,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
   const deleteEmptyKeyValues = () => {
     const aux = currentNode
-    if (aux.features.length === 0) delete aux.features
+    if (aux.features?.length === 0) delete aux.features
     Object.keys(aux).forEach((k) => {
       if (aux[k] === '') delete aux[k]
     })
@@ -124,6 +77,9 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   }
 
   const handleOnSubmit = () => {
+
+    if (!isValidNode(currentNode)) return
+
     if (nodeIndex !== null) {
       const newNodes = [...nodes]
       newNodes[nodeIndex] = deleteEmptyKeyValues()
@@ -136,6 +92,23 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
     setOpenModal(false)
   }
 
+  const deleteObjectKeys = (obj, keys) => {
+    keys.forEach((key) => {
+      if (obj[key])
+        delete obj[key]
+    })
+  }
+
+  const handleOnChangeNodeType = (key, value) => {
+
+    const newNode = JSON.parse(JSON.stringify(currentNode))
+
+    deleteObjectKeys(newNode, NODE_EXTRA_KEYS[newNode.node_type] ?? [])
+
+    setCurrentNode({ ...newNode, [key]: value })
+
+  }
+
   useEffect(() => {
     setCurrentNode(nodes[nodeIndex] || defaultNode)
   }, [nodes, nodeIndex])
@@ -143,46 +116,68 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   return (
     <Modal openModal={openModal} setOpenModal={(value) => setOpenModal(value)}>
       <Grid container justify="center" className={classes.nodes}>
-        <Box className={classes.wrapperForm}>
+        <Grid>
           <Typography className={classes.sectionTitle} variant="h5">
             Nodes
           </Typography>
 
-          <TextField
-            onChange={(e) => handleOnChange('node_type', e.target.value)}
-            variant="outlined"
-            label="Node Type"
-            select
-            value={currentNode.node_type}
-            className={classes.formFieldForm}
-          >
-            {nodeTypes.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Box>
+          <Grid className={classes.nodeWrapper}>
+            <TextField
+              onChange={(e) => handleOnChangeNodeType('node_type', e.target.value)}
+              variant="outlined"
+              label="Node Type"
+              select
+              value={currentNode.node_type}
+              className={classes.formFieldForm}
+            >
+              {Object.values(NODE_TYPES).map((type) => (
+                <MenuItem key={type} value={type}>
+                  {toCapitalCase(type)}
+                </MenuItem>
+              ))}
+            </TextField>
 
-        <Box className={classes.wrapperForm}>
+            <Typography variant="body1" align="center">
+              Full
+            </Typography>
+            <Checkbox
+              onClick={(e) => handleOnChange('full', e.target.checked)}
+              checked={currentNode.full}
+            />
+          </Grid>
+        </Grid>
+
+        <Grid className={classes.wrapperForm}>
           <Typography className={classes.sectionTitle} variant="h5">
             Location
           </Typography>
 
-          <Box className={classes.locationWrapper}>
+          <Grid className={classes.locationWrapper}>
             <TextField
               onChange={(e) => handleOnChangeLocation('name', e.target.value)}
               variant="outlined"
               label="Name"
+              required
+              error={!locationSchema.name.isValid(currentNode.location.name)}
+              helperText={
+                !locationSchema.name.isValid(currentNode.location.name) &&
+                locationSchema.name.message
+              }
               value={currentNode.location.name}
               className={classes.formFieldForm}
             />
             <TextField
               onChange={(e) =>
-                handleOnChangeLocation('country', e.target.value)
+                handleOnChangeLocation('country', e.target.value.toUpperCase())
               }
               variant="outlined"
               label="Country"
+              required
+              error={!countryValidation(currentNode.location.country)}
+              helperText={
+                !countryValidation(currentNode.location.country) &&
+                locationSchema.country.message
+              }
               value={currentNode.location.country}
               className={classes.formFieldForm}
             />
@@ -193,7 +188,12 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               variant="outlined"
               label="Latitude"
               type="number"
-              value={currentNode.location.latitude || ''}
+              error={!latitudeValidation(currentNode.location.latitude)}
+              helperText={
+                !latitudeValidation(currentNode.location.latitude) &&
+                locationSchema.latitude.message
+              }
+              value={currentNode.location.latitude}
               className={classes.formFieldForm}
             />
             <TextField
@@ -203,122 +203,36 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               variant="outlined"
               label="Longitude"
               type="number"
+              error={!longitudeValidation(currentNode.location.longitude)}
+              helperText={
+                !longitudeValidation(currentNode.location.longitude) &&
+                locationSchema.longitude.message
+              }
               value={currentNode.location.longitude}
               className={classes.formFieldForm}
             />
-          </Box>
-        </Box>
+          </Grid>
+        </Grid>
 
-        <Box className={classes.wrapperForm}>
-          <Typography
-            style={{
-              display:
-                currentNode.node_type === 'producer' ||
-                currentNode.node_type === ''
-                  ? 'none'
-                  : undefined
-            }}
-            className={classes.sectionTitle}
-            variant="h5"
+        <Grid className={classes.wrapperForm}>
+          <EndpointsForm currentNode={currentNode} handleOnChange={handleOnChange} />
+        </Grid>
+
+        <Grid className={classes.wrapperForm}>
+          <FeaturesForm currentNode={currentNode} handleOnChange={handleOnChangeFeatures} />
+        </Grid>
+
+        <Grid container item direction="column" alignItems="center">
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.addButton}
+            onClick={handleOnSubmit}
+            disabled={!currentNode.node_type}
           >
-            Endpoints
-          </Typography>
-
-          <TextField
-            style={{
-              display: currentNode.node_type !== 'seed' ? 'none' : undefined
-            }}
-            onChange={(e) => handleOnChange('p2p_endpoint', e.target.value)}
-            variant="outlined"
-            label="P2P Endpoint"
-            value={currentNode.p2p_endpoint || ''}
-            className={classes.formFieldForm}
-          />
-
-          <TextField
-            onChange={(e) => handleOnChange('api_endpoint', e.target.value)}
-            style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
-            }}
-            variant="outlined"
-            label="API Endpoint"
-            value={currentNode.api_endpoint || ''}
-            className={classes.formFieldForm}
-          />
-
-          <TextField
-            style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
-            }}
-            onChange={(e) => handleOnChange('ssl_endpoint', e.target.value)}
-            variant="outlined"
-            label="SSL Endpoint"
-            value={currentNode.ssl_endpoint || ''}
-            className={classes.formFieldForm}
-          />
-        </Box>
-
-        <Box className={classes.wrapperForm}>
-          <Typography
-            style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
-            }}
-            className={classes.sectionTitle}
-            variant="h5"
-          >
-            Features
-          </Typography>
-
-          <TextField
-            style={{
-              display: currentNode.node_type !== 'query' ? 'none' : undefined
-            }}
-            onChange={handleOnChangeFeatures}
-            variant="outlined"
-            label="Node Feactures"
-            select
-            SelectProps={{
-              multiple: true,
-              classes: {
-                root: currentNode.features?.length ? classes.selectChips : ''
-              },
-              renderValue: (selected) => (
-                <div className={classes.chips}>
-                  {selected.map((value, index) => (
-                    <Chip
-                      key={`chip-item-${index}`}
-                      label={value}
-                      className={classes.chip}
-                    />
-                  ))}
-                </div>
-              )
-            }}
-            value={currentNode.features || []}
-            className={classes.formFieldForm}
-          >
-            {features.map((option, index) => (
-              <MenuItem key={`menu-item-${index}`} value={option.value}>
-                <Checkbox
-                  checked={
-                    (currentNode.features || []).indexOf(option.value) > -1
-                  }
-                />
-                <ListItemText primary={option.label} />
-              </MenuItem>
-            ))}
-          </TextField>
-        </Box>
-
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.addButton}
-          onClick={handleOnSubmit}
-          disabled={!currentNode.node_type}
-        >
-          {nodeIndex !== null ? 'Edit node' : 'Add Node'}
-        </Button>
+            {nodeIndex !== null ? 'Edit node' : 'Add Node'}
+          </Button>
+        </Grid>
       </Grid>
     </Modal>
   )
