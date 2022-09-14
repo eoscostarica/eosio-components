@@ -7,7 +7,7 @@ const Styles = (theme) => ({
   },
   wrapper: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'column !important',
     marginBottom: theme.spacing(2)
   },
   dropzoneArea: {
@@ -116,7 +116,7 @@ const Styles = (theme) => ({
   nodeWrapper: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   locationWrapper: {
     display: 'flex',
