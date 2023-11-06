@@ -16,7 +16,6 @@ Example.args = {
   contractName: 'eosio',
   actionName: undefined,
   showClauses: true,
-  url: config.eosApiHost,
   title: undefined,
   showActionsAtBottom: false
 }

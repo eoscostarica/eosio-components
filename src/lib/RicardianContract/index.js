@@ -17,6 +17,8 @@ const useStyles = makeStyles(Styles)
 const RicardianContract = ({
   name,
   url,
+  abiParams,
+  actionsParams,
   httpEndpoint,
   contractName,
   actionName,
@@ -191,9 +193,7 @@ const RicardianContract = ({
       <Typography variant="body1">
         {'Name: '}
         <Link
-          href={`${url}/account/${
-            contractName || name
-          }?loadContract=true&tab=Actions`}
+          href={`${url}${contractName || name}${actionsParams}`}
           variant="body2"
           target="_blank"
           rel="noopener noreferrer"
@@ -205,9 +205,7 @@ const RicardianContract = ({
       <Typography variant="body1">
         {'Hash: '}
         <Link
-          href={`${url}/account/${
-            contractName || name
-          }?loadContract=true&tab=ABI`}
+          href={`${url}${contractName || name}${abiParams}`}
           variant="body2"
           target="_blank"
           rel="noopener noreferrer"
@@ -239,6 +237,8 @@ RicardianContract.propTypes = {
   showActionsAtBottom: PropTypes.bool,
   name: PropTypes.string,
   url: PropTypes.string,
+  abiParams: PropTypes.string,
+  actionsParams: PropTypes.string,
   loadingMessage: PropTypes.string,
   LinearProgressColor: PropTypes.string,
   errorMessage: PropTypes.string,
@@ -248,7 +248,9 @@ RicardianContract.propTypes = {
 
 RicardianContract.defaultProps = {
   httpEndpoint: 'https://jungle.eosio.cr',
-  url: 'https://bloks.io',
+  url: 'https://bloks.io/account/',
+  abiParams: '?loadContract=true&tab=ABI',
+  actionsParams: '?loadContract=true&tab=Actions',
   showClauses: true,
   showActionsAtBottom: false,
   loadingMessage: 'Fetching ricardian clauses from blockchain',
