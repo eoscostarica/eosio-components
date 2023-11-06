@@ -33,12 +33,8 @@ const defaultNode = {
 
 const useStyles = makeStyles(Styles)
 
-const {
-  latitudeValidation,
-  longitudeValidation,
-  countryValidation,
-  validate,
-} = Validator
+const { latitudeValidation, longitudeValidation, countryValidation, validate } =
+  Validator
 
 const isValidNode = (node) => {
   return validate(node, nodeSchema)
@@ -77,7 +73,6 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   }
 
   const handleOnSubmit = () => {
-
     if (!isValidNode(currentNode)) return
 
     if (nodeIndex !== null) {
@@ -94,19 +89,16 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
   const deleteObjectKeys = (obj, keys) => {
     keys.forEach((key) => {
-      if (obj[key])
-        delete obj[key]
+      if (obj[key]) delete obj[key]
     })
   }
 
   const handleOnChangeNodeType = (key, value) => {
-
     const newNode = JSON.parse(JSON.stringify(currentNode))
 
     deleteObjectKeys(newNode, NODE_EXTRA_KEYS[newNode.node_type] ?? [])
 
     setCurrentNode({ ...newNode, [key]: value })
-
   }
 
   useEffect(() => {
@@ -116,14 +108,15 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   return (
     <Modal openModal={openModal} setOpenModal={(value) => setOpenModal(value)}>
       <Grid container justify="center" className={classes.nodes}>
-        <Grid>
+        <div className={classes.wrapperForm}>
           <Typography className={classes.sectionTitle} variant="h5">
             Nodes
           </Typography>
-
-          <Grid className={classes.nodeWrapper}>
+          <div className={classes.nodeTypeSelector}>
             <TextField
-              onChange={(e) => handleOnChangeNodeType('node_type', e.target.value)}
+              onChange={(e) =>
+                handleOnChangeNodeType('node_type', e.target.value)
+              }
               variant="outlined"
               label="Node Type"
               select
@@ -137,17 +130,19 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               ))}
             </TextField>
 
-            <Typography variant="body1" align="center">
-              Full
-            </Typography>
-            <Checkbox
-              onClick={(e) => handleOnChange('full', e.target.checked)}
-              checked={currentNode.full}
-            />
-          </Grid>
-        </Grid>
+            <div>
+              <Typography variant="body1" align="center">
+                Full
+              </Typography>
+              <Checkbox
+                onClick={(e) => handleOnChange('full', e.target.checked)}
+                checked={currentNode.full}
+              />
+            </div>
+          </div>
+        </div>
 
-        <Grid className={classes.wrapperForm}>
+        <div className={classes.wrapperForm}>
           <Typography className={classes.sectionTitle} variant="h5">
             Location
           </Typography>
@@ -212,15 +207,21 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               className={classes.formFieldForm}
             />
           </Grid>
-        </Grid>
+        </div>
 
-        <Grid className={classes.wrapperForm}>
-          <EndpointsForm currentNode={currentNode} handleOnChange={handleOnChange} />
-        </Grid>
+        <div className={classes.wrapperForm}>
+          <EndpointsForm
+            currentNode={currentNode}
+            handleOnChange={handleOnChange}
+          />
+        </div>
 
-        <Grid className={classes.wrapperForm}>
-          <FeaturesForm currentNode={currentNode} handleOnChange={handleOnChangeFeatures} />
-        </Grid>
+        <div className={classes.wrapperForm}>
+          <FeaturesForm
+            currentNode={currentNode}
+            handleOnChange={handleOnChangeFeatures}
+          />
+        </div>
 
         <Grid container item direction="column" alignItems="center">
           <Button

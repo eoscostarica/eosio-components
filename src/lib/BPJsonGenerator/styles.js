@@ -101,7 +101,7 @@ const Styles = (theme) => ({
     padding: theme.spacing(2, 2, 0, 2),
     '& svg': {
       fontSize: 25,
-      color: theme.palette.secondary.main
+      color: theme.palette.primary.main
     }
   },
   bodyWrapper: {
@@ -114,7 +114,8 @@ const Styles = (theme) => ({
   wrapperForm: {
     display: 'flex',
     flexDirection: 'column',
-    width: '100%'
+    width: '100%',
+    gap: theme.spacing(4)
   },
   nodeWrapper: {
     display: 'flex',
@@ -125,16 +126,20 @@ const Styles = (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
+    gap: theme.spacing(4),
+    '& .MuiFormControl-root': {
+      width: '100%'
+    },
     [theme.breakpoints.up('sm')]: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       '& .MuiFormControl-root': {
-        width: '48%'
+        width: '45%'
       }
     }
   },
   sectionTitle: {
-    marginBottom: theme.spacing(2)
+    paddingTop: `${theme.spacing(2)} !important`
   },
   formFieldForm: {
     marginBottom: theme.spacing(2)
@@ -154,8 +159,18 @@ const Styles = (theme) => ({
   addButton: {
     height: 40,
     width: '100%',
+    margin: theme.spacing(4, 0),
     [theme.breakpoints.up('md')]: {
       width: 300
+    }
+  },
+  nodeTypeSelector: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: theme.spacing(4),
+    '& .MuiFormControl-root': {
+      width: '45%'
     }
   }
 })
