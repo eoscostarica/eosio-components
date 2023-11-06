@@ -8,7 +8,10 @@ const Styles = (theme) => ({
   wrapper: {
     display: 'flex',
     flexDirection: 'column !important',
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
+    '& .MuiTypography-h5': {
+      paddingBottom: theme.spacing(2)
+    }
   },
   dropzoneArea: {
     flex: 1,
@@ -26,7 +29,7 @@ const Styles = (theme) => ({
     transition: 'border .24s ease-in-out'
   },
   divider: {
-    marginBottom: theme.spacing(2)
+    marginBottom: `${theme.spacing(2)} !important`
   },
   formField: {
     width: '100%'
