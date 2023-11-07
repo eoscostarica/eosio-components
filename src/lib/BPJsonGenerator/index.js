@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import ReactJson from 'react-json-view'
-import fileDownload from 'react-file-download'
+import fileDownload from 'js-file-download'
 import { makeStyles } from '@mui/styles'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
@@ -103,14 +103,13 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   }
 
   const getValidBpForm = () => {
-    const bp =
-    {
+    const bp = {
       org,
       nodes,
       producer_account_name: accountName
     }
 
-    return (isValidBP(bp) ? JSON.stringify(bp, null, '\t') : null)
+    return isValidBP(bp) ? JSON.stringify(bp, null, '\t') : null
   }
 
   const handleOnDownload = () => {
@@ -124,17 +123,19 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
 
     !!bp
       ? onSubmit({
-        bpJson: bp
-      })
+          bpJson: bp
+        })
       : onSubmit(null)
   }
 
   const preLoadBP = (bp) => {
     if (bp.org === undefined) {
-      throw Error("The BPJSON does not have the information of the organization")
+      throw Error(
+        'The BPJSON does not have the information of the organization'
+      )
     }
     if (bp.nodes === undefined) {
-      throw Error("The BPJSON does not have the list of nodes")
+      throw Error('The BPJSON does not have the list of nodes')
     }
 
     setOrg(bp ? bp.org : initData)
@@ -232,12 +233,19 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('ownership_disclosure', e.target.value, 'org')
                 }
                 variant="outlined"
-                error={!orgSchema.ownership_disclosure.isValid(org.ownership_disclosure)}
+                error={
+                  !orgSchema.ownership_disclosure.isValid(
+                    org.ownership_disclosure
+                  )
+                }
                 label="Ownership disclosure"
                 required
                 helperText={
-                  (org.ownership_disclosure === '' && 'The field is required') ||
-                  (!orgSchema.ownership_disclosure.isValid(org.ownership_disclosure) &&
+                  (org.ownership_disclosure === '' &&
+                    'The field is required') ||
+                  (!orgSchema.ownership_disclosure.isValid(
+                    org.ownership_disclosure
+                  ) &&
                     orgSchema.ownership_disclosure.message)
                 }
                 value={org.ownership_disclosure || ''}
@@ -352,7 +360,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   url={org.branding.logo_1024}
                   label="Logo 1024px"
                   isInvalidURL={!urlInputValidation(org.branding.logo_1024)}
-                /></Grid>
+                />
+              </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -405,7 +414,11 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
-                  handleOnChange('country', e.target.value.toUpperCase(), 'location')
+                  handleOnChange(
+                    'country',
+                    e.target.value.toUpperCase(),
+                    'location'
+                  )
                 }
                 variant="outlined"
                 label="Country"
