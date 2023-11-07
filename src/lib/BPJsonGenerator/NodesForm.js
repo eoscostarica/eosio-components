@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import MenuItem from '@mui/material/MenuItem'
+import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
 
@@ -112,6 +113,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
           <Typography className={classes.sectionTitle} variant="h5">
             Nodes
           </Typography>
+          <Divider className={classes.divider} />
           <div className={classes.nodeTypeSelector}>
             <TextField
               onChange={(e) =>
@@ -121,7 +123,6 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               label="Node Type"
               select
               value={currentNode.node_type}
-              className={classes.formFieldForm}
             >
               {Object.values(NODE_TYPES).map((type) => (
                 <MenuItem key={type} value={type}>
@@ -146,6 +147,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
           <Typography className={classes.sectionTitle} variant="h5">
             Location
           </Typography>
+          <Divider className={classes.divider} />
 
           <Grid className={classes.locationWrapper}>
             <TextField
@@ -209,19 +211,15 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
           </Grid>
         </div>
 
-        <div className={classes.wrapperForm}>
-          <EndpointsForm
-            currentNode={currentNode}
-            handleOnChange={handleOnChange}
-          />
-        </div>
+        <EndpointsForm
+          currentNode={currentNode}
+          handleOnChange={handleOnChange}
+        />
 
-        <div className={classes.wrapperForm}>
-          <FeaturesForm
-            currentNode={currentNode}
-            handleOnChange={handleOnChangeFeatures}
-          />
-        </div>
+        <FeaturesForm
+          currentNode={currentNode}
+          handleOnChange={handleOnChangeFeatures}
+        />
 
         <Grid container item direction="column" alignItems="center">
           <Button

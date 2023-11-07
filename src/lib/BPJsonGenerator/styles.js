@@ -34,17 +34,9 @@ const Styles = (theme) => ({
   formField: {
     width: '100%'
   },
-  checkbox: {
-    paddingTop: 0,
-    paddingBottom: 0
-  },
-  caption: {
-    display: 'block'
-  },
   btn: {
     height: 40,
     width: '100%',
-    marginBottom: theme.spacing(2),
     [theme.breakpoints.up('sm')]: {
       width: 300
     }
@@ -86,12 +78,10 @@ const Styles = (theme) => ({
   paper: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    height: '100%',
     width: '100%',
     overflowY: 'auto',
     outlineWidth: 0,
     [theme.breakpoints.up('sm')]: {
-      height: '80%',
       width: '70%'
     }
   },
@@ -105,8 +95,7 @@ const Styles = (theme) => ({
     }
   },
   bodyWrapper: {
-    padding: theme.spacing(0, 2, 2, 2),
-    height: '100%'
+    padding: theme.spacing(0, 2, 2, 2)
   },
   nodes: {
     height: '100%'
@@ -114,13 +103,7 @@ const Styles = (theme) => ({
   wrapperForm: {
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
-    gap: theme.spacing(4)
-  },
-  nodeWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
+    width: '100%'
   },
   locationWrapper: {
     display: 'flex',
@@ -139,10 +122,10 @@ const Styles = (theme) => ({
     }
   },
   sectionTitle: {
-    paddingTop: `${theme.spacing(2)} !important`
+    padding: `${theme.spacing(2)} 0px !important`
   },
   formFieldForm: {
-    marginBottom: theme.spacing(2)
+    marginBottom: `${theme.spacing(2)} !important`
   },
   chips: {
     display: 'flex',
@@ -159,7 +142,7 @@ const Styles = (theme) => ({
   addButton: {
     height: 40,
     width: '100%',
-    margin: theme.spacing(4, 0),
+    margin: `${theme.spacing(4, 0)} !important`,
     [theme.breakpoints.up('md')]: {
       width: 300
     }

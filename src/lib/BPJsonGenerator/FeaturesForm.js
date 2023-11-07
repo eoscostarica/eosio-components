@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
 import Checkbox from '@mui/material/Checkbox'
 import Chip from '@mui/material/Chip'
+import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemText from '@mui/material/ListItemText'
 import TextField from '@mui/material/TextField'
@@ -58,7 +59,7 @@ const features = [
   {
     label: 'atomic-assets-api',
     value: 'atomic-assets-api',
-    info: '',
+    info: ''
   }
 ]
 
@@ -70,13 +71,11 @@ const FeaturesForm = ({ currentNode, handleOnChange }) => {
   }
 
   return (
-    <>
-      <Typography
-        className={classes.sectionTitle}
-        variant="h5"
-      >
+    <div className={classes.wrapperForm}>
+      <Typography className={classes.sectionTitle} variant="h5">
         Features
       </Typography>
+      <Divider className={classes.divider} />
       <TextField
         onChange={handleOnChange}
         variant="outlined"
@@ -105,21 +104,19 @@ const FeaturesForm = ({ currentNode, handleOnChange }) => {
         {features.map((option, index) => (
           <MenuItem key={`menu-item-${index}`} value={option.value}>
             <Checkbox
-              checked={
-                (currentNode.features || []).indexOf(option.value) > -1
-              }
+              checked={(currentNode.features || []).indexOf(option.value) > -1}
             />
             <ListItemText primary={option.label} />
           </MenuItem>
         ))}
       </TextField>
-    </>
+    </div>
   )
 }
 
 FeaturesForm.propTypes = {
   currentNode: PropTypes.object,
-  handleOnChange: PropTypes.func,
+  handleOnChange: PropTypes.func
 }
 
 export default FeaturesForm

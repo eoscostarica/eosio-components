@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
+import Divider from '@mui/material/Divider'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
@@ -12,19 +13,20 @@ const useStyles = makeStyles(Styles)
 const { hostValidation, urlInputValidation } = Validator
 const EndpointsForm = ({ currentNode, handleOnChange }) => {
   const classes = useStyles()
-  if (currentNode.node_type === NODE_TYPES.PRODUCER || currentNode.node_type === '') {
+  if (
+    currentNode.node_type === NODE_TYPES.PRODUCER ||
+    currentNode.node_type === ''
+  ) {
     return <></>
   }
 
   return (
-    <>
-      <Typography
-        className={classes.sectionTitle}
-        variant="h5"
-      >
+    <div className={classes.wrapperForm}>
+      <Typography className={classes.sectionTitle} variant="h5">
         Endpoints
       </Typography>
-      {(NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('p2p_endpoint') > -1) && (
+      <Divider className={classes.divider} />
+      {NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('p2p_endpoint') > -1 && (
         <TextField
           onChange={(e) => handleOnChange('p2p_endpoint', e.target.value)}
           variant="outlined"
@@ -37,7 +39,7 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
           className={classes.formFieldForm}
         />
       )}
-      {(NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('api_endpoint') > -1) && (
+      {NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('api_endpoint') > -1 && (
         <TextField
           onChange={(e) => handleOnChange('api_endpoint', e.target.value)}
           variant="outlined"
@@ -50,7 +52,7 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
           className={classes.formFieldForm}
         />
       )}
-      {((NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('ssl_endpoint') > -1) &&
+      {NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('ssl_endpoint') > -1 && (
         <TextField
           onChange={(e) => handleOnChange('ssl_endpoint', e.target.value)}
           variant="outlined"
@@ -63,13 +65,13 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
           className={classes.formFieldForm}
         />
       )}
-    </>
+    </div>
   )
 }
 
 EndpointsForm.propTypes = {
   currentNode: PropTypes.object,
-  handleOnChange: PropTypes.func,
+  handleOnChange: PropTypes.func
 }
 
 export default EndpointsForm
