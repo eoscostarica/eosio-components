@@ -24,19 +24,23 @@ const Dropzone = ({ onSubmit }) => {
     const reader = new FileReader()
 
     reader.onload = (e) => {
-
       if (acceptedFiles[0] !== lastFile) {
         try {
           onSubmit(JSON.parse(e.target.result))
-          setLastFile(acceptedFiles[0])
         } catch (error) {
-          setErrorMessage(error instanceof SyntaxError ? "The file does not have the correct JSON format" : error.message)
+          setErrorMessage(
+            error instanceof SyntaxError
+              ? 'The file does not have the correct JSON format'
+              : error.message
+          )
           setOpenModal(true)
+          onSubmit({})
+        } finally {
+          setLastFile(acceptedFiles[0])
         }
       }
     }
     reader.readAsText(acceptedFiles[0])
-
   }, [acceptedFiles, lastFile, onSubmit])
 
   return (
@@ -44,13 +48,14 @@ const Dropzone = ({ onSubmit }) => {
       <section>
         <div {...getRootProps({ className: classes.dropzoneArea })}>
           <input {...getInputProps()} />
-          <p>Drop your BP json file here</p>
+          <p>Drop your BP.json file here</p>
         </div>
       </section>
       <ErrorModal
         openModal={openModal}
         setOpenModal={(value) => setOpenModal(value)}
-        message={errorMessage} />
+        message={errorMessage}
+      />
     </>
   )
 }

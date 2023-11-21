@@ -78,11 +78,15 @@ const Styles = (theme) => ({
   paper: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    width: '100%',
     overflowY: 'auto',
+    maxHeight: '80%',
     outlineWidth: 0,
-    [theme.breakpoints.up('sm')]: {
-      width: '70%'
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
     }
   },
   closeIcon: {
@@ -155,6 +159,11 @@ const Styles = (theme) => ({
     '& .MuiFormControl-root': {
       width: '45%'
     }
+  },
+  iconError: {
+    width: '64px !important',
+    height: '64px !important',
+    color: theme.palette.error.main
   }
 })
 
