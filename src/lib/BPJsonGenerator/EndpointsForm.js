@@ -5,18 +5,15 @@ import Divider from '@mui/material/Divider'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
-import { Validator, NODE_TYPES, NODE_EXTRA_KEYS } from '../utils'
+import { Validator } from '../utils'
 
 import Styles from './styles'
 
 const useStyles = makeStyles(Styles)
 const { hostValidation, urlInputValidation } = Validator
-const EndpointsForm = ({ currentNode, handleOnChange }) => {
+const EndpointsForm = ({ currentNode, nodesKeys, handleOnChange }) => {
   const classes = useStyles()
-  if (
-    currentNode.node_type === NODE_TYPES.PRODUCER ||
-    currentNode.node_type === ''
-  ) {
+  if (!nodesKeys[currentNode.node_type]) {
     return <></>
   }
 
@@ -26,7 +23,7 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
         Endpoints
       </Typography>
       <Divider className={classes.divider} />
-      {NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('p2p_endpoint') > -1 && (
+      {nodesKeys[currentNode.node_type]?.indexOf('p2p_endpoint') > -1 && (
         <TextField
           onChange={(e) => handleOnChange('p2p_endpoint', e.target.value)}
           variant="outlined"
@@ -39,7 +36,7 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
           className={classes.formFieldForm}
         />
       )}
-      {NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('api_endpoint') > -1 && (
+      {nodesKeys[currentNode.node_type]?.indexOf('api_endpoint') > -1 && (
         <TextField
           onChange={(e) => handleOnChange('api_endpoint', e.target.value)}
           variant="outlined"
@@ -52,7 +49,7 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
           className={classes.formFieldForm}
         />
       )}
-      {NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('ssl_endpoint') > -1 && (
+      {nodesKeys[currentNode.node_type]?.indexOf('ssl_endpoint') > -1 && (
         <TextField
           onChange={(e) => handleOnChange('ssl_endpoint', e.target.value)}
           variant="outlined"
@@ -71,6 +68,7 @@ const EndpointsForm = ({ currentNode, handleOnChange }) => {
 
 EndpointsForm.propTypes = {
   currentNode: PropTypes.object,
+  nodesKeys: PropTypes.object,
   handleOnChange: PropTypes.func
 }
 

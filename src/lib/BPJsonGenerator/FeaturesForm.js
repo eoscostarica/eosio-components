@@ -9,8 +9,6 @@ import ListItemText from '@mui/material/ListItemText'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
-import { NODE_EXTRA_KEYS } from '../utils'
-
 import Styles from './styles'
 
 const useStyles = makeStyles(Styles)
@@ -63,10 +61,10 @@ const features = [
   }
 ]
 
-const FeaturesForm = ({ currentNode, handleOnChange }) => {
+const FeaturesForm = ({ currentNode, nodesKeys, handleOnChange }) => {
   const classes = useStyles()
 
-  if (!(NODE_EXTRA_KEYS[currentNode.node_type]?.indexOf('features') > -1)) {
+  if (!(nodesKeys[currentNode.node_type]?.indexOf('features') > -1)) {
     return <></>
   }
 
@@ -116,6 +114,7 @@ const FeaturesForm = ({ currentNode, handleOnChange }) => {
 
 FeaturesForm.propTypes = {
   currentNode: PropTypes.object,
+  nodesKeys: PropTypes.object,
   handleOnChange: PropTypes.func
 }
 

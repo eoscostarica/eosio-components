@@ -10,13 +10,15 @@ import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 
 import ArrayTextField from '../ArrayTextField'
-import { Validator, toCapitalCase } from '../utils'
+import { Validator, toCapitalCase, NODE_TYPES } from '../utils'
 import { bpSchema, orgSchema, locationSchema } from '../utils/schemas'
 
 import ImagePreview from './ImagePreview'
 import NodesForm from './NodesForm'
 import NodesList from './NodesList'
 import BoxDropzone from './BoxDropzone'
+import ErrorModal from './ErrorModal'
+
 import Styles from './styles'
 
 const initData = {
@@ -64,16 +66,35 @@ const {
   validate
 } = Validator
 
-const isValidBP = (bp) => {
-  return validate(bp, bpSchema)
-}
-
-const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
+const BPJsonForm = ({
+  accountName,
+  additionalNodesTypes,
+  bpJson,
+  onSubmit
+}) => {
   const classes = useStyles()
   const [openModal, setOpenModal] = useState(false)
   const [org, setOrg] = useState(initData)
   const [nodes, setNodes] = useState([])
   const [currentNodeIndex, setCurrentNodeIndex] = useState(null)
+  const [openErrorModal, setOpenErrorModal] = useState(false)
+  const nodesTypes = {
+    ...(!Array.isArray(additionalNodesTypes) &&
+      Object.keys(additionalNodesTypes || {})),
+    ...NODE_TYPES
+  }
+
+  const isValidBP = (bp) => {
+    const isValid =
+      validate(bp, bpSchema) &&
+      (bp?.nodes || []).every((node) =>
+        Object.values(nodesTypes || {}).includes(node.node_type)
+      )
+
+    setOpenErrorModal(!isValid)
+
+    return isValid
+  }
 
   const handleOnChange = (key, value, parent) => {
     if (parent === 'org') {
@@ -129,17 +150,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   }
 
   const preLoadBP = (bp) => {
-    if (bp.org === undefined) {
-      throw Error(
-        'The BPJSON does not have the information of the organization'
-      )
-    }
-    if (bp.nodes === undefined) {
-      throw Error('The BPJSON does not have the list of nodes')
-    }
-
-    setOrg(bp ? bp.org : initData)
-    setNodes(bp ? bp.nodes : [])
+    setOrg(bp?.org ? bp.org : initData)
+    setNodes(bp?.nodes ? bp.nodes : [])
   }
 
   useEffect(() => {
@@ -499,6 +511,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
         <Divider className={classes.divider} />
         <NodesForm
           nodes={nodes}
+          nodesTypes={nodesTypes}
+          additionalNodesTypes={additionalNodesTypes}
           nodeIndex={currentNodeIndex}
           onSubmit={handleOnSubmitNode}
           openModal={openModal}
@@ -509,6 +523,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             {(nodes || []).length ? (
               <NodesList
                 nodes={nodes}
+                nodesTypes={nodesTypes}
                 onDelete={handleOnDeleteNode}
                 onEdit={handleOnEditNode}
               />
@@ -547,6 +562,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
           collapsed
         />
       </Grid>
+
+      <ErrorModal
+        openModal={openErrorModal}
+        setOpenModal={(value) => setOpenErrorModal(value)}
+        message={'Invalid BP.json format'}
+      />
 
       <Grid className={classes.wrapper}>
         <Grid container direction="row" spacing={1}>
@@ -592,6 +613,16 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
 
 BPJsonForm.propTypes = {
   accountName: PropTypes.string,
+  additionalNodesTypes: PropTypes.objectOf(
+    PropTypes.arrayOf(
+      PropTypes.oneOf([
+        'api_endpoint',
+        'ssl_endpoint',
+        'p2p_endpoint',
+        'features'
+      ])
+    )
+  ),
   bpJson: PropTypes.any,
   onSubmit: PropTypes.func
 }

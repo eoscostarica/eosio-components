@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
 
-import { Validator, toCapitalCase, NODE_TYPES, NODE_EXTRA_KEYS } from '../utils'
+import { Validator, toCapitalCase, NODE_EXTRA_KEYS } from '../utils'
 import { nodeSchema, locationSchema } from '../utils/schemas'
 
 import Styles from './styles'
@@ -41,9 +41,21 @@ const isValidNode = (node) => {
   return validate(node, nodeSchema)
 }
 
-const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
+const NodesForm = ({
+  nodes,
+  nodesTypes,
+  additionalNodesTypes,
+  nodeIndex,
+  onSubmit,
+  openModal,
+  setOpenModal
+}) => {
   const classes = useStyles()
   const [currentNode, setCurrentNode] = useState(defaultNode)
+  const nodesKeys = {
+    ...(!Array.isArray(additionalNodesTypes) && additionalNodesTypes),
+    ...NODE_EXTRA_KEYS
+  }
 
   const handleOnChange = (key, value) => {
     setCurrentNode({ ...currentNode, [key]: value })
@@ -97,7 +109,7 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   const handleOnChangeNodeType = (key, value) => {
     const newNode = JSON.parse(JSON.stringify(currentNode))
 
-    deleteObjectKeys(newNode, NODE_EXTRA_KEYS[newNode.node_type] ?? [])
+    deleteObjectKeys(newNode, nodesKeys[newNode.node_type] ?? [])
 
     setCurrentNode({ ...newNode, [key]: value })
   }
@@ -123,8 +135,16 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               label="Node Type"
               select
               value={currentNode.node_type}
+              error={
+                !Object.values(nodesTypes || {}).includes(currentNode.node_type)
+              }
+              helperText={
+                !Object.values(nodesTypes || {}).includes(
+                  currentNode.node_type
+                ) && 'Select a valid node type'
+              }
             >
-              {Object.values(NODE_TYPES).map((type) => (
+              {Object.values(nodesTypes).map((type) => (
                 <MenuItem key={type} value={type}>
                   {toCapitalCase(type)}
                 </MenuItem>
@@ -213,11 +233,13 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
         <EndpointsForm
           currentNode={currentNode}
+          nodesKeys={nodesKeys}
           handleOnChange={handleOnChange}
         />
 
         <FeaturesForm
           currentNode={currentNode}
+          nodesKeys={nodesKeys}
           handleOnChange={handleOnChangeFeatures}
         />
 
@@ -227,7 +249,9 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             color="secondary"
             className={classes.addButton}
             onClick={handleOnSubmit}
-            disabled={!currentNode.node_type}
+            disabled={
+              !Object.values(nodesTypes || {}).includes(currentNode.node_type)
+            }
           >
             {nodeIndex !== null ? 'Edit node' : 'Add Node'}
           </Button>
@@ -239,6 +263,8 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
 NodesForm.propTypes = {
   nodes: PropTypes.array,
+  nodesTypes: PropTypes.object,
+  additionalNodesTypes: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)),
   nodeIndex: PropTypes.number,
   onSubmit: PropTypes.func,
   openModal: PropTypes.bool,

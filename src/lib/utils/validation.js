@@ -1,24 +1,24 @@
-import { NODE_TYPES } from "./constants"
-
 const isString = (value) => {
-  return typeof (value) == "string"
+  return typeof value == 'string'
 }
 
 const isNumber = (value) => {
-  return typeof (value) == "number"
+  return typeof value == 'number'
 }
 const isBoolean = (value) => {
-  return typeof (value) === "boolean";
+  return typeof value === 'boolean'
 }
 
 const urlInputValidation = (value) => {
-  const urlRegex = /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/
+  const urlRegex =
+    /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/
 
   return !value || (isString(value) && urlRegex.test(value))
 }
 
 const emailInputValidation = (email) => {
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+  const emailRegex =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
   return isString(email) && emailRegex.test(email)
 }
@@ -47,17 +47,13 @@ const hostValidation = (endpoint) => {
   return !endpoint || (isString(endpoint) && hostRegex.test(endpoint))
 }
 
-const nodeTypeValidation = (type) => {
-  return Object.values(NODE_TYPES).indexOf(type) > -1
-}
-
 const validate = (obj, schema) => {
-
   if (obj === undefined) return false
 
   return Object.keys(schema).every((key) => {
-
-    if (obj[key] === undefined) return !schema[key].isRequired
+    if (obj[key] === undefined) {
+      return !schema[key].isRequired
+    }
 
     if (Array.isArray(obj[key])) {
       return obj[key].every((sub) => {
@@ -77,7 +73,6 @@ const Validator = {
   longitudeValidation,
   urlInputValidation,
   requiredValidation,
-  nodeTypeValidation,
   isBoolean,
   validate
 }
