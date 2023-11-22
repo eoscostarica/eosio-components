@@ -74,13 +74,12 @@ const BPJsonForm = ({
 }) => {
   const classes = useStyles()
   const [openModal, setOpenModal] = useState(false)
+  const [openErrorModal, setOpenErrorModal] = useState(false)
   const [org, setOrg] = useState(initData)
   const [nodes, setNodes] = useState([])
   const [currentNodeIndex, setCurrentNodeIndex] = useState(null)
-  const [openErrorModal, setOpenErrorModal] = useState(false)
   const nodesTypes = {
-    ...(!Array.isArray(additionalNodesTypes) &&
-      Object.keys(additionalNodesTypes || {})),
+    ...Object.keys(additionalNodesTypes || {}),
     ...NODE_TYPES
   }
 
