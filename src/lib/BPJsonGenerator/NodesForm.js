@@ -68,11 +68,29 @@ const NodesForm = ({
     })
   }
 
-  const handleOnChangeFeatures = (event) => {
-    setCurrentNode((prevValue) => ({
-      ...prevValue,
-      features: event.target.value
-    }))
+  const handleOnChangeFeatures = (_event, features) => {
+    setCurrentNode((prevValue) => {
+      if (!features?.length) return { ...prevValue, features: [] }
+
+      const newFeature = features[features.length - 1]
+      const newValue = (newFeature?.label || newFeature)?.toLowerCase()
+      const index = prevValue.features.indexOf(newValue)
+
+      if (index >= 0) {
+        return {
+          ...prevValue,
+          features: [
+            ...prevValue.features.slice(0, index),
+            ...prevValue.features.slice(index + 1)
+          ]
+        }
+      } else {
+        return {
+          ...prevValue,
+          features: [...prevValue.features, newValue]
+        }
+      }
+    })
   }
 
   const deleteEmptyKeyValues = () => {

@@ -131,17 +131,9 @@ const Styles = (theme) => ({
   formFieldForm: {
     marginBottom: `${theme.spacing(2)} !important`
   },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    marginBottom: theme.spacing(1)
-  },
   chip: {
     marginBottom: theme.spacing(1),
     marginRight: theme.spacing(1)
-  },
-  selectChips: {
-    paddingBottom: 0
   },
   addButton: {
     height: 40,

@@ -1,65 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@mui/styles'
-import Checkbox from '@mui/material/Checkbox'
-import Chip from '@mui/material/Chip'
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete'
 import Divider from '@mui/material/Divider'
-import MenuItem from '@mui/material/MenuItem'
-import ListItemText from '@mui/material/ListItemText'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+
+import { NODE_FEATURES } from '../utils'
 
 import Styles from './styles'
 
 const useStyles = makeStyles(Styles)
 
-const features = [
-  {
-    label: 'chain-api',
-    value: 'chain-api',
-    info: 'basic eosio::chain_api_plugin (/v1/chain/*)'
-  },
-  {
-    label: 'account-query',
-    value: 'account-query',
-    info: '(/v1/chain/get_accounts_by_authorizers)'
-  },
-  {
-    label: 'history-v1',
-    value: 'history-v1',
-    info: '(/v1/history/*)'
-  },
-  {
-    label: 'hyperion-v2',
-    value: 'hyperion-v2',
-    info: '(/v2/*)'
-  },
-  {
-    label: 'dfuse',
-    value: 'dfuse',
-    info: ''
-  },
-  {
-    label: 'fio-api',
-    value: 'fio-api',
-    info: ''
-  },
-  {
-    label: 'snapshot-api',
-    value: 'snapshot-api',
-    info: ''
-  },
-  {
-    label: 'dsp-api',
-    value: 'dsp-api',
-    info: ''
-  },
-  {
-    label: 'atomic-assets-api',
-    value: 'atomic-assets-api',
-    info: ''
-  }
-]
+const filter = createFilterOptions()
 
 const FeaturesForm = ({ currentNode, nodesKeys, handleOnChange }) => {
   const classes = useStyles()
@@ -74,40 +27,37 @@ const FeaturesForm = ({ currentNode, nodesKeys, handleOnChange }) => {
         Features
       </Typography>
       <Divider className={classes.divider} />
-      <TextField
-        onChange={handleOnChange}
+      <Autocomplete
+        multiple
         variant="outlined"
-        label="Node Features"
-        select
-        SelectProps={{
-          multiple: true,
-          classes: {
-            root: currentNode.features?.length ? classes.selectChips : ''
-          },
-          renderValue: (selected) => (
-            <div className={classes.chips}>
-              {selected.map((value, index) => (
-                <Chip
-                  key={`chip-item-${index}`}
-                  label={value}
-                  className={classes.chip}
-                />
-              ))}
-            </div>
-          )
-        }}
+        options={NODE_FEATURES}
+        onChange={handleOnChange}
         value={currentNode.features || []}
-        className={classes.formFieldForm}
-      >
-        {features.map((option, index) => (
-          <MenuItem key={`menu-item-${index}`} value={option.value}>
-            <Checkbox
-              checked={(currentNode.features || []).indexOf(option.value) > -1}
-            />
-            <ListItemText primary={option.label} />
-          </MenuItem>
-        ))}
-      </TextField>
+        defaultValue={currentNode.features || []}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params)
+
+          if (params.inputValue !== '') {
+            filtered.push({
+              label: params.inputValue,
+              value: params.inputValue,
+              info: ''
+            })
+          }
+
+          return filtered
+        }}
+        getOptionLabel={(option) => {
+          if (typeof option === 'string') return option
+
+          if (option.inputValue) return option.inputValue
+
+          return option.label
+        }}
+        renderInput={(params) => (
+          <TextField {...params} variant="outlined" label="Node Features" />
+        )}
+      />
     </div>
   )
 }
