@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import ReactJson from 'react-json-view'
-import fileDownload from 'react-file-download'
+import fileDownload from 'js-file-download'
 import { makeStyles } from '@mui/styles'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
@@ -10,13 +10,15 @@ import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 
 import ArrayTextField from '../ArrayTextField'
-import { Validator, toCapitalCase } from '../utils'
+import { Validator, toCapitalCase, NODE_TYPES } from '../utils'
 import { bpSchema, orgSchema, locationSchema } from '../utils/schemas'
 
 import ImagePreview from './ImagePreview'
 import NodesForm from './NodesForm'
 import NodesList from './NodesList'
 import BoxDropzone from './BoxDropzone'
+import ErrorModal from './ErrorModal'
+
 import Styles from './styles'
 
 const initData = {
@@ -64,16 +66,34 @@ const {
   validate
 } = Validator
 
-const isValidBP = (bp) => {
-  return validate(bp, bpSchema)
-}
-
-const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
+const BPJsonForm = ({
+  accountName,
+  additionalNodesTypes,
+  bpJson,
+  onSubmit
+}) => {
   const classes = useStyles()
   const [openModal, setOpenModal] = useState(false)
+  const [openErrorModal, setOpenErrorModal] = useState(false)
   const [org, setOrg] = useState(initData)
   const [nodes, setNodes] = useState([])
   const [currentNodeIndex, setCurrentNodeIndex] = useState(null)
+  const nodesTypes = {
+    ...Object.keys(additionalNodesTypes || {}),
+    ...NODE_TYPES
+  }
+
+  const isValidBP = (bp) => {
+    const isValid =
+      validate(bp, bpSchema) &&
+      (bp?.nodes || []).every((node) =>
+        Object.values(nodesTypes || {}).includes(node.node_type)
+      )
+
+    setOpenErrorModal(!isValid)
+
+    return isValid
+  }
 
   const handleOnChange = (key, value, parent) => {
     if (parent === 'org') {
@@ -103,14 +123,13 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
   }
 
   const getValidBpForm = () => {
-    const bp =
-    {
+    const bp = {
       org,
       nodes,
       producer_account_name: accountName
     }
 
-    return (isValidBP(bp) ? JSON.stringify(bp, null, '\t') : null)
+    return isValidBP(bp) ? JSON.stringify(bp, null, '\t') : null
   }
 
   const handleOnDownload = () => {
@@ -124,21 +143,14 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
 
     !!bp
       ? onSubmit({
-        bpJson: bp
-      })
+          bpJson: bp
+        })
       : onSubmit(null)
   }
 
   const preLoadBP = (bp) => {
-    if (bp.org === undefined) {
-      throw Error("The BPJSON does not have the information of the organization")
-    }
-    if (bp.nodes === undefined) {
-      throw Error("The BPJSON does not have the list of nodes")
-    }
-
-    setOrg(bp ? bp.org : initData)
-    setNodes(bp ? bp.nodes : [])
+    setOrg(bp?.org ? bp.org : initData)
+    setNodes(bp?.nodes ? bp.nodes : [])
   }
 
   useEffect(() => {
@@ -232,12 +244,19 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   handleOnChange('ownership_disclosure', e.target.value, 'org')
                 }
                 variant="outlined"
-                error={!orgSchema.ownership_disclosure.isValid(org.ownership_disclosure)}
+                error={
+                  !orgSchema.ownership_disclosure.isValid(
+                    org.ownership_disclosure
+                  )
+                }
                 label="Ownership disclosure"
                 required
                 helperText={
-                  (org.ownership_disclosure === '' && 'The field is required') ||
-                  (!orgSchema.ownership_disclosure.isValid(org.ownership_disclosure) &&
+                  (org.ownership_disclosure === '' &&
+                    'The field is required') ||
+                  (!orgSchema.ownership_disclosure.isValid(
+                    org.ownership_disclosure
+                  ) &&
                     orgSchema.ownership_disclosure.message)
                 }
                 value={org.ownership_disclosure || ''}
@@ -352,7 +371,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
                   url={org.branding.logo_1024}
                   label="Logo 1024px"
                   isInvalidURL={!urlInputValidation(org.branding.logo_1024)}
-                /></Grid>
+                />
+              </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -405,7 +425,11 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 onChange={(e) =>
-                  handleOnChange('country', e.target.value.toUpperCase(), 'location')
+                  handleOnChange(
+                    'country',
+                    e.target.value.toUpperCase(),
+                    'location'
+                  )
                 }
                 variant="outlined"
                 label="Country"
@@ -486,6 +510,8 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
         <Divider className={classes.divider} />
         <NodesForm
           nodes={nodes}
+          nodesTypes={nodesTypes}
+          additionalNodesTypes={additionalNodesTypes}
           nodeIndex={currentNodeIndex}
           onSubmit={handleOnSubmitNode}
           openModal={openModal}
@@ -496,6 +522,7 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
             {(nodes || []).length ? (
               <NodesList
                 nodes={nodes}
+                nodesTypes={nodesTypes}
                 onDelete={handleOnDeleteNode}
                 onEdit={handleOnEditNode}
               />
@@ -534,6 +561,12 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
           collapsed
         />
       </Grid>
+
+      <ErrorModal
+        openModal={openErrorModal}
+        setOpenModal={(value) => setOpenErrorModal(value)}
+        message={'Invalid BP.json format'}
+      />
 
       <Grid className={classes.wrapper}>
         <Grid container direction="row" spacing={1}>
@@ -579,6 +612,16 @@ const BPJsonForm = ({ accountName, bpJson, onSubmit }) => {
 
 BPJsonForm.propTypes = {
   accountName: PropTypes.string,
+  additionalNodesTypes: PropTypes.objectOf(
+    PropTypes.arrayOf(
+      PropTypes.oneOf([
+        'api_endpoint',
+        'ssl_endpoint',
+        'p2p_endpoint',
+        'features'
+      ])
+    )
+  ),
   bpJson: PropTypes.any,
   onSubmit: PropTypes.func
 }

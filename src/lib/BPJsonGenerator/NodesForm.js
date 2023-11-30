@@ -5,10 +5,11 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import MenuItem from '@mui/material/MenuItem'
+import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
 
-import { Validator, toCapitalCase, NODE_TYPES, NODE_EXTRA_KEYS } from '../utils'
+import { Validator, toCapitalCase, NODE_EXTRA_KEYS } from '../utils'
 import { nodeSchema, locationSchema } from '../utils/schemas'
 
 import Styles from './styles'
@@ -33,20 +34,28 @@ const defaultNode = {
 
 const useStyles = makeStyles(Styles)
 
-const {
-  latitudeValidation,
-  longitudeValidation,
-  countryValidation,
-  validate,
-} = Validator
+const { latitudeValidation, longitudeValidation, countryValidation, validate } =
+  Validator
 
 const isValidNode = (node) => {
   return validate(node, nodeSchema)
 }
 
-const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
+const NodesForm = ({
+  nodes,
+  nodesTypes,
+  additionalNodesTypes,
+  nodeIndex,
+  onSubmit,
+  openModal,
+  setOpenModal
+}) => {
   const classes = useStyles()
   const [currentNode, setCurrentNode] = useState(defaultNode)
+  const nodesKeys = {
+    ...(!Array.isArray(additionalNodesTypes) && additionalNodesTypes),
+    ...NODE_EXTRA_KEYS
+  }
 
   const handleOnChange = (key, value) => {
     setCurrentNode({ ...currentNode, [key]: value })
@@ -59,11 +68,30 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
     })
   }
 
-  const handleOnChangeFeatures = (event) => {
-    setCurrentNode((prevValue) => ({
-      ...prevValue,
-      features: event.target.value
-    }))
+  const handleOnChangeFeatures = (_event, features) => {
+    setCurrentNode((prevValue) => {
+      if (!features?.length) return { ...prevValue, features: [] }
+
+      const prevFeatures = prevValue?.features || []
+      const newFeature = features[features.length - 1]
+      const newValue = (newFeature?.label || newFeature)?.toLowerCase()
+      const index = prevFeatures.indexOf(newValue)
+
+      if (index >= 0) {
+        return {
+          ...prevValue,
+          features: [
+            ...prevFeatures.slice(0, index),
+            ...prevFeatures.slice(index + 1)
+          ]
+        }
+      } else {
+        return {
+          ...prevValue,
+          features: [...prevFeatures, newValue]
+        }
+      }
+    })
   }
 
   const deleteEmptyKeyValues = () => {
@@ -77,7 +105,6 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   }
 
   const handleOnSubmit = () => {
-
     if (!isValidNode(currentNode)) return
 
     if (nodeIndex !== null) {
@@ -94,19 +121,16 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
   const deleteObjectKeys = (obj, keys) => {
     keys.forEach((key) => {
-      if (obj[key])
-        delete obj[key]
+      if (obj[key]) delete obj[key]
     })
   }
 
   const handleOnChangeNodeType = (key, value) => {
-
     const newNode = JSON.parse(JSON.stringify(currentNode))
 
-    deleteObjectKeys(newNode, NODE_EXTRA_KEYS[newNode.node_type] ?? [])
+    deleteObjectKeys(newNode, nodesKeys[newNode.node_type] ?? [])
 
     setCurrentNode({ ...newNode, [key]: value })
-
   }
 
   useEffect(() => {
@@ -116,41 +140,53 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
   return (
     <Modal openModal={openModal} setOpenModal={(value) => setOpenModal(value)}>
       <Grid container justify="center" className={classes.nodes}>
-        <Grid>
+        <div className={classes.wrapperForm}>
           <Typography className={classes.sectionTitle} variant="h5">
             Nodes
           </Typography>
-
-          <Grid className={classes.nodeWrapper}>
+          <Divider className={classes.divider} />
+          <div className={classes.nodeTypeSelector}>
             <TextField
-              onChange={(e) => handleOnChangeNodeType('node_type', e.target.value)}
+              onChange={(e) =>
+                handleOnChangeNodeType('node_type', e.target.value)
+              }
               variant="outlined"
               label="Node Type"
               select
               value={currentNode.node_type}
-              className={classes.formFieldForm}
+              error={
+                !Object.values(nodesTypes || {}).includes(currentNode.node_type)
+              }
+              helperText={
+                !Object.values(nodesTypes || {}).includes(
+                  currentNode.node_type
+                ) && 'Select a valid node type'
+              }
             >
-              {Object.values(NODE_TYPES).map((type) => (
+              {Object.values(nodesTypes).map((type) => (
                 <MenuItem key={type} value={type}>
                   {toCapitalCase(type)}
                 </MenuItem>
               ))}
             </TextField>
 
-            <Typography variant="body1" align="center">
-              Full
-            </Typography>
-            <Checkbox
-              onClick={(e) => handleOnChange('full', e.target.checked)}
-              checked={currentNode.full}
-            />
-          </Grid>
-        </Grid>
+            <div>
+              <Typography variant="body1" align="center">
+                Full
+              </Typography>
+              <Checkbox
+                onClick={(e) => handleOnChange('full', e.target.checked)}
+                checked={currentNode.full}
+              />
+            </div>
+          </div>
+        </div>
 
-        <Grid className={classes.wrapperForm}>
+        <div className={classes.wrapperForm}>
           <Typography className={classes.sectionTitle} variant="h5">
             Location
           </Typography>
+          <Divider className={classes.divider} />
 
           <Grid className={classes.locationWrapper}>
             <TextField
@@ -212,15 +248,19 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
               className={classes.formFieldForm}
             />
           </Grid>
-        </Grid>
+        </div>
 
-        <Grid className={classes.wrapperForm}>
-          <EndpointsForm currentNode={currentNode} handleOnChange={handleOnChange} />
-        </Grid>
+        <EndpointsForm
+          currentNode={currentNode}
+          nodesKeys={nodesKeys}
+          handleOnChange={handleOnChange}
+        />
 
-        <Grid className={classes.wrapperForm}>
-          <FeaturesForm currentNode={currentNode} handleOnChange={handleOnChangeFeatures} />
-        </Grid>
+        <FeaturesForm
+          currentNode={currentNode}
+          nodesKeys={nodesKeys}
+          handleOnChange={handleOnChangeFeatures}
+        />
 
         <Grid container item direction="column" alignItems="center">
           <Button
@@ -228,7 +268,9 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
             color="secondary"
             className={classes.addButton}
             onClick={handleOnSubmit}
-            disabled={!currentNode.node_type}
+            disabled={
+              !Object.values(nodesTypes || {}).includes(currentNode.node_type)
+            }
           >
             {nodeIndex !== null ? 'Edit node' : 'Add Node'}
           </Button>
@@ -240,6 +282,8 @@ const NodesForm = ({ nodes, nodeIndex, onSubmit, openModal, setOpenModal }) => {
 
 NodesForm.propTypes = {
   nodes: PropTypes.array,
+  nodesTypes: PropTypes.object,
+  additionalNodesTypes: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)),
   nodeIndex: PropTypes.number,
   onSubmit: PropTypes.func,
   openModal: PropTypes.bool,

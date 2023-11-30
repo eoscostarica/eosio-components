@@ -8,7 +8,10 @@ const Styles = (theme) => ({
   wrapper: {
     display: 'flex',
     flexDirection: 'column !important',
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
+    '& .MuiTypography-h5': {
+      paddingBottom: theme.spacing(2)
+    }
   },
   dropzoneArea: {
     flex: 1,
@@ -26,22 +29,14 @@ const Styles = (theme) => ({
     transition: 'border .24s ease-in-out'
   },
   divider: {
-    marginBottom: theme.spacing(2)
+    marginBottom: `${theme.spacing(2)} !important`
   },
   formField: {
     width: '100%'
   },
-  checkbox: {
-    paddingTop: 0,
-    paddingBottom: 0
-  },
-  caption: {
-    display: 'block'
-  },
   btn: {
     height: 40,
     width: '100%',
-    marginBottom: theme.spacing(2),
     [theme.breakpoints.up('sm')]: {
       width: 300
     }
@@ -83,13 +78,15 @@ const Styles = (theme) => ({
   paper: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    height: '100%',
-    width: '100%',
     overflowY: 'auto',
+    maxHeight: '80%',
     outlineWidth: 0,
-    [theme.breakpoints.up('sm')]: {
-      height: '80%',
-      width: '70%'
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
     }
   },
   closeIcon: {
@@ -98,12 +95,11 @@ const Styles = (theme) => ({
     padding: theme.spacing(2, 2, 0, 2),
     '& svg': {
       fontSize: 25,
-      color: theme.palette.secondary.main
+      color: theme.palette.primary.main
     }
   },
   bodyWrapper: {
-    padding: theme.spacing(0, 2, 2, 2),
-    height: '100%'
+    padding: theme.spacing(0, 2, 2, 2)
   },
   nodes: {
     height: '100%'
@@ -113,47 +109,53 @@ const Styles = (theme) => ({
     flexDirection: 'column',
     width: '100%'
   },
-  nodeWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
   locationWrapper: {
     display: 'flex',
     flexDirection: 'column',
     flexWrap: 'wrap',
+    gap: theme.spacing(4),
+    '& .MuiFormControl-root': {
+      width: '100%'
+    },
     [theme.breakpoints.up('sm')]: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       '& .MuiFormControl-root': {
-        width: '48%'
+        width: '45%'
       }
     }
   },
   sectionTitle: {
-    marginBottom: theme.spacing(2)
+    padding: `${theme.spacing(2)} 0px !important`
   },
   formFieldForm: {
-    marginBottom: theme.spacing(2)
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    marginBottom: theme.spacing(1)
+    marginBottom: `${theme.spacing(2)} !important`
   },
   chip: {
     marginBottom: theme.spacing(1),
     marginRight: theme.spacing(1)
   },
-  selectChips: {
-    paddingBottom: 0
-  },
   addButton: {
     height: 40,
     width: '100%',
+    margin: `${theme.spacing(4, 0)} !important`,
     [theme.breakpoints.up('md')]: {
       width: 300
     }
+  },
+  nodeTypeSelector: {
+    display: 'flex',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: theme.spacing(4),
+    '& .MuiFormControl-root': {
+      width: '45%'
+    }
+  },
+  iconError: {
+    width: '64px !important',
+    height: '64px !important',
+    color: theme.palette.error.main
   }
 })
 
