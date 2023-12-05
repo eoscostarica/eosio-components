@@ -25,6 +25,6 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: storybook-static
+          token: ${{ secrets.ACCESS_TOKEN }}
+          branch: gh-pages
+          folder: storybook-static
